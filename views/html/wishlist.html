@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<link rel="shortcut icon" href="./images/logo.png" type="image/x-icon">
+    
+<!-- Box  icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Overlock:wght@400;700&display=swap" rel="stylesheet"> 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="../css/style.css">
+<title>Fresh Food Market Place</title>
+<!--Temp Code Starts Here-->
+
+<style>
+    .cartdiv
+{
+    position:relative;
+    display:flex;
+    justify-content: space-between;
+    border:1px solid black;
+}
+.plusButton
+{
+    min-height: 40
+px
+;
+text-shadow: none;
+position: relative;
+padding: 0px;
+border-radius: 0px 21px 21px 0px;
+background-color: rgb(66, 125, 0);
+color: rgb(255, 255, 255);
+width: 56px;
+height: 40px;
+border: none;
+font-size: 1.772rem;
+font-weight: 100;
+}
+.minusButton
+{
+    min-height: 40
+px
+;
+text-shadow: none;
+position: relative;
+padding: 0px;
+border-radius: 21px 0px 0px 21px;
+background-color: rgb(66, 125, 0);
+color: rgb(255, 255, 255);
+width: 56px;
+height: 40px;
+border: none;
+font-size: 1.772rem;
+font-weight: 100;
+}
+.quantitySpanValue
+{
+    background-color:lightgray;
+}
+.quantityDiv
+{
+    margin-bottom: 8px;
+}
+.buttonDiv
+{
+    display:inline-block;
+    float:none;
+    vertical-align: middle;
+    font-size:1 rem;
+}
+.productDiv
+{
+    padding-top:30px;
+    width:400px;
+}
+.myquantity
+{
+    padding-top:30px;
+}
+.productPrice
+{
+    padding-top:70px;
+}
+.spanPrice
+{
+    font-size:25px;
+}
+.billdiv
+{   
+    border:2px solid black;
+
+}
+.subtotalLabel,.shippingLabel,.taxesLabel,.totalLabel
+{
+    width:100px;
+}
+.continueButton
+{
+    margin-top:20px;
+    
+}
+.gobackButton
+{   
+    margin-left:120px;
+    margin-top:20px;
+}
+.productHeading{
+    width:400px;
+}
+.removeButton{
+    margin-top:60px;
+}
+</style>
+<script>
+    $(function()
+    {
+        $.ajax({
+            url:"http://localhost:6050/getuserinfo",
+            type:"GET",
+            dataType:"json",
+            success:function(response)
+            {
+                console.log(response)
+                console.log(response[0].first_name)
+                console.log(response[0].last_name)
+
+                buildTable(response);
+
+            }
+
+        })
+
+        //To extract all the data from the wishlisst file
+        $.ajax({
+            url:"http://localhost:6050/getwish",
+            type:"GET",
+            dataType:"json",
+            success:function(response)
+            {
+                console.log(response)
+                buildResponse(response)
+            }
+        })
+    })
+    function buildTable(response)
+    {
+        var table=document.getElementById("customer_name");
+        var row1=`
+        <span class="glyphicon glyphicon-user"></span>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="userdiv">
+        <span class="user_first_name">Welcome, ${response[0].first_name}&nbsp;&nbsp;${response[0].last_name}</span>
+        &nbsp;&nbsp;
+        <span class="user_last_name"></span>
+        &nbsp;&nbsp;
+        </div>
+        `;
+        table.innerHTML+=row1;
+
+
+
+    }
+
+    function buildResponse(data)
+    {
+        console.log("You are inside the Build Response")
+        var table=document.getElementById("mainDiv")
+        for(let  i=0;i<data.length;i++)
+        {
+            var row1=`
+        <div class="row">
+    <div class="col-xs-2"></div>
+
+    <div id="mydiv" class="col-xs-8 cartdiv">
+        <!--For the product image -->
+        <div>
+            <img src=${data[i].img} 
+            width="200px" height="200px"alt="">
+        </div>
+        <div class="productDiv">
+            <h1 class="productHeading">${data[i].name}</h1>
+            
+        </div>
+
+      
+
+        <!--Product Price Starts Here-->
+        <div class="productPrice">
+            <span class="spanPrice">${data[i].price}</span>
+        </div>
+        <!--Product Price Ends Here-->
+
+        <!--Remove button starts Here -->
+        <div class="removeDiv">
+            <button class="btn btn-danger removeButton" id="remove" value=${i} onClick=RemoveItem(this.value)>X Remove</button>
+        </div>
+
+        <!--Remove button ends Here -->
+    </div>
+    <div class="col-xs-2"></div>
+    </div>
+    <br>    `;
+    table.innerHTML+=row1;
+
+        }
+      
+ 
+
+    }
+    function RemoveItem(index)
+    {   
+        console.log("Congo you clicked Remove Button")
+        $.ajax({
+            url:"http://localhost:6050/removewish",
+            type:"POST",
+            dataType:"JSON",
+            data:{
+                "index":index
+            },
+            success:function(response)
+            {
+                console.log(response)
+            }
+      
+
+        })
+        window.location.reload()
+    }
+
+</script>
+<!--Temp Code Ends Here-->
+<style>
+    .signoutli
+    {
+        margin-left:25px;
+    }
+    .user_first_name
+    {
+        background-color:rgb(229, 180, 235)
+    }
+    .user_last_name
+    {
+        background-color:rgb(229, 180, 235)
+    }
+    .user_div
+    {
+        background-color:rgb(229, 180, 235)
+    }
+    .customer_info
+    {
+        margin-left: 25px;
+        
+    }
+    .cart-item
+    {
+        margin-left:25px;
+    }
+    .row
+    {
+        width:100%;
+    }
+    #mainDiv
+    {
+        width:100%;
+    }
+
+    .cartDiv
+    {
+        position:relative;
+        display:flex;
+        justify-content: space-between;
+        border:1px solid black;
+
+    }
+    .buttonDiv
+    {
+        display:inline-block;
+        float:none;
+        vertical-align: middle;
+        font-size:1 rem;
+    }
+    .productDiv
+    {
+        padding-top:30px;
+        width:400px;
+    }
+    .productPrice
+    {
+        padding-top:70px;
+    }
+    .spanPrice
+    {
+        font-size:25px;
+    }
+    .removeButton{
+        margin-top:60px;
+    }
+    
+</style>
+<body>
+    
+        <!-- Header -->
+      
+            <!-- Navigation -->
+            <nav class="nav">
+                <div class="navigation container">
+                    <a href="index.html">
+                    <div class="logo">
+                        <img src="../images/logo.png">
+                        <div class="hero-content">
+                            
+                        </div>
+                    </div>
+                    </a>
+        
+                    <div class="menu">
+                        <div class="top-nav">
+                            <div class="logo">
+                                <img src="../images/logo.png">
+                            </div>
+                            <div class="close">
+                                <i class='bx bx-x'></i>
+                            </div>
+                        </div>
+                        <ul class="nav-list">
+                            <li class="nav-item">
+                                <a href="/home">Home &nbsp;&nbsp;&nbsp;&nbsp;</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/fruit&veg">Fruits & Vegetables &nbsp;&nbsp;&nbsp;&nbsp;</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/dairy">Dairy &nbsp;&nbsp;&nbsp;&nbsp;</a>
+                            </li>
+        
+                            <li class="nav-item">
+                                <a href="/meat">Meat &nbsp;&nbsp;&nbsp;&nbsp;</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/uinfo">Account &nbsp;&nbsp;&nbsp;&nbsp;</a>
+                            </li>
+                            <li>
+                                <a href="">My Wishlist</a>
+                            </li>
+                            <li class=" cart-item nav-item">
+                                <a href="cart.html"><i class='bx bx-cart'>&nbsp;&nbsp;&nbsp;&nbsp;</i></a>
+                            </li>
+                           
+                            <!--Temp code Starts Here-->
+                            <li class="customer_info" id="customer_name">
+                        
+                               
+                            </li>
+    
+                            
+                            <li class="signoutli">
+                                <a href="/home">
+                                <span class="glyphicon glyphicon-log-out">
+                                
+                                </span>
+                                </a>
+                            </li>
+    
+                            
+                         
+    
+    
+                            <!--Temp Code Ends Here-->
+                        </ul>
+                    </div>
+                    <a href="cart.html" class="cart-icon"><i class='bx bx-cart'></i></a>
+                    <div class="nav-menu">
+                        <i class='bx bx-menu' ></i>
+                    </div>
+                </div>
+            </nav>
+            
+           
+            
+    
+        <!--Temp Code Starts Here-->
+        <div id="mainDiv"></div>
+
+        <!--Temp Code Ends Here-->
+</body>
+</html>

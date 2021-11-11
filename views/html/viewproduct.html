@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script>
+    $(function()
+    {   
+        var myArray=[]
+
+        $.ajax({
+            url:'http://localhost:6050/viewproductdetails',
+            type:'GET',
+            dataType:'json',
+            success:function(response)
+            {   
+                myArray=response
+                console.log("Hello Everyone")
+                console.log(response)
+                
+                buildTable(response)
+
+            }
+        })
+        function buildTable(data)
+        {
+            var table=document.getElementById("mydiv")
+            console.log(table)
+            console.log("Inside Build Table")
+            console.log(data)
+            console.log(data.name)
+
+           
+
+                var row1=`
+                    <div>
+                   <p>${data.name}</p>
+                   </div>
+
+                  <div>
+                  <img class="productImage" src=${data.img} width="200px" height="200px">            
+                    </div>
+                  <div class="product_display item">
+
+                  <p>PRICE: ${data.price}</p>
+                  </div>`
+
+                 table.innerHTML+=row1;
+            
+            console.log(row1)
+
+        }
+    })
+</script>
+<style>
+  
+    .midh
+    {
+        background-color:skyblue;
+        color:whitesmoke;
+        text-align: center;
+    }
+</style>
+
+<body>
+    <h1>Products Page</h1>
+    <div class='container'>
+    <div class='col-xs-2'></div>
+    <div class='col-xs-8 mididv'>
+    <h1 class="midh">PRODUCT INFO</h1>
+    <div class="grid-container" id="mydiv"></div>
+    </div>
+    <div class='col-xs-2'></div>
+    </div>
+</body>
+</html>

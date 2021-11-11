@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+<link rel="stylesheet" href="../css/style1.css">
+<style>
+    .uheading
+    {
+        text-align:center;
+        background-color:cadetblue;
+    }
+    .first_name_label
+    {
+        text-align:center;
+    }
+    .myLabel
+    {
+        width:120px;
+        margin-right:120px;
+    }
+    .editButton
+    {
+        text-align:center;
+        
+        margin-top:35px;
+    }
+    .updateButton
+    {
+        margin-top:35px;
+        margin-left:95px;
+    }
+    .userDiv
+    {
+        text-align:center;
+    }
+</style>
+<script>
+    $(function()
+    {   
+        var myArray=[]
+        $.ajax({
+            url:'http://localhost:6050/getuserinfo',
+            type:'GET',
+            dataType:'json',
+            success:function(response)
+            {       
+                myArray=response;
+                console.log(response)
+                getData(response)
+            }
+
+            //End of AJAX call
+        })
+    })
+
+    function getData(data)
+    {
+        console.log(data[0].first_name)
+        console.log(data[0].address)
+        const address=data[0].address
+        var table=document.getElementById("myDiv")
+        var row=`    <div class="row">
+       
+       <div class="col-xs-2"></div>
+       <div class="col-xs-8 userDiv">
+        <form  action="/updateuserinfo" method="POST">
+           <h1 class="uheading">USER DETAILS</h1>
+           <label for="firstName" class="myLabel">FIRST NAME</label>
+           <input name="firstName" class="myinput" type="text" id="first_name" disabled value=${data[0].first_name}>
+           <br>
+           <label for="lastName" class="myLabel">LAST NAME </label>
+           <input  name="lastName" class="myinput" type="text" id="last_name"  disabled  value=${data[0].last_name}>
+           <br>
+           <label for="emailAddress" class="myLabel">EMAIL ADDRESS</label>
+           <input name="email" class="myinput" type="text" id="email_address"  disabled  value=${data[0].email}>
+           <br>
+           <label for="address" class="myLabel">ADDRESS</label>
+           <input name="address" class="myinput" type="text" id="address" " disabled value='${address}'>
+           <br>
+           <label for="phoneNumber" class="myLabel">PHONE NUMBER</label>
+           <input  name="phoneNumber"  class="myinput"  type="text" id="phone_number"  disabled  value=${data[0].phone}>
+           <br>
+           <label for="postalCode" class="myLabel">POSTAL CODE</label>
+           <input name="postalCode" class="myinput" type="text" id="postal_code"  disabled  value='${data[0].postal_code}'>
+           <br>
+           <button type="button" onClick=editDetails() class="btn btn-primary editButton">EDIT</button>
+           <button type="submit" onClick=updateDetails()  class="btn btn-success updateButton" disabled>UPDATE</button>
+        </form>    
+        
+       </div>
+       <div class="col-xs-2"></div>
+   </div>
+        
+        `;
+        table.innerHTML+=row;
+
+    }
+
+    //EditDetails() function definition
+
+    function editDetails()
+    {   
+      
+            $(".myinput").removeAttr("disabled")
+            $(".updateButton").removeAttr("disabled")
+          
+
+       
+    }
+    function updateDetails()
+    {
+        console.log("Update Button Clicked Successfully")
+        $.ajax({
+
+        })
+    }
+
+    $("#confirm_password").keyup(()=>
+    {
+        let newPass=$("#new_password").val()
+        console.log(newPass)
+        let confirmPass=$("#confirm_password").val()
+        console.log(confirmPass)
+    })
+    function passwordUpd(oldP,newP,confirmP)
+    {
+        var  old_pasword=oldP;
+        var new_password=newP;
+        var confirm_password=confirmP;
+        console.log(old_pasword)
+        console.log(new_password)
+        console.log(confirm_password)
+        if(new_password!=confirm_password)
+        {
+            alert("New and Verify Password doesn't match")
+        }
+        else{
+            $.ajax({
+                url:"http://localhost:6050/updatePassword",
+                type:"POST",
+                data:{
+                    "oldPassword":oldP,
+                    "newPassword":newP,
+                    "confirmPassword":confirmP
+                },
+                dataType:"json",
+                success:function(response)
+                {
+                    console.log(response);
+                    console.log(response.count)
+                    if(response.count==0)
+                    {
+                        alert("Password Changed Successfully")
+                    }
+                    if(response.count==1)
+                    {
+                        alert("Invalid Password,Please Try Again")
+                    }
+                }
+            })
+        }
+
+    }
+</script>
+
+<body>
+    <nav class="nav">
+        <div class="navigation container">
+            <a href="index.html">
+            <div class="logo">
+                <img src="../images/logo.png">
+                <div class="hero-content">
+                    
+                </div>
+            </div>
+            </a>
+
+            <div class="menu">
+                <div class="top-nav">
+                    <div class="logo">
+                        <img src="../images/logo.png">
+                    </div>
+                    <div class="close">
+                        <i class='bx bx-x'></i>
+                    </div>
+                </div>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="/home">Home &nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/fruit&veg">Fruits & Vegetables &nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/dairy">Dairy &nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="/meat">Meat &nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/uinfo">Account &nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    </li>
+                    <li>
+                        <a href="">My Wishlist</a>
+                    </li>
+                    <li class=" cart-item nav-item">
+                        <a href="cart.html"><i class='bx bx-cart'>&nbsp;&nbsp;&nbsp;&nbsp;</i></a>
+                    </li>
+                   
+                    <!--Temp code Starts Here-->
+                    <li class="customer_info" id="customer_name">
+                
+                       
+                    </li>
+
+                    
+                    <li class="signoutli">
+                        <a href="/home">
+                        <span class="glyphicon glyphicon-log-out">
+                        
+                        </span>
+                        </a>
+                    </li>
+
+                    
+                 
+
+
+                    <!--Temp Code Ends Here-->
+                </ul>
+            </div>
+            <a href="cart.html" class="cart-icon"><i class='bx bx-cart'></i></a>
+            <div class="nav-menu">
+                <i class='bx bx-menu' ></i>
+            </div>
+        </div>
+    </nav>
+    
+    <div id="myDiv"></div>
+    <div class="changePasswordDiv">
+        <div class="row">
+            <div class="col-xs-2"></div>
+            <div class="col-xs-8 userDiv">
+                <h1 class="uheading">Change Password</h1>
+                <form action="/updatepassword" method="POST">
+                    <label class="myLabel" for="old_password">Enter Old Password</label>
+                    <input required class="myInput" type="password" name="oldPassword" placeholder="Enter old Password">
+                    <br>
+                    <label class="myLabel" for="new_password">New Password</label>
+                    <input  required id="new_password" class="myInput" type="password" placeholder="New Password" name="newPassword" required>
+                    <br>
+                    <label class="myLabel" for="verify_password">Verify Password</label>
+                    <input required  id="confirm_password" class="myInput" type="password" name="confirmPassword" placeholder="Confirm Password" required>
+                    <br>
+                    <br>
+                    <button id="submitPassword" type="button" onclick="passwordUpd(oldPassword.value,newPassword.value,confirmPassword.value)" class="btn btn-primary">SUBMIT</button>
+                </form>
+            </div>
+            <div class="col-xs-2"></div>
+        </div>
+    </div>
+
+</body>
+</html>

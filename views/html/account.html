@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="./images/logo.png" type="image/x-icon">
+    
+    <!-- Box  icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Overlock:wght@400;700&display=swap" rel="stylesheet"> 
+    
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="../css/style.css">
+    <title>Food Company</title>
+</head>
+<body>
+    <!-- Header -->
+    <header id="home" class="header">
+        <!-- Navigation -->
+        <nav class="nav">
+            <div class="navigation container">
+              <a href="index.html">
+                <div class="logo">
+                    <img src="./images/logo.png">
+                </div>
+                </a>
+    
+                <div class="menu">
+                    <div class="top-nav">
+                        <div class="logo">
+                            <img src="./images/logo.png">
+                        </div>
+                        <div class="close">
+                            <i class='bx bx-x'></i>
+                        </div>
+                    </div>
+                    <ul class="nav-list">
+                      <li class="nav-item">
+                        <a href="">Home &nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="">Fruits & Vegetables &nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="">Meat &nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="">Dairy &nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="">Account &nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    </li>
+                        <li class="nav-item">
+                          <a href="cart.html"><i class='bx bx-cart'>&nbsp;&nbsp;&nbsp;&nbsp;</i></a>
+                        </li> 
+                    </ul>
+                </div>
+                <a href="cart.html" class="cart-icon"><i class='bx bx-cart'></i></a>
+                <div class="nav-menu">
+                    <i class='bx bx-menu' ></i>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Login/Signup -->
+        <center>
+        <div class="wrapper">
+          <div class="title-text">
+             <div class="title login">
+                Login / Signup
+             </div>
+             <div class="title signup">
+              Login / Signup
+             </div>
+          </div>
+          <div class="form-container">
+             <div class="slide-controls">
+                <input type="radio" name="slide" id="login" checked>
+                <input type="radio" name="slide" id="signup">
+                <label for="login" class="slide login">Login</label>
+                <label for="signup" class="slide signup">Signup</label>
+                <div class="slider-tab"></div>
+             </div>
+             <div class="form-inner">
+                <form action="/signin" method="POST" class="login">
+                   <div class="field">
+                      <label for="emailaddress">Email Address</label>
+                      <input type="text" placeholder="Email Address" name="email" required>
+                   </div>
+                   <br>
+                   <div class="field">
+                      <label for="password">Password</label>
+                      <input type="password" placeholder="Password" name="password" required>
+                   </div>
+                   <br><br>
+                   <div class="pass-link">
+                      <a href="/uinfo">Forgot password?</a>
+                   </div>
+                  
+                     <!--
+                      <div class="btn-layer"></div>
+                      <input onclick="submitForm(email.value,password.value)" type="submit" value="Login">
+                     -->
+                     <button type="button"  onClick=submitForm(email.value,password.value) class="btn btn-dark">Login</button>
+                  
+                   <div class="signup-link">
+                      Not a member? <a href="">Signup now</a>
+                   </div>
+                </form>
+                <form action="/register" method="POST" class="signup">
+                  <div class="field">
+                    <label for="firstname">Firstname</label>
+                    <input type="text" placeholder="First Name" name="first_name" required>
+                 </div><br>
+                 <div class="field">
+                  <label for="lastname">Lastname</label>
+                  <input type="text" placeholder="Last Name" name="last_name" required>
+                </div><br>
+                   <div class="field">
+                    <label for="emailaddress">Email Address</label>
+                      <input type="email" placeholder="Email Address" name="email" required>
+                   </div><br>
+                   <div class="field">
+                    <label for="dob">Date Of Birth</label>
+                      <input type="date" placeholder="" name="date_of_birth" required>
+                   </div><br>
+                   <div class="field">
+                    <label for="address">Address</label>
+                      <input type="text" placeholder="Address" name="address" required>
+                   </div><br>
+                   <div class="field">
+                    <label for="phone">Phone number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="123-456-7890"  pattern="[0-9]{10}" required>
+                   </div><br>
+                   <div class="field">
+                    <label for="password">Password</label>
+                    <input type="password" id="psw" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" placeholder="Password" required>
+                   </div><br>
+                   <!--Code Editing Starts Here-->
+                   <div class="field">
+                       <label for="confirm_password">Confirm Password</label>
+                       <input type="password" id="cpsw" name="confirm_password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" placeholder="Password" required >
+                   </div><br>
+
+                   <div class="field">
+                       <label for="postal_code">Postal Code</label>
+                       <input type="text" id="pcode" placeholder="Postal Code"  name="postal_code"required>
+                   </div><br>
+
+                   <!--Code Editing ends Here-->
+                   <div class="field btn">
+                      <div class="btn-layer"></div>
+                      <input type="submit" value="Signup">
+                   </div><br>
+                </form>
+             </div><br>
+          </div>
+       </div>
+      </center><br><br>
+      
+        <!-- Footer -->
+        <footer id="footer" class="section footer">
+          <div class="container">
+          <div class="footer-container">
+              <div class="footer-center">
+             
+              <div class="footer-center">
+              <h3>CONTACT US</h3>
+              <div>
+                  <span>
+                  <i class="fas fa-map-marker-alt"></i>
+                  </span>
+                  577 Boul Henri-Bourassa E, Montréal, QC H2C 1E2
+              </div>
+              <div>
+                  <span>
+                  <i class="far fa-envelope"></i>
+                  </span>
+                  owner@info_orion.ca
+              </div>
+              <div>
+                  <span>
+                  <i class="fas fa-phone"></i>
+                  </span>
+                  123-456-7890
+              </div>
+              <div>
+                  <span>
+                  <i class="far fa-paper-plane"></i>
+                  </span>
+                  Montreal, Canada
+              </div>
+              </div>
+          </div>
+          </div>
+          </div><br>
+          <div class="copyright">
+          <center><i class='bx bx-copyright'>Copyright Reserved By Cégep de la Gaspésie et des Îles, Montreal</i></center>
+      </div>
+      </footer>
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
+    <!-- Custom Script -->
+    <script src="./javascripts/index.js"></script>
+
+    <script>
+      const loginText = document.querySelector(".title-text .login");
+      const loginForm = document.querySelector("form.login");
+      const loginBtn = document.querySelector("label.login");
+      const signupBtn = document.querySelector("label.signup");
+      const signupLink = document.querySelector("form .signup-link a");
+      signupBtn.onclick = (()=>{
+       
+        loginForm.style.marginLeft = "-50%";
+        loginText.style.marginLeft = "-50%";
+      });
+      loginBtn.onclick = (()=>{
+        loginForm.style.marginLeft = "0%";
+        loginText.style.marginLeft = "0%";
+      });
+      signupLink.onclick = (()=>{
+        
+        signupBtn.click();
+        window.alert("sometext");
+        return false;
+      });
+
+      function submitForm(email,password)
+      {
+        $.ajax(
+        {
+          url:"http://localhost:6050/signin",
+          type:"POST",
+          data:{
+            "email":email,
+            "password":password
+          },
+          dataType:"json",
+          success:(response)=>
+          {
+            console.log(response)
+            console.log(response.count)
+            if(response.count==0)
+            { 
+              localStorage.setItem("count",0);
+              window.location.href="/homelogin";
+            }
+            if(response.count==1)
+            {
+              localStorage.setItem("count",1);
+              
+              alert("Invalid Username or Password Enterted");
+            }
+          }
+        })
+      }
+   </script>
+
+</body>
+</html>

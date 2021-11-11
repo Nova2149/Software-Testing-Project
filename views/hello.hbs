@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+
+</style>
+<body>
+    <p>Welcome to the Hello Page</p>
+    <tbody>
+    {{#each student}}
+    <td>{{this.firstname}}</td>
+    <td>{{this.lastname}}</td>
+    {{/each}}
+  </tbody>
+
+  <script>
+      //helper to Stringify the data
+      var decodedJSON=decodeURIComponent("{{{student}}}")
+      console.log(decodedJSON)
+      var jsonObj=JSON.parse(decodedJSON)
+      console.log(jsonObj)
+
+    var my_data="{{{student}}}"
+    console.log(my_data)
+    console.log(JSON.stringify(my_data))
+
+  
+  </script>
+</body>
+</html>

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<script>
+
+</script>
+
+<!--Style starts from here-->
+<style>
+        .cartdiv
+    {
+        position:relative;
+        display:flex;
+        justify-content: space-between;
+        border:1px solid black;
+    }
+    .plusButton
+    {
+        min-height: 40
+px
+;
+    text-shadow: none;
+    position: relative;
+    padding: 0px;
+    border-radius: 0px 21px 21px 0px;
+    background-color: rgb(66, 125, 0);
+    color: rgb(255, 255, 255);
+    width: 56px;
+    height: 40px;
+    border: none;
+    font-size: 1.772rem;
+    font-weight: 100;
+    }
+    .minusButton
+    {
+        min-height: 40
+px
+;
+    text-shadow: none;
+    position: relative;
+    padding: 0px;
+    border-radius: 21px 0px 0px 21px;
+    background-color: rgb(66, 125, 0);
+    color: rgb(255, 255, 255);
+    width: 56px;
+    height: 40px;
+    border: none;
+    font-size: 1.772rem;
+    font-weight: 100;
+    }
+    .quantitySpanValue
+    {
+        background-color:lightgray;
+    }
+    .quantityDiv
+    {
+        margin-bottom: 8px;
+    }
+    .buttonDiv
+    {
+        display:inline-block;
+        float:none;
+        vertical-align: middle;
+        font-size:1 rem;
+    }
+    .productDiv
+    {
+        padding-top:30px;
+        width:400px;
+    }
+    .myquantity
+    {
+        padding-top:30px;
+    }
+    .productPrice
+    {
+        padding-top:70px;
+    }
+    .spanPrice
+    {
+        font-size:25px;
+    }
+    .billdiv
+    {   
+        border:2px solid black;
+
+    }
+    .subtotalLabel,.shippingLabel,.taxesLabel,.totalLabel
+    {
+        width:100px;
+    }
+    .continueButton
+    {
+        margin-top:20px;
+        
+    }
+    .gobackButton
+    {   
+        margin-left:120px;
+        margin-top:20px;
+    }
+    .productHeading{
+        width:400px;
+    }
+    .removeButton{
+        margin-top:60px;
+    }
+</style>
+<!--Style Ends Here-->
+
+<script>
+    //Inside the script tag
+ $(function(){
+
+    //Start of the AJAX call
+    //This ajax call is made to view the items of the cart
+
+    //This variable is declared to store the response inside it
+    var myArray=[]
+
+    $.ajax({
+        url:"http://localhost:6050/viewcart",
+        type:"GET",
+        dataType:"json",
+        success:function(response)
+        {   
+            console.log("Inside Jquery function Javascript")
+            buildTable(response); 
+            billTotal(response);
+    
+        }
+
+    
+    
+    })
+    function billTotal(response)
+    {   
+        console.log("Inside the Bill Total");
+        //This Variable Stores the value of the subtotal amoub;nt
+        let subTotalValue=0;
+
+       for(let i=0;i<response.length;i++)
+       {    
+           //a variable is declared the price from the response
+           let a =response[i].price;
+           console.log(a)
+           //b variable is declared to convert the String to type float
+           let b=parseFloat(a);
+           subTotalValue=subTotalValue+b;
+       }
+       console.log(subTotalValue)
+       //Set the Value to input having the id subTotalValue
+       $("#subTotalValue").val(subTotalValue)
+
+       //Declared a variable for the Shipping Price
+       let shippingValue=parseFloat(10.00)
+       //Set the Value to the input having id shipping Value
+       
+       $("#shippingValue").val(shippingValue);
+
+       //Declare a variable for the taxea
+       let taxValue=subTotalValue*0.15;
+       console.log("Tax Value "+taxValue)
+       //toFixed(2) to show the value only till2 decimal places
+       $("#taxValue").val(taxValue.toFixed(2))
+       //totalValue
+       let totalValue=subTotalValue+shippingValue+taxValue;
+       $("#totalValue").val(totalValue.toFixed(2))
+
+    }
+  
+    //Its now the End of the AJAX Call
+ 
+
+    //Add clicking on + button
+
+})
+
+    
+    function buildTable(data)
+    {
+        var table=document.getElementById("mydiv");
+        for(var i=0;i<data.length;i++)
+        {
+            var row1=` 
+    <div class="row">
+    <div class="col-xs-2"></div>
+
+    <div id="mydiv" class="col-xs-8 cartdiv">
+        <!--For the product image -->
+        <div>
+            <img src=${data[i].img} 
+            width="200px" height="200px"alt="">
+        </div>
+        <div class="productDiv">
+            <h1 class="productHeading">${data[i].name}</h1>
+            
+        </div>
+
+        <!--Qunatity Starts here -->
+        <div class="myquantity">
+
+        <div class="quantityDiv">
+            Quantity:
+        </div>
+
+        <div class="buttonDiv">
+            
+            <button class="minusButton" value=${i} onClick="Decrement(this.value)">-</button>
+            <span class="quantitySpanValue" id="spanButtonValue">1</span>
+            <button class="plusButton" id="pButton" value=${i} onClick="Increment(this.value)">+</button>
+        </div>
+        </div>
+        <!--Quantity Ends Here-->
+
+        <!--Product Price Starts Here-->
+        <div class="productPrice">
+            <span class="spanPrice">${data[i].price}</span>
+        </div>
+        <!--Product Price Ends Here-->
+
+        <!--Remove button starts Here -->
+        <div class="removeDiv">
+            <button class="btn btn-danger removeButton" id="remove" value=${i} onClick=RemoveItem(this.value)>X Remove</button>
+        </div>
+
+        <!--Remove button ends Here -->
+    </div>
+    <div class="col-xs-2"></div>
+    </div>
+    <br>    
+
+    <!--New Div starts here for continue-->
+    `;
+    table.innerHTML+=row1;
+
+        }
+
+    }
+    //This Function will called up when you click the plus Button for Quantity(The Green One)
+    function Increment(index)
+    {
+        console.log("You are inside Increment")
+        console.log(index)
+        //Get all the Span Elements that have the id as spanButtonValue
+        var currentSpanElement=document.querySelectorAll("#spanButtonValue")
+        //Select the single span Element and gets it Value
+        var currentValue=currentSpanElement[index].innerHTML;
+        console.log(currentValue)
+        if(currentValue<10 && currentValue>=1)
+        {
+        var newValue=parseInt(currentValue)+1
+        }
+        else{
+            alert("Maximum Quantity  Reached");
+        }
+        console.log(newValue)
+        //Set a new value to that Span Element
+        currentSpanElement[index].innerHTML=newValue.toString();
+
+
+
+    }
+    //This function will called up when you click the Minus Button for Quantity (The Green One)
+    function Decrement(index)
+    {
+        console.log("You are inside Decrement")
+        console.log(index)
+        //Get all the span Element and gets its Value
+        var currentSpanElement=document.querySelectorAll("#spanButtonValue")
+        //Select the single span Element and get its Value
+        var currentValue=currentSpanElement[index].innerHTML;
+        console.log(currentValue)
+        if(currentValue>1)
+        {
+        var newValue=parseInt(currentValue)-1
+        }
+        else 
+        {
+            alert("Minimum quantity Reached");
+        }
+        console.log(newValue)
+        //Set a new Value to the Span Element
+        currentSpanElement[index].innerHTML=newValue.toString();
+        //
+
+    }
+    //This function is basically to Remove Item
+    function RemoveItem(index)
+    {
+        console.log("Inside Remove Item")
+        console.log(index)
+
+        //Code to Reload the Page once the remove Button is Clicked
+        window.location.reload();
+        //call the api to Remove the item once you click the Remove item
+        //Start of the AJAX call
+        //This ajax call is called basically to Remove the item from the cart
+        $.ajax({
+            url:'http://localhost:6050/removeCartItem',
+            type:'POST',
+            dataType:'json',
+            data:{
+                "index":index
+
+            },
+            success:function(response)
+            {
+                console.log(response)
+            }
+
+
+        })
+        //End of the AJAX call
+        //Try to Refresh the page again
+        window.location.reload();
+
+
+    }
+ 
+   
+
+
+</script>
+<body>
+    <!--The Cart content starts from here -->
+    <h1>Cart Page</h1>
+    <div id="mydiv"></div>
+    <div class="row">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-8">
+            <div class="billDiv">
+                <h1>SUMMARY:</h1>
+                <br>
+                <label class="subtotalLabel" for="subtotal">SUBTOTAL</label>
+                <input type="text" disabled class="subtotalInput" id="subTotalValue">
+                <br>
+                <label  class="shippingLabel" for="shipping">SHIPPING</label>
+                <input type="text" disabled class="shippingInput" id="shippingValue">
+                <br>
+                <label class="taxesLabel" for="taxes">TAXES</label>
+                <input type="text" disabled class="taxInput" id="taxValue">
+                <br>
+                <label class="totalLabel" for="total">TOTAL </label>
+                <input type="text" disabled class="TotalInput" id="totalValue">
+               <br> 
+            </div>
+            <button class="btn btn-success continueButton">Continue</button>
+            <button class="btn btn-danger gobackButton">Go Back</button>
+        </div>
+        <div class="col-xs-2"></div>
+    </div>
+    
+</body>
+</html>

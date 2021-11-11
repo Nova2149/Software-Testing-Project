@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="../css/style1.css">
+<style>
+    .loveButton
+    {
+        appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    outline: none;
+    border: 0;
+    background: transparent;
+    }
+</style>
+<script>
+
+    $(function()
+    {
+        var myArray=[];
+    $.ajax({
+        url:'http://localhost:6050/mydata',
+        type:'GET',
+        dataType:'json',
+
+        success:function(response){
+            myArray=response
+            console.log("Hello Everyone");
+           // console.log(myArray)
+            console.log(myArray.meat)
+            buildTable(myArray)
+
+        }
+      
+    })
+    function buildTable(data)
+    {
+        var table=document.getElementById("mydiv")
+        for(var i=0;i<data.meat.length;i++)
+        {
+            var row1=`<div>
+
+        <div>
+            <p class="item">${data.meat[i].name}</p>
+        </div>
+
+        <div>
+        <img class="productImage" src=${data.meat[i].img} width="200px" height="200px">            
+        </div>
+        <div class="product_display item">
+
+        <p>PRICE: ${data.meat[i].price}</p>
+        </div>
+        <div class="buttonPanel">
+            <button type="button" class="btn btn-primary" >VIEW</button>
+         
+            <button type="button" class="btn btn-success" onclick=addProduct('${data.meat[i].product_id}','${data.meat[i].type}')>ADD TO CART</button>
+            <button  class="loveButton" type="button" onclick=addToWishlist('${data.meat[i].product_id}','${data.meat[i].type}') >
+                <i class=" btn btn-danger fa fa-heart-o" ></i>
+            </button>            
+        </div>
+        
+        </div>`
+
+        table.innerHTML+=row1;
+        }
+
+    }
+
+    })
+    
+    function addProduct(id,type)
+    {       
+        console.log("Inside the Meat Section")
+        console.log(id)
+        $.ajax({
+      url:"http://localhost:6050/addproduct",
+      type:"POST",
+      dataType:"json",
+      data:{"product_id":id,"type":type},
+      success:function(response)
+      {
+          console.log(response)
+      }
+  })
+
+    }
+    function addToWishlist(id,type)
+    {
+        console.log("Inside add to Wishlist")
+        alert("Product added to Wishlist")
+        $.ajax({
+            url:"http://localhost:6050/addwish",
+            type:"POST",
+            dataType:"json",
+            data:{
+                "product_id":id,
+                "type":type
+            },
+            success:function(response)
+            {
+                console.log(response)
+            }
+        })
+    }
+</script>
+<style>
+      @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;700&display=swap');
+    body{
+            font-family:'Raleway',sans-serif;
+        font-weight:400;
+    }
+    .grid-container
+    {
+        display:grid;
+        grid-template-columns:auto auto auto;
+
+    }
+    .grid-container>div{
+        border:2px solid black;
+    }
+    .item{
+        text-align:center;
+        font-size: 25px;
+        font-weight:bold;
+    }
+    .productImage
+    {
+        margin-left:150px;
+    }
+    .buttonPanel
+    {
+        margin-left:160px;
+        margin-bottom:20px;
+    }
+</style>
+<body>
+    <nav class="nav">
+        <div class="navigation container">
+            <a href="index.html">
+            <div class="logo">
+                <img src="../images/logo.png">
+                <div class="hero-content">
+                    <h6><span class="logo_title">Food Place</span></h6>
+                </div>
+            </div>
+            </a>
+
+            <div class="menu">
+                <div class="top-nav">
+                    <div class="logo">
+                        <img src="../images/logo.png">
+                    </div>
+                    <div class="close">
+                        <i class='bx bx-x'></i>
+                    </div>
+                </div>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="/homelogin">Home &nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/fruit&veg">Fruits & Vegetables &nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/dairy">Dairy &nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="/meat">Meat &nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/uinfo">Account &nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    </li>
+                    <li>
+                        <a href="">My Wishlist</a>
+                    </li>
+                    <li class=" cart-item nav-item">
+                        <a href="cart.html"><i class='bx bx-cart'>&nbsp;&nbsp;&nbsp;&nbsp;</i></a>
+                    </li>
+                   
+                    <!--Temp code Starts Here-->
+                    <li class="customer_info" id="customer_name">
+                
+                       
+                    </li>
+
+                    
+                    <li class="signoutli">
+                        <a href="/home">
+                        <span class="glyphicon glyphicon-log-out">
+                        
+                        </span>
+                        </a>
+                    </li>
+
+                    
+                 
+
+
+                    <!--Temp Code Ends Here-->
+                </ul>
+            </div>
+            <a href="cart.html" class="cart-icon"><i class='bx bx-cart'></i></a>
+            <div class="nav-menu">
+                <i class='bx bx-menu' ></i>
+            </div>
+        </div>
+    </nav>
+    <div class="grid-container" id="mydiv"></div>
+    
+</body>
+</html>

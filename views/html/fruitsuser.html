@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    var myArray=[]
+    $.ajax({
+        url:'http://localhost:6050/mydata',
+        type:'GET',
+     
+        dataType:"json", 
+       
+      
+        success:function(response)
+        {
+            myArray=response
+            console.log("Hello Everyone")
+            console.log(myArray)
+            buildTable(myArray)
+            console.log("Mayank Tagra")
+            console.log(myArray.fruits)
+            console.log(myArray.fruits[1].img)
+            console.log(myArray.fruits.length)
+
+
+        }
+
+    })
+    function buildTable(data)
+    {
+        console.log("Inside Build Table")
+       var table=document.getElementById("mydiv")
+
+       for(var i=0;i<data.fruitsetlegumes.length;i++)
+       {
+           var row1=`<div>
+
+            <div>
+                <p class="item">${data.fruitsetelgumes[i].name}</p>
+            </div>
+           
+           <div>
+            <img src=${data.fruitsetlegumes[i].img} width="200px" height="200px">            
+            </div>
+            <div class="product_display item">
+
+            <p>PRICE: ${data.fruitsetlegumes[i].price}</p>
+            </div>
+            </div>`
+
+            table.innerHTML+=row1
+
+       }
+      
+
+    
+    }
+
+</script>
+<style>
+    .grid-container
+    {
+        display: grid;
+        grid-template-columns: auto auto auto;
+
+
+    }
+    .grid-container>div{
+        border:2px solid black;
+
+    }
+    .item
+    {
+        text-align:center;
+    }
+
+</style>
+<body>
+    <h1>Fruits Department</h1>
+    <div class="grid-container" id="mydiv">
+     
+    
+    </div>
+</body>
+</html>

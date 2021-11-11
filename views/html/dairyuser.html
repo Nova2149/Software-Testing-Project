@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fresh Food Marketplace</title>
+    <!-- <link rel="stylesheet" href="../css/style.css"> -->
+</head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="../css/style1.css">
+
+<script src="../Js/script.js"></script>
+
+
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;700&display=swap');
+    body{
+            font-family:'Raleway',sans-serif;
+        font-weight:400;
+    }
+    .grid-container
+    {
+        display:grid;
+        grid-template-columns:auto auto auto;
+
+    }
+    .grid-container>div{
+        border:2px solid black;
+    }
+    .item{
+        text-align:center;
+        font-size: 25px;
+        font-weight:bold;
+    }
+    .productImage
+    {
+        margin-left:150px;
+    }
+    .buttonPanel
+    {
+        margin-left:160px;
+        margin-bottom:20px;
+    }
+
+    .loveButton
+    {
+        appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    outline: none;
+    border: 0;
+    background: transparent;
+    }
+</style>
+<body>
+   
+
+    <nav class="nav">
+        <div class="navigation container">
+            <a href="index.html">
+            <div class="logo">
+                <img src="../images/logo.png">
+                <div class="hero-content">
+                    <h6><span class="logo_title">Food Place</span></h6>
+                </div>
+            </div>
+            </a>
+
+            <div class="menu">
+                <div class="top-nav">
+                    <div class="logo">
+                        <img src="../images/logo.png">
+                    </div>
+                    <div class="close">
+                        <i class='bx bx-x'></i>
+                    </div>
+                </div>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="/homelogin">Home &nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/fruit&veg">Fruits & Vegetables &nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/dairy">Dairy &nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="/meat">Meat &nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/uinfo">Account &nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    </li>
+                    <li>
+                        <a href="">My Wishlist</a>
+                    </li>
+                    <li class=" cart-item nav-item">
+                        <a href="cart.html"><i class='bx bx-cart'>&nbsp;&nbsp;&nbsp;&nbsp;</i></a>
+                    </li>
+                   
+                    <!--Temp code Starts Here-->
+                    <li class="customer_info" id="customer_name">
+                
+                       
+                    </li>
+
+                    
+                    <li class="signoutli">
+                        <a href="/home">
+                        <span class="glyphicon glyphicon-log-out">
+                        
+                        </span>
+                        </a>
+                    </li>
+
+                    
+                 
+
+
+                    <!--Temp Code Ends Here-->
+                </ul>
+            </div>
+            <a href="cart.html" class="cart-icon"><i class='bx bx-cart'></i></a>
+            <div class="nav-menu">
+                <i class='bx bx-menu' ></i>
+            </div>
+        </div>
+    </nav>
+    <div class="grid-container" id="mydiv"></div>
+    
+    
+</body>
+</html>

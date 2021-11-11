@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<style>
+    .cartdiv
+    {
+        position:relative;
+        display:flex;
+        justify-content: space-between;
+        border:1px solid black;
+    }
+    .plusButton
+    {
+        min-height: 40
+px
+;
+    text-shadow: none;
+    position: relative;
+    padding: 0px;
+    border-radius: 0px 21px 21px 0px;
+    background-color: rgb(66, 125, 0);
+    color: rgb(255, 255, 255);
+    width: 56px;
+    height: 40px;
+    border: none;
+    font-size: 1.772rem;
+    font-weight: 100;
+    }
+    .minusButton
+    {
+        min-height: 40
+px
+;
+    text-shadow: none;
+    position: relative;
+    padding: 0px;
+    border-radius: 21px 0px 0px 21px;
+    background-color: rgb(66, 125, 0);
+    color: rgb(255, 255, 255);
+    width: 56px;
+    height: 40px;
+    border: none;
+    font-size: 1.772rem;
+    font-weight: 100;
+    }
+    .quantitySpanValue
+    {
+        background-color:lightgray;
+    }
+    .quantityDiv
+    {
+        margin-bottom: 8px;
+    }
+    .buttonDiv
+    {
+        display:inline-block;
+        float:none;
+        vertical-align: middle;
+        font-size:1 rem;
+    }
+    .productDiv
+    {
+        padding-top:30px;
+    }
+    .myquantity
+    {
+        padding-top:30px;
+    }
+    .productPrice
+    {
+        padding-top:70px;
+    }
+    .spanPrice
+    {
+        font-size:25px;
+    }
+    .billdiv
+    {   
+        border:2px solid black;
+
+    }
+    .subtotalLabel,.shippingLabel,.taxesLabel,.totalLabel
+    {
+        width:100px;
+    }
+    .continueButton
+    {
+        margin-top:20px;
+        
+    }
+    .gobackButton
+    {   
+        margin-left:120px;
+        margin-top:20px;
+    }
+</style>
+<body>
+    <div class="mainDiv">
+    <h1>Cart Example with CSS in html</h1>  
+    <div class="row">
+    <div class="col-xs-2"></div>
+
+    <div id="mydiv" class="col-xs-8 cartdiv">
+        <!--For the product image -->
+        <div>
+            <img src="https://cdn.shopify.com/s/files/1/0336/7501/products/nutri-oeuf-brown-organic-eggs-12_medium.jpg?v=1486758015" 
+            width="200px" height="200px"alt="">
+        </div>
+        <div class="productDiv">
+            <h1>Product Name</h1>
+        </div>
+
+        <!--Qunatity Starts here -->
+        <div class="myquantity">
+
+        <div class="quantityDiv">
+            Quantity:
+        </div>
+
+        <div class="buttonDiv">
+            <button class="minusButton">-</button>
+            <span class="quantitySpanValue">Value</span>
+            <button class="plusButton">+</button>
+        </div>
+        </div>
+        <!--Quantity Ends Here-->
+
+        <!--Product Price Starts Here-->
+        <div class="productPrice">
+            <span class="spanPrice">250$</span>
+        </div>
+        <!--Product Price Ends Here-->
+    </div>
+    <div class="col-xs-2"></div>
+    </div>
+    <br>    
+
+    <!--New Div starts here for continue-->
+    <div class="row">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-8">
+            <div class="billDiv">
+                <h1>SUMMARY:</h1>
+                <br>
+                <label class="subtotalLabel" for="subtotal">SUBTOTAL</label>
+                <input type="text" disabled class="subtotalInput">
+                <br>
+                <label  class="shippingLabel" for="shipping">SHIPPING</label>
+                <input type="text" disabled class="shippingInput">
+                <br>
+                <label class="taxesLabel" for="taxes">TAXES</label>
+                <input type="text" disabled class="taxInput">
+                <br>
+                <label class="totalLabel" for="total">TOTAL </label>
+                <input type="text" disabled class="TotalInput">
+               <br> 
+            </div>
+            <button class="btn btn-success continueButton">Continue</button>
+            <button class="btn btn-danger gobackButton">Go Back</button>
+        </div>
+        <div class="col-xs-2"></div>
+    </div>
+</div>
+</body>
+</html>
