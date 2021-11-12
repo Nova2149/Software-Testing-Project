@@ -8,77 +8,129 @@
 </head>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<link rel="stylesheet" href="../css/style1.css">
-<style>
-    .loveButton
-    {
-        appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    outline: none;
-    border: 0;
-    background: transparent;
-    }
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+ <link rel="stylesheet" href="../css/style1.css">
+
+ <style>
+     .search_input
+     {
+         width:60%;
+     }
+     .search_div
+     {
+         padding-left:235px;
+     }
+     .input_label
+     {
+         margin-left:100px;
+     }
+     .searchbtn
+     {
+         margin-left:184px;
+     }
+
+     
+ </style>
+ <style>
+    @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;700&display=swap');
+  body{
+          font-family:'Raleway',sans-serif;
+      font-weight:400;
+  }
+  .grid-container
+  {
+      display:grid;
+      grid-template-columns:auto auto auto;
+
+  }
+  .grid-container>div{
+      border:2px solid black;
+  }
+  .item{
+      text-align:center;
+      font-size: 25px;
+      font-weight:bold;
+      height:80px;
+  }
+  .productImage
+  {
+      text-align:center;
+      margin-left:65px;
+  }
+  .product_display .p
+  {
+      text-align:center;
+  }
+  .buttonPanel
+  {
+      margin-left:50px;
+      margin-bottom:20px;
+  }
+  .price_p
+  {
+      text-align:center;
+      font-weight: bold;
+  }
 </style>
-<script>
-
-    $(function()
-    {
-        var myArray=[];
-    $.ajax({
-        url:'http://localhost:6050/mydata',
-        type:'GET',
-        dataType:'json',
-
-        success:function(response){
-            myArray=response
-            console.log("Hello Everyone");
-           // console.log(myArray)
-            console.log(myArray.meat)
-            buildTable(myArray)
-
-        }
+ <script>
+     function searchProduct()
+     {      
+         console.log("Inside Search Product")
+         var text=document.getElementById("search_input").value;
       
-    })
-    function buildTable(data)
-    {
-        var table=document.getElementById("mydiv")
-        for(var i=0;i<data.meat.length;i++)
-        {
-            var row1=`<div>
+         console.log(text)
+         $.ajax({
+             url:"http://localhost:6050/searchProduct",
+             type:"POST",
+             dataType:"json",
+             data:{
+                 "searchText":text
+             }
+             ,success:function(response)
+             {
+                 console.log(response)
+                 buildTable(response)
+             }
 
-        <div>
-            <p class="item">${data.meat[i].name}</p>
+         })
+     }
+     function buildTable(data)
+     {
+         var table=document.getElementById("mydiv");
+         table.innerHTML="";
+         for(let i=0;i<data.length;i++)
+         {
+         var row=`
+         
+         <div class="item_div">
+            <div>
+                <p class="item">${data[i].name}</p>
+            </div>
+            <div>
+        <img class="productImage" src=${data[i].img} width="200px" height="200px">            
         </div>
+        <div class="product_display">
 
-        <div>
-        <img class="productImage" src=${data.meat[i].img} width="200px" height="200px">            
-        </div>
-        <div class="product_display item">
-
-        <p>PRICE: ${data.meat[i].price}</p>
+        <p class="price_p">PRICE: ${data[i].price}</p>
         </div>
         <div class="buttonPanel">
             <button type="button" class="btn btn-primary" >VIEW</button>
          
-            <button type="button" class="btn btn-success" onclick=addProduct('${data.meat[i].product_id}','${data.meat[i].type}')>ADD TO CART</button>
-            <button  class="loveButton" type="button" onclick=addToWishlist('${data.meat[i].product_id}','${data.meat[i].type}') >
+            <button type="button" class="btn btn-success" onclick=addProduct('${data[i].product_id}','${data[i].type}')>ADD TO CART</button>
+            <button  class="loveButton" type="button" onclick=addToWishlist('${data[i].product_id}','${data[i].type}') >
                 <i class=" btn btn-danger fa fa-heart-o" ></i>
             </button>            
         </div>
-        
-        </div>`
 
-        table.innerHTML+=row1;
+        </div>
+         
+         `;
+         table.innerHTML+=row;
+
         }
-
-    }
-
-    })
-    
-    function addProduct(id,type)
+     }
+     function addProduct(id,type)
     {           
         // To get the value from the local storage
         let count=localStorage.getItem("count");
@@ -127,37 +179,7 @@
             localStorage.setItem("count",1);
 
         }
-</script>
-<style>
-      @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;700&display=swap');
-    body{
-            font-family:'Raleway',sans-serif;
-        font-weight:400;
-    }
-    .grid-container
-    {
-        display:grid;
-        grid-template-columns:auto auto auto;
-
-    }
-    .grid-container>div{
-        border:2px solid black;
-    }
-    .item{
-        text-align:center;
-        font-size: 25px;
-        font-weight:bold;
-    }
-    .productImage
-    {
-        margin-left:150px;
-    }
-    .buttonPanel
-    {
-        margin-left:160px;
-        margin-bottom:20px;
-    }
-</style>
+ </script>
 <body>
     <nav class="nav">
         <div class="navigation container">
@@ -231,7 +253,30 @@
             </div>
         </div>
     </nav>
-    <div class="grid-container" id="mydiv"></div>
-    
+    <br>
+    <br>
+
+    <div class="row">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-8">
+            <div class="search_div">
+                <label for="searchProdct" class="input_label">Enter Product to be searched</label>
+                <input id="search_input" type="text" class="search_input form-control" name="mytext" required placeholder="Enter Product Name">
+                <br>
+                <button class="searchbtn btn btn-success" onclick="searchProduct()">Search</button>
+            </div>
+        </div>
+        <div class="col-xs-2"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-8">
+
+            <div class="grid-container" id="mydiv"></div>
+        </div>
+        <div class="col-xs-2"></div>
+        
+    </div>
 </body>
 </html>

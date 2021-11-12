@@ -105,16 +105,25 @@ function addProduct(id,type)
     console.log("Inside add Product")
     console.log(id)
 
-  $.ajax({
-      url:"http://localhost:6050/addproduct",
-      type:"POST",
-      dataType:"json",
-      data:{"product_id":id,"type":type},
-      success:function(response)
-      {
-          console.log(response)
-      }
-  })
+    //To get the local Storage
+    let count=localStorage.getItem("count")
+    if(count==1)
+    {
+        window.location.href="/account"
+    }
+    else{
+
+            $.ajax({
+                url:"http://localhost:6050/addproduct",
+                type:"POST",
+                dataType:"json",
+                data:{"product_id":id,"type":type},
+                success:function(response)
+                {
+                    console.log(response)
+                }
+            })
+    }
 }
 
 function addToWishlist(id,type)
@@ -133,5 +142,11 @@ function addToWishlist(id,type)
             console.log(response)
         }
     })
+
+}
+function updateLocalStorage()
+{
+    console.log(localStorage.getItem("count"))
+    localStorage.setItem("count",1);
 
 }

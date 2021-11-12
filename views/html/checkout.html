@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<style>
+    .myLabel
+    {
+    width:190px;
+    margin-left: 45px;
+    margin-bottom:25px;
+    }
+    .checkoutDiv
+    {
+        border:2px solid black;
+    }
+    .checkoutHeading
+    {
+        text-align: center;
+        border: 2px solid blue;
+        background-color: cornflowerblue;
+    }
+
+    #btn-proceed
+    {
+        margin-left:150px;
+    }
+</style>
+<script>
+    $.ajax({
+        url:"http://localhost:6050/readbill",
+        type:"GET",
+        dataType:"json",
+        success:function(response)
+        {
+            console.log(response)
+            buildTable(response)
+        }
+    })
+    //To Add the Bill details
+    function buildTable(data)
+    {
+        document.getElementById("numberOfItems").value=data[0].number
+        document.getElementById("shipping").value=data[0].shipping
+        document.getElementById("subtotal").value=data[0].subtotal
+        document.getElementById("tax").value=data[0].taxes
+        document.getElementById("total").value=data[0].total
+    }
+
+    //Get the Addres,Postal Code and the card number
+    
+    $.ajax({
+        url:"http://localhost:6050/shippingdetails",
+        type:"GET",
+        dataType:"json",
+        success:function(response)
+        {
+            console.log(response)
+            buildShipping(response);
+        }
+    })
+    function buildShipping(response)
+    {
+      document.getElementById("shippingAddress").innerHTML=response[0].address+"\n"+"Montreal,Quebec"
+      document.getElementById("postalCode").value=response[0].postal_code
+     // document.getElementById("cardNumber").value=response[0].card_number
+        
+     let valArray=response[0].card_number.split("")
+     console.log(valArray)
+     let card_value="";
+
+     for(let i=0;i<valArray.length;i++)
+     {  
+         if(i<8)
+         {
+            card_value+="●";
+         }
+         else{
+             card_value+=valArray[i];
+         }
+        
+     }
+     console.log(card_value)
+     document.getElementById("cardNumber").value=card_value
+    }
+    
+
+    //Click Proceed
+    function clickProceed()
+    {
+        console.log("You are currently inside the Proceed ")
+        
+    }
+</script>
+<body>
+    <p>Welcome to the Checkout Page</p>
+
+<div class="mainDiv">
+    <div class="row">
+        <div class="col-xs-1"></div>
+        <div class="col-xs-3">
+            <h1>Shipping Adress</h1>
+            <textarea disabled  name="" id="shippingAddress" cols="50" rows="10" placeholder="Shipping Address should be dislayed here">
+
+            </textarea>
+            <br>
+            <label for="postal_code">Postal Code</label>
+            <input type="text" id="postalCode" placeholder="Postal Code">
+            <br>
+            <label for="">Mode Of Payment</label>
+            <br>
+            <input id="cardNumber" type="text" placeholder="Mode of Payment">
+        </div>
+        <div class="col-xs-1"></div>
+        <div class="col-xs-3">
+            <div class="checkoutDiv">
+                <h1 class="checkoutHeading">Checkout</h1>
+                <label class="myLabel" for="number_of_items">Number of Items</label>
+                <input disabled type="text" placeholder="Number_Of_items" id="numberOfItems">
+                <br>
+                <label class="myLabel" for="s_and _h">Shipping And Handling</label>
+                <input disabled type="text" placeholder="Shipping And Handling" id="shipping">
+                <br>
+                <label class="myLabel" for="">Total Before Tax</label>
+                <input disabled type="text" placeholder="Total Before Tax" id="subtotal">
+                <br>
+                <label class="myLabel" for="">Estimated Tax</label>
+                <input disabled  type="text" placeholder="Estimated Tax" id="tax">
+                <br>
+                <label class="myLabel" for="order_total">Order Total</label>
+                <input disabled type="text" placeholder="Order Total" id="total">
+                <br>
+                <button class="btn btn-success" onclick=clickProceed() id="btn_proceed">PROCEED</button>
+            </div>
+        </div>
+        <div class="col-xs-1"></div>
+    </div>
+</div>
+</body>
+</html>

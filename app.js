@@ -644,17 +644,24 @@ app.post("/addcard",(req,res)=>
     if(result==null||result=="")
     {
         console.log("Good to Add to the Payment Table")
-        sql="insert into payment(user_id,card_number,name,expiry_month,expiry_year,css) values (?,?,?,?,?,?)";
+        sql="insert into payment(user_id,card_number,name,expiry_month,expiry_year,cvv) values (?,?,?,?,?,?)";
         connection.query(sql,[user_id,card_number,name,expiry_month,expiry_year,cvv],
             (err,result)=>
             {
                 if (err) throw err;
-                console.log("Number of Records Inserted")
+                console.log("Number of Records  Inserted "+result)
             })
     }
     else{
         console.log(result);
         console.log("Sorry User details already exists")
+        sql="update payment set card_number=?,name=?,expiry_month=?,expiry_year=?,cvv=? where user_id=?";
+        connection.query(sql,[card_number,name,expiry_month,expiry_year,cvv,user_id],(error,result)=>
+        {
+            if(error) throw error;
+            console.log("Result after Updation "+result)
+
+        })
     }
 })
 
@@ -691,8 +698,18 @@ app.get("/homelogin",(req,res)=>
 })
 //Get Request to load your Wishlist Page
 app.get('/wishlist',(req,res)=>
-{
+{   
+   
     res.sendFile(path.resolve(__dirname,'views/html/wishlist.html'))
+})
+//Request to Creating a wishlist Table
+sql="create table if not exists wishlist(user_id int,product_id int,product_type varchar(50)"+
+",primary key(user_id,product_id,product_type), foreign key(user_id) references register(user_id) on delete cascade);";
+
+connection.query(sql,(err,res)=>
+{
+    if(err) throw err;
+    console.log("Wishlist Table is created successfully "+res)
 })
 
 //AddWishlist to json File
@@ -783,6 +800,8 @@ app.post("/addwish",(req,res)=>
         }
         fs.writeFileSync('wishlist.json',JSON.stringify(finalArray))
         console.log(finalArray)
+
+      
         res.send(null)
         
 
@@ -805,7 +824,19 @@ app.post("/removewish",(req,res)=>
         {
             myArray.push(mydata[i])
         }
+        else{
+            let product_id=mydata[i].product_id
+            let product_type=mydata[i].type
+            sql="delete from wishlist where user_id=? and product_id=? and product_type=?";
+            connection.query(sql,[user_id,product_id,product_type],(error,result)=>
+            {
+                if(error)throw error;
+                console.log("Result "+result)
+            })
+        }
     }
+    console.log("My Array after deletion")
+    console.log(myArray)
     fs.writeFileSync("wishlist.json",JSON.stringify(myArray))
     res.send(
 
@@ -817,10 +848,88 @@ app.post("/removewish",(req,res)=>
 //Get wish to get all the itens
 app.get("/getwish",(req,res)=>
 {
+    var myArray=[]
+
+    sql="select product_id,product_type from wishlist where user_id=?";
+
+    connection.query(sql,[user_id],(error,result)=>
+    {       
+        if(error) throw error;
+        console.log(result)
+        buildResponse(result)
+        
+    
+    });
+    console.log("Result of the Database Query")
+    function buildResponse(response)
+    {
+            console.log("Inside Build Response")
+            console.log(response)
+            
+
+        
+     
+        const dataBuffer=fs.readFileSync('simple.json')
+        const data=JSON.parse(dataBuffer)
+        var finalArray=[]
+
+        for(let j=0;j<response.length;j++)
+        {   
+            for(let i=0;i<data.fruitsetlegumes.length;i++)
+            {   
+                if(response[j].product_id==data.fruitsetlegumes[i].product_id 
+                    &&
+                    response[j].product_type==data.fruitsetlegumes[i].type)
+                    {
+                        finalArray.push(data.fruitsetlegumes[i]);
+                    }
+        
+        
+            }
+
+            //for meat Products
+            for(let i=0;i<data.meat.length;i++)
+            {
+                if(response[j].product_id==data.meat[i].product_id 
+                    &&
+                    response[j].product_type==data.meat[i].type)
+                    {
+                        finalArray.push(data.meat[i])
+                    }
+            }
+            //for Dairy Products
+            for(let i=0;i<data.dairy.length;i++)
+            {
+                if(response[j].product_id==data.dairy[i].product_id && 
+                    response[j].product_type==data.dairy[i].type)
+                    {
+                        finalArray.push(data.dairy[i])
+                    }
+            }
+
+            console.log("Result for the Final Array")
+            console.log(finalArray)
+        }
+        //Empty the contents of the  JSON File
+        fs.writeFileSync('wishlist.json',JSON.stringify(''))
+        //Write to the JSON File
+        fs.writeFileSync('wishlist.json',JSON.stringify(finalArray))
+
+ 
+    }
+
+    //This will add an interval of 2 seconds before the code is executed
+    setTimeout(()=>
+    {
+
+        
     const dataBuffer=fs.readFileSync('wishlist.json');
     const data=JSON.parse(dataBuffer)
     console.log(data)
     res.send(data)
+
+    },500);
+
 
     
 })
@@ -877,26 +986,182 @@ app.post("/updatePassword",(req,response)=>
 //This is a get Request for the Signout 
 app.get("/signout",(req,res)=>
 {
-    console.log("Signout Response")
-    sql="select * from register where user_id=null";
+    //Write the data from the wishlist file to the Database 
+    const dataBuffer=fs.readFileSync('wishlist.json');
+    const data=JSON.parse(dataBuffer)
+    console.log("Content of Wishlis are as below")
+    console.log(data)
+
+    //Insert the Data to the Database
+    for(let i=0;i<data.length;i++)
+    {       
+        //To get the Product ID
+        let product_id=data[i].product_id
+        //To get the Product Type
+        let product_type=data[i].type;
+        sql="select * from wishlist where user_id=? and product_id=? and product_type=?";
+        connection.query(sql,[user_id,product_id,product_type],(error,result)=>
+        {
+            if(result==null||result=="")
+            {
+                sql="insert into wishlist values(?,?,?)";
+                connection.query(sql,[user_id,product_id,product_type],(er,rs)=>
+                {
+                    if(er) throw er;
+                    console.log(result)
+
+                })
+
+            }
+            else{
+                console.log("Product Already Exists");
+
+            }
+        })
+      
+    }
+
+    //Below is the code t empty the contents of wishlist.json
+    fs.readFileSync('wishlist.json',JSON.stringify(""))
+    //Now the wishlist.json File is Emmpty
+
+})
+
+
+//Get Request for the Checkout Page
+app.get("/checkout",(req,res)=>
+{
+    res.sendFile(path.resolve(__dirname,'views/html/checkout.html'))
+
+})
+
+//Search Functionallity 
+//Get Request to load the search Page
+
+app.get("/search",(req,res)=>
+{
+    res.sendFile(path.resolve(__dirname,'views/html/search.html'))
+})
+
+app.post("/searchProduct",(req,res)=>
+{
+    const insertedText=req.body.searchText;
+    console.log(insertedText)
+    const upper_text_insertedText=insertedText.toUpperCase()
+
+    //Read the Simple.json File
+    const dataBuffer=fs.readFileSync('simple.json')
+    const data=JSON.parse(dataBuffer)
+
+    //Loop through the data
+ 
+  
+
+   var finalArray=[]
+   //For Fruits et Legumes Products
+   for(let i=0;i<data.fruitsetlegumes.length;i++)
+   {
+   let product_name=data.fruitsetlegumes[i].name
+   let upper_text_product_name=product_name.toUpperCase()
+   if(upper_text_product_name.includes(upper_text_insertedText))
+   {
+       finalArray.push(data.fruits[i])
+   }
+
+   }
+   
+   //For Dairy Products
+   for(let i=0;i<data.dairy.length;i++)
+   {
+       let product_name=data.dairy[i].name
+       let upper_text_product_name=product_name.toUpperCase()
+       if(upper_text_product_name.includes(upper_text_insertedText))
+       {
+           finalArray.push(data.dairy[i])
+       }
+   }
+   //For Meat Products
+   for(let i=0;i<data.meat.length;i++)
+   {    
+       let product_name=data.meat[i].name
+       let upper_text_product_name=product_name.toUpperCase()
+       if(upper_text_product_name.includes(upper_text_insertedText))
+        {
+            finalArray.push(data.meat[i]);
+            
+        }
+   }
+   console.log(finalArray)
+   res.send(finalArray)
+})
+
+//To add the bill to theJSON File
+
+app.post("/bill",(req,res)=>
+{
+    console.log(req.body)
+    let subtotal=req.body.subtotal
+    let shipping=req.body.shipping
+    let taxes=req.body.taxes
+    let total=req.body.total
+    //Read the number of Items from the Cart.json files
+    const dataBuffer=fs.readFileSync('cart.json')
+    const data=JSON.parse(dataBuffer)
+    var number=data.length;
+
+
+    var myArray=[]
+    myArray.push({"number":number,"subtotal":subtotal,"shipping":shipping,"taxes":taxes,"total":total})
+ 
+    console.log("My Final Array")
+    console.log(myArray)
+    fs.writeFileSync('bill.json',JSON.stringify(''))
+
+    fs.writeFileSync('bill.json',JSON.stringify(myArray))
+
+
+})
+//To read the bill from the JSON File
+app.get("/readbill",(req,res)=>
+{
+    const dataBuffer=fs.readFileSync("bill.json")
+    const data=JSON.parse(dataBuffer)
+    console.log(data)
+    res.send(data)
+})
+
+
+//Get Request to get the shiiping details
+app.get("/shippingdetails",(req,res)=>
+{   
+    var myArray=[]
+    sql="select address,postal_code,card_number from register inner join payment on register.user_id=payment.user_id;"
     connection.query(sql,(error,result)=>
     {
         if(error) throw error;
         console.log(result)
-
+        res.send(result)
     })
-    res.send("User Signout of the application successfully")
+    
 })
+//create an Order Table
+sql="create table order(user_id int,order_id int,product_id int,product_type varchar(30),"+
+"primary key(user_id,order_id,product_id,product_type),foreign key(user_id) references register(user_id)"+
+"on delete cascade";
 
-app.get("/callname",(req,res)=>
+connection.query(sql,(error,result)=>
 {
-    res.send({
-
-        "name":"Raashid"
-    })
+    if(error) throw error;
+    console.log("Order Table is Created"+result)
 })
 
-
+//get Request when you click Proceed
+app.get("/proceed",(req,res)=>
+{
+    const dataBuffer=fs.readFileSync("cart.json")
+    const data=JSON.parse(dataBuffer)
+    console.log(data)
+})
 
 
 

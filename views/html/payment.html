@@ -46,6 +46,7 @@
             alert("Sorry,Your card has Expired ,Please Use a different one")
         }
 
+        window.location.href="/checkout";
 
     }
 </script>
@@ -104,12 +105,12 @@
                         <form action="/addcard" method="POST">
                         <span>CARD NUMBER</span>
                        
-                        <input type="text" max="12" name="cardNumber" class="card_number" placeholder="ENTER YOUR CARD NUMBER">
+                        <input required  type="number" inputmode="numeric" minlength="12" maxlength="12"  name="cardNumber" class="card_number" placeholder="ENTER YOUR CARD NUMBER">
                         <br>
                         <br>
                         <span>NAME ON THE CARD</span>
                   
-                        <input type="text" name="cardHolderName" placeholder="NAME ON THE CARD" class="input_name">
+                        <input required type="text" name="cardHolderName" placeholder="NAME ON THE CARD" class="input_name">
                         <br>
                         <br>
                         <span>
@@ -122,7 +123,7 @@
                 
                         <span class="spnCVV">CVV</span>
                      
-                         <input name="cvv" type="text" required="" id="securityCode" maxlength="3" size="3" class="esjsdlz1 css-f0up1d eesbt950" value="">
+                         <input name="cvv" required  type="text" required="" id="securityCode" maxlength="3" size="3" class="esjsdlz1 css-f0up1d eesbt950" value="">
                         <br>
 
                        <button type="submit"  onClick="submitPay()" class="btn btn-success">PAY</button>

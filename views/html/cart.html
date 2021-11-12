@@ -326,8 +326,49 @@ px
 
 
     }
+
  
-   
+   function createBill()
+    {
+        console.log("The values are")
+        let subtotal=document.getElementById("subTotalValue").value
+        let shipping=document.getElementById("shippingValue").value
+        let taxes=document.getElementById("taxValue").value
+        let total=document.getElementById("totalValue").value
+        let number;
+
+        console.log(subtotal)
+        console.log(shipping)
+        console.log(taxes)
+        console.log(total)
+        alert(subtotal,shipping,taxes,total)
+
+      
+     
+       
+        //Make an AJAX calll Now
+        $.ajax({
+
+          
+           
+            url:"http://localhost:6050/bill",
+            type:"POST",
+            dataType:"json",
+            data:{
+                
+                "subtotal":subtotal,
+                "shipping":shipping,
+            "taxes":taxes,
+        "total":total            },
+        success:function(response)
+        {
+            console.log(response)
+        }
+        })
+
+        //Navigate to the Payment Page
+        window.location.href="/payment"
+    }
 
 
 </script>
@@ -341,20 +382,21 @@ px
             <div class="billDiv">
                 <h1>SUMMARY:</h1>
                 <br>
+               
                 <label class="subtotalLabel" for="subtotal">SUBTOTAL</label>
-                <input type="text" disabled class="subtotalInput" id="subTotalValue">
+                <input type="text" disabled class="subtotalInput" id="subTotalValue" name="subtotal">
                 <br>
                 <label  class="shippingLabel" for="shipping">SHIPPING</label>
-                <input type="text" disabled class="shippingInput" id="shippingValue">
+                <input type="text" disabled class="shippingInput" id="shippingValue" name="shipping">
                 <br>
                 <label class="taxesLabel" for="taxes">TAXES</label>
-                <input type="text" disabled class="taxInput" id="taxValue">
+                <input type="text" disabled class="taxInput" id="taxValue" name="taxes">
                 <br>
                 <label class="totalLabel" for="total">TOTAL </label>
-                <input type="text" disabled class="TotalInput" id="totalValue">
+                <input type="text" disabled class="TotalInput" id="totalValue" name="total">
                <br> 
             </div>
-            <button class="btn btn-success continueButton">Continue</button>
+            <button onclick="createBill()" class="btn btn-success continueButton">Continue</button>
             <button class="btn btn-danger gobackButton">Go Back</button>
         </div>
         <div class="col-xs-2"></div>

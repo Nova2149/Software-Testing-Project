@@ -54,6 +54,22 @@
             table.innerHTML+=row1;
 
         }
+        function updateLocalStorage()
+        {
+            console.log(localStorage.getItem("count"))
+            localStorage.setItem("count",1);
+
+            $.ajax({
+                url:"http://localhost:6050/signout",
+                type:"GET",
+                dataType:"json",
+                success:function(response)
+                {
+                    console.log(response)
+                }
+            })
+
+        }
 
     </script>
     <!--Temp Code Ends Here-->
@@ -133,10 +149,10 @@
                             <a href="/uinfo">Account &nbsp;&nbsp;&nbsp;&nbsp;</a>
                         </li>
                         <li>
-                            <a href="">My Wishlist</a>
+                            <a href="/wishlist">My Wishlist</a>
                         </li>
                         <li class=" cart-item nav-item">
-                            <a href="cart.html"><i class='bx bx-cart'>&nbsp;&nbsp;&nbsp;&nbsp;</i></a>
+                            <a href="/cart"><i class='bx bx-cart'>&nbsp;&nbsp;&nbsp;&nbsp;</i></a>
                         </li>
                        
                         <!--Temp code Starts Here-->
@@ -147,7 +163,7 @@
 
                         
                         <li class="signoutli">
-                            <a href="/home">
+                            <a onClick="updateLocalStorage()" href="/home">
                             <span class="glyphicon glyphicon-log-out">
                             
                             </span>

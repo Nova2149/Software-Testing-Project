@@ -110,43 +110,55 @@
     {       
 
         //calling the Check for SignIn Functionallity
-        checkSign();
-        console.log("Inside Fruits and Veegtables")
-        console.log(id)
-        $.ajax({
-      url:"http://localhost:6050/addproduct",
-      type:"POST",
-      dataType:"json",
-      data:{"product_id":id,"type":type},
-      success:function(response)
-      {
-          console.log(response)
-      }
-        })
-    }
-    function checkSign()
-    {   var counter;
-        $.ajax({
-            url:"http://localhost:6050/vid",
-            type:"GET",
-    
-            success:function(res)
-            {   
-                console.log("My Response")
-                console.log(res);
-                console.log(res.counter)
-                counter=parseInt(res.counter)
-                console.log(counter)
-                if(counter==0)
-                {
-                    window.location="http://localhost:6050/account";
+        let count=localStorage.getItem("count")
+        console.log(count)
+        if (count==0)
+        {
+            console.log("Inside Fruits and Veegtables")
+            console.log(id)
+            $.ajax({
+        url:"http://localhost:6050/addproduct",
+        type:"POST",
+        dataType:"json",
+        data:{"product_id":id,"type":type},
+        success:function(response)
+        {
+            console.log(response)
+        }
+            })
+        }
+        else{
+            window.location.href="/account";
 
-                }
-            }
-        })
+        }
+    }
+    // function checkSign()
+    // {   var counter;
+    //     let counter=localStorage.getItem("count")
+    //     if()
+
+
+    //     $.ajax({
+    //         url:"http://localhost:6050/vid",
+    //         type:"GET",
+    
+    //         success:function(res)
+    //         {   
+    //             console.log("My Response")
+    //             console.log(res);
+    //             console.log(res.counter)
+    //             counter=parseInt(res.counter)
+    //             console.log(counter)
+    //             if(counter==0)
+    //             {
+    //                 window.location="http://localhost:6050/account";
+
+    //             }
+    //         }
+    //     })
        
     
-    }
+    // }
     function addToWishlist(id,type)
     {
         console.log("Inside add to wishlist")
@@ -165,6 +177,12 @@
             }
         })
     }
+    function updateLocalStorage()
+        {
+            console.log(localStorage.getItem("count"))
+            localStorage.setItem("count",1);
+
+        }
 </script>
 <style>
       @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;700&display=swap');
@@ -250,7 +268,7 @@
 
                     
                     <li class="signoutli">
-                        <a href="/home">
+                        <a onClick="updateLocalStorage()" href="/home">
                         <span class="glyphicon glyphicon-log-out">
                         
                         </span>
