@@ -72,6 +72,26 @@
       text-align:center;
       font-weight: bold;
   }
+  .search-info
+  {
+      margin-left:20px;
+  }
+  .mywish
+  {
+      margin-left:20px;
+  }
+  .myorder
+  {
+      margin-left:20px;
+  }
+  .cart-item
+  {
+      margin-left:20px;
+  }
+  .signoutli
+  {
+      margin-left:20px;
+  }
 </style>
  <script>
      function searchProduct()
@@ -133,6 +153,9 @@
      function addProduct(id,type)
     {           
         // To get the value from the local storage
+        console.log("Inside Add Product")
+        console.log(id)
+        console.log(type)
         let count=localStorage.getItem("count");
         if(count==1)
         {
@@ -218,27 +241,32 @@
                     <li class="nav-item">
                         <a href="/uinfo">Account &nbsp;&nbsp;&nbsp;&nbsp;</a>
                     </li>
-                    <li>
-                        <a href="">My Wishlist</a>
-                    </li>
-                    <li class=" cart-item nav-item">
-                        <a href="cart.html"><i class='bx bx-cart'>&nbsp;&nbsp;&nbsp;&nbsp;</i></a>
-                    </li>
-                   
-                    <!--Temp code Starts Here-->
-                    <li class="customer_info" id="customer_name">
-                
+                    <li class="search-info" id="customer_name">
+                        <a href="/search">Search</a>
                        
                     </li>
-
-                    
-                    <li class="signoutli">
-                        <a onClick="updateLocalStorage()" href="/home">
-                        <span class="glyphicon glyphicon-log-out">
-                        
-                        </span>
-                        </a>
+                    <li class="mywish">
+                        <a href="/wishlist">My Wishlist</a>
                     </li>
+                    <li class="myorder">
+                        <a href="/order">My Order</a>
+                    </li>
+                       
+                        <li class=" cart-item nav-item">
+                            <a href="/cart"><span class="glyphicon glyphicon-shopping-cart"></span></a>
+                        </li>
+                       
+                        <!--Temp code Starts Here-->
+                     
+    
+                        
+                        <li class="signoutli">
+                            <a onClick="updateLocalStorage()" href="/home">
+                            <span class="glyphicon glyphicon-log-out">
+                            
+                            </span>
+                            </a>
+                        </li>
 
                     
                  

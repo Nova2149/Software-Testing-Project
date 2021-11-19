@@ -116,15 +116,16 @@
                       Not a member? <a href="">Signup now</a>
                    </div>
                 </form>
-                <form action="/register" method="POST" class="signup">
-                  <div class="field">
+                  <form>
+                  <div class="field signup">
                     <label for="firstname">Firstname</label>
                     <input type="text" placeholder="First Name" name="first_name" required>
                  </div><br>
                  <div class="field">
                   <label for="lastname">Lastname</label>
                   <input type="text" placeholder="Last Name" name="last_name" required>
-                </div><br>
+                </div>
+                <br>
                    <div class="field">
                     <label for="emailaddress">Email Address</label>
                       <input type="email" placeholder="Email Address" name="email" required>
@@ -157,10 +158,7 @@
                    </div><br>
 
                    <!--Code Editing ends Here-->
-                   <div class="field btn">
-                      <div class="btn-layer"></div>
-                      <input type="submit" value="Signup">
-                   </div><br>
+                   <button type="button"  onClick=registerNewUser(first_name.value,last_name.value,email.value,date_of_birth.value,address.value,phone.value,password.value,confirm_password.value,postal_code.value) class="btn btn-dark">Register</button>
                 </form>
              </div><br>
           </div>
@@ -262,6 +260,63 @@
             }
           }
         })
+      }
+
+      function registerNewUser(firstname,lastname,email,dob,address,phone,password,confirmpassword,postalcode)
+      {
+        console.log("Inside Register New User");
+        console.log(firstname);
+        console.log(lastname);
+        console.log(email);
+        console.log(dob);
+        console.log(address);
+        console.log(phone);
+        console.log(password);
+        console.log(confirmpassword);
+        console.log(postalcode);
+      
+        if(password!=confirmpassword)
+        {
+          alert("Passwords don't match")
+        }
+        else
+        {
+          $.ajax({
+            url:"http://localhost:6050/register",
+            type:"POST",
+            data:{
+              "first_name":firstname,
+              "last_name":lastname,
+              "email":email,
+              "date_of_birth":dob,
+              "address":address,
+              "phone":phone,
+              "password":password,
+              "confirm_password":confirmpassword,
+              "postal_code":postalcode
+            }
+            ,
+            dataType:"json",
+            success:function(response)
+            {
+              console.log(response)
+            console.log(response.counter)
+            if(response.counter==0)
+            { 
+                alert("User Registered Successfully");
+                window.location.reload();
+            }
+            else{
+              alert("User already Exists");
+
+            }
+            }
+            
+          })
+
+        }
+      
+      
       }
    </script>
 

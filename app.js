@@ -139,6 +139,7 @@ app.post("/register",(req,res)=>
                         console.log("Number of Records Inserted "+result.affectedRows)
             
                     })
+                    res.send({"counter":0})
         }
         else{
 
@@ -146,6 +147,7 @@ app.post("/register",(req,res)=>
             console.log("Sorry User already exists")
             counter=1
             console.log(counter)
+            res.send({"counter":1})
      
         }
     })
@@ -638,32 +640,35 @@ app.post("/addcard",(req,res)=>
     //insert data into the Payment Table
     sql="select * from payment where user_id=?";
     connection.query(sql,[user_id],(err,result)=>
-{
-    if(err) throw err;
-    console.log(result)
-    if(result==null||result=="")
-    {
-        console.log("Good to Add to the Payment Table")
-        sql="insert into payment(user_id,card_number,name,expiry_month,expiry_year,cvv) values (?,?,?,?,?,?)";
-        connection.query(sql,[user_id,card_number,name,expiry_month,expiry_year,cvv],
-            (err,result)=>
-            {
-                if (err) throw err;
-                console.log("Number of Records  Inserted "+result)
-            })
-    }
-    else{
-        console.log(result);
-        console.log("Sorry User details already exists")
-        sql="update payment set card_number=?,name=?,expiry_month=?,expiry_year=?,cvv=? where user_id=?";
-        connection.query(sql,[card_number,name,expiry_month,expiry_year,cvv,user_id],(error,result)=>
         {
-            if(error) throw error;
-            console.log("Result after Updation "+result)
+            if(err) throw err;
+            console.log(result)
+            if(result==null||result=="")
+            {
+                console.log("Good to Add to the Payment Table")
+                sql="insert into payment(user_id,card_number,name,expiry_month,expiry_year,cvv) values (?,?,?,?,?,?)";
+                connection.query(sql,[user_id,card_number,name,expiry_month,expiry_year,cvv],
+                    (err,result)=>
+                    {
+                        if (err) throw err;
+                        console.log("Number of Records  Inserted "+result)
+                    })
+            }
+            else{
+                console.log(result);
+                console.log("Sorry User details already exists")
+                sql="update payment set card_number=?,name=?,expiry_month=?,expiry_year=?,cvv=? where user_id=?";
+                connection.query(sql,[card_number,name,expiry_month,expiry_year,cvv,user_id],(error,result)=>
+                {
+                    if(error) throw error;
+                    console.log("Result after Updation "+result)
 
+                })
+            }
         })
-    }
-})
+        res.sendFile(path.resolve(__dirname,'views/html/checkout.html'))
+
+
 
 
 })
@@ -798,10 +803,33 @@ app.post("/addwish",(req,res)=>
                 finalArray.push(final_result)
             }
         }
+        console.log("Final Array in  Ass Wish Api");
+
         fs.writeFileSync('wishlist.json',JSON.stringify(finalArray))
         console.log(finalArray)
 
-      
+      //Insert in the wishlist which record is not inserted
+      for(let i=0;i<finalArray.length;i++)
+      {
+        sql="select * from wishlist where user_id=? and product_id=? and product_type=?";
+        connection.query(sql,[user_id,finalArray[i].product_id,finalArray[i].type],(error,result)=>
+        {
+            if(error) throw error;
+            console.log(result)
+            if(result==""||result==null)
+            {
+                sql="insert into wishlist values(?,?,?)";
+                connection.query(sql,[user_id,finalArray[i].product_id,finalArray[i].type],(er,rs)=>
+                {   
+                    if(er) throw er;
+                    console.log("Inserted new Wish to the wishlist")
+                    console.log(i)
+                    console.log(rs)
+                })
+
+            }
+        })
+      }
         res.send(null)
         
 
@@ -1065,7 +1093,7 @@ app.post("/searchProduct",(req,res)=>
    let upper_text_product_name=product_name.toUpperCase()
    if(upper_text_product_name.includes(upper_text_insertedText))
    {
-       finalArray.push(data.fruits[i])
+       finalArray.push(data.fruitsetlegumes[i])
    }
 
    }
@@ -1134,20 +1162,54 @@ app.get("/readbill",(req,res)=>
 //Get Request to get the shiiping details
 app.get("/shippingdetails",(req,res)=>
 {   
-    var myArray=[]
-    sql="select address,postal_code,card_number from register inner join payment on register.user_id=payment.user_id;"
-    connection.query(sql,(error,result)=>
-    {
-        if(error) throw error;
-        console.log(result)
-        res.send(result)
-    })
+ var myArray=[]
+ function passArray(x)
+ {
+    myArray.push(x)
+ }
+sql="select address,postal_code from register where user_id=?";
+connection.query(sql,[user_id],(error,result)=>
+{
+    if(error) throw error;
+    console.log(result)
+    console.log(result[0].address)
+    console.log(result[0].postal_code)
+passArray({"address":result[0].address})
+passArray({"postal_code":result[0].postal_code})
+   
+
+})
+//Second Sql Query
+sql="select card_number from payment where user_id=?";
+connection.query(sql,[user_id],(error,result)=>
+{
+    if(error) throw error;
+    console.log(result)
+   console.log(result[0].card_number)
+   passArray({"card_number":result[0].card_number})
+
     
 })
+
+//Timeout 
+setTimeout(()=>
+{
+    console.log("Inside Shipping Details")
+    console.log("Value of finalArray")
+    console.log(myArray)
+
+res.send(myArray)
+
+},1000)
+
+
+    
+})
+
 //create an Order Table
-sql="create table order(user_id int,order_id int,product_id int,product_type varchar(30),"+
-"primary key(user_id,order_id,product_id,product_type),foreign key(user_id) references register(user_id)"+
-"on delete cascade";
+sql="create table if not exists  orderTable(user_id int,order_id int,order_total decimal(6,2),order_status varchar(30),"+
+"primary key(user_id,order_id),foreign key(user_id) references register(user_id)"+
+" on delete cascade);";
 
 connection.query(sql,(error,result)=>
 {
@@ -1156,14 +1218,67 @@ connection.query(sql,(error,result)=>
 })
 
 //get Request when you click Proceed
+//Not yet Completed
 app.get("/proceed",(req,res)=>
-{
-    const dataBuffer=fs.readFileSync("cart.json")
+{           
+
+    const dataBuffer=fs.readFileSync('bill.json')
     const data=JSON.parse(dataBuffer)
     console.log(data)
+
+    var order_total=data[0].total
+    console.log(order_total)
+
+    var order_status="Placed";
+
+
+
+    //user_id,order_id,order_total,order_status 
+    sql="select order_id from orderTable where user_id=?";
+    connection.query(sql,[user_id],(error,result)=>
+    {
+        if(error) throw error;
+        console.log(result)
+        if(result==""||result==null)
+        {
+            sql="insert into orderTable values(?,1,?,?)";
+            connection.query(sql,[user_id,order_total,order_status],(er,rs)=>
+            {
+                if (er) throw er;
+                console.log(rs);
+            })
+
+        }
+        else{
+
+            console.log("Inside Else")
+            var  result_index=result.length-1
+            console.log(result_index)
+            console.log(result[result_index].order_id)
+            
+            var order_id=result[result_index].order_id+1
+            console.log(order_id)
+            console.log(typeof order_id)
+           var string_order_id=order_id.toString()
+            sql="insert into orderTable values(?,?,?,?)";
+            connection.query(sql,[user_id,order_id,order_total,order_status],(er,rs)=>
+            {
+                if (er) throw er;
+                console.log(rs);
+
+            })
+        }
+    })
+
 })
 
 
+//Get Request to upload the order page
+app.get("/order",(req,res)=>
+{
+    res.sendFile("path.resolve(__dirname,'views/html/order.html')");
+
+})
 
 
 

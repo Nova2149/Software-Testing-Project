@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="../css/style1.css">
 
 <script>
 
@@ -113,6 +114,25 @@ px
     }
     .removeButton{
         margin-top:60px;
+    }
+    .signoutli
+    {
+        margin-left:20px;
+    }
+    .cart-item
+    {
+        margin-left:20px;
+    }
+    .search-info{
+        margin-left:20px;
+    }
+    .mywishlist
+    {
+        margin-left:20px;
+    }
+    .myorder
+    {
+        margin-left:20px;
     }
 </style>
 <!--Style Ends Here-->
@@ -374,7 +394,83 @@ px
 </script>
 <body>
     <!--The Cart content starts from here -->
-    <h1>Cart Page</h1>
+    <nav class="nav">
+        <div class="navigation container">
+            <a href="index.html">
+            <div class="logo">
+                <img src="../images/logo.png">
+                <div class="hero-content">
+                    <h6><span class="logo_title">Food Place</span></h6>
+                </div>
+            </div>
+            </a>
+
+            <div class="menu">
+                <div class="top-nav">
+                    <div class="logo">
+                        <img src="../images/logo.png">
+                    </div>
+                    <div class="close">
+                        <i class='bx bx-x'></i>
+                    </div>
+                </div>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="/homelogin">Home &nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/fruit&veg">Fruits & Vegetables &nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/dairy">Dairy &nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="/meat">Meat &nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/uinfo">Account &nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    </li>
+                    <li class="search-info" id="customer_name">
+                        <a href="/search">Search</a>
+                       
+                    </li>
+                    <li class="mywishlist">
+                        <a href="/wishlist">My Wishlist</a>
+                    </li>
+                    <li class="myorder">
+                        <a href="/order">My Orders</a>
+                    </li>
+                 
+                    <li class=" cart-item nav-item">
+                        <a href="/cart"><span class="glyphicon glyphicon-shopping-cart"></span></a>
+                    </li>
+                   
+                    <!--Temp code Starts Here-->
+                 
+
+                    
+                    <li class="signoutli">
+                        <a onClick="updateLocalStorage()" href="/home">
+                        <span class="glyphicon glyphicon-log-out">
+                        
+                        </span>
+                        </a>
+                    </li>
+
+                    
+                 
+
+
+                    <!--Temp Code Ends Here-->
+                </ul>
+            </div>
+            <a href="cart.html" class="cart-icon"><i class='bx bx-cart'></i></a>
+            <div class="nav-menu">
+                <i class='bx bx-menu' ></i>
+            </div>
+        </div>
+    </nav>
     <div id="mydiv"></div>
     <div class="row">
         <div class="col-xs-2"></div>

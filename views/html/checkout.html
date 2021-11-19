@@ -68,10 +68,10 @@
     function buildShipping(response)
     {
       document.getElementById("shippingAddress").innerHTML=response[0].address+"\n"+"Montreal,Quebec"
-      document.getElementById("postalCode").value=response[0].postal_code
+      document.getElementById("postalCode").value=response[1].postal_code
      // document.getElementById("cardNumber").value=response[0].card_number
         
-     let valArray=response[0].card_number.split("")
+     let valArray=response[2].card_number.split("")
      console.log(valArray)
      let card_value="";
 
@@ -95,6 +95,15 @@
     function clickProceed()
     {
         console.log("You are currently inside the Proceed ")
+        $.ajax({
+            url:"http://localhost:6050/proceed",
+            method:"GET",
+            dataType:"json",
+            success:function(response)
+            {
+                console.log(response)
+            }
+        })
         
     }
 </script>
