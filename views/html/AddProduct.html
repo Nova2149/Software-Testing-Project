@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="../css/style1.css">
+
+<script>
+    function enterNewProduct(pname,pprice,ptype,pdescription,pquantity,pimageurl)
+    {
+        let product_name=document.getElementById("product_name").value
+        console.log(product_name)
+        let product_price=document.getElementById("product_price").value
+        console.log(product_price)
+        let product_type=document.getElementById("product_type").value
+        console.log(product_type)
+        let product_description=document.getElementById("product_description").value
+        console.log(product_description)
+        let product_quantity=document.getElementById("product_quantity").value
+        console.log(product_quantity)
+        let product_img_url=document.getElementById("product_image_url").value
+        console.log(product_img_url)
+
+        $.ajax({
+            url:"http://localhost:6050/addnewproduct",
+            method:"POST",
+            dataType:"json",
+            data:{
+                    "product_name":product_name,
+                "product_price":product_price,
+                "product_type":product_type,
+            "product_description":product_description,
+            "product_quantity":product_quantity,
+            "product_img_url":product_img_url        
+        },
+        success:function(response)
+        {
+            console.log(response)
+        }
+    })
+    alert("Item Added Successfully")
+    
+
+    }
+</script>
+<body>
+    <h1>Welcome to the Add Product Page</h1>
+    <div class="row">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-8">
+            <h1>ADD PRODUCT</h1>
+            <form>
+                <label for="product_name">PRODUCT NAME</label>
+                <input type="text" id="product_name" class="form-control" placeholder="Enter the Product Name" required >
+                <br>
+                <label for="product_price">PRODUCT PRICE</label>
+                <input type="text" id="product_price" class="form-control" placeholder="Enter the Product Price" required >
+                <br>
+                <label for="product_type">PRODUCT TYPE</label>
+                <select class="form-control" name="product_type" id="product_type">
+                    <option value="meat">MEAT</option>
+                    <option value="fruitsetlegumes">FRUITS ET LEGUMES</option>
+                    <option value="dairy">DAIRY</option>
+                </select>
+                <br>
+                <label for="product_Description">PRODUCT DESCRIPTION</label>
+                <input type="text" id="product_description" class="form-control" placeholder="Enter the Product Description" required >
+                <br>
+                <label for="product_Quantity">PRODUCT QUANTITY</label>
+                <input type="text" id="product_quantity" class="form-control" placeholder="Enter the Product Qunatity" required >
+                <br>
+                <label for="product_img_url">PRODUCT IMAGE URL</label>
+                <input type="text" id="product_image_url" class="form-control" placeholder="Enter Product Image Url" required >
+                <br>
+                <button type="button" class="btn btn-success" onclick="enterNewProduct()">SUBMIT</button>
+            </form>
+        </div>
+        <div class="col-xs-2"></div>
+    </div>
+    
+</body>
+</html>

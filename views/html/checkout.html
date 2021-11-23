@@ -14,11 +14,12 @@
     {
     width:190px;
     margin-left: 45px;
-    margin-bottom:25px;
+   
     }
     .checkoutDiv
     {
         border:2px solid black;
+        text-align: center;
     }
     .checkoutHeading
     {
@@ -31,6 +32,20 @@
     {
         margin-left:150px;
     }
+    
+body{
+    font-family: 'Overlock', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    background-color: whitesmoke;
+    color: black;
+    position: relative;
+    z-index: 1;
+}
+.shipping_details
+{
+    border:2px solid black;
+}
 </style>
 <script>
     $.ajax({
@@ -103,31 +118,49 @@
             {
                 console.log(response)
             }
+            
         })
+        alert("Thanks for Placing Order");
+        window.location.href="http://localhost:6050/homelogin"
         
+    }
+    function clickClearCart()
+    {
+        console.log("You are currently inside Click Clear Cart")
+        $.ajax({
+            url:"http://localhost:6050/clearcart",
+            method:"GET",
+            dataType:"json",
+            success:function(response)
+            {
+                console.log(response)
+
+            }
+        })
     }
 </script>
 <body>
-    <p>Welcome to the Checkout Page</p>
-
+   
 <div class="mainDiv">
     <div class="row">
         <div class="col-xs-1"></div>
-        <div class="col-xs-3">
-            <h1>Shipping Adress</h1>
-            <textarea disabled  name="" id="shippingAddress" cols="50" rows="10" placeholder="Shipping Address should be dislayed here">
+        <div class="col-xs-3 shipping_details">
+            <h1 class="checkoutHeading">SHIPPING DETAILS</h1>
+            <br>
+            <label for="shipping_adress">Shipping Address</label>
+            <textarea disabled  name="" id="shippingAddress" cols="30" rows="10" placeholder="Shipping Address should be dislayed here">
 
             </textarea>
             <br>
-            <label for="postal_code">Postal Code</label>
+            <label for="postal_code">POSTAL CODE</label>
             <input type="text" id="postalCode" placeholder="Postal Code">
             <br>
-            <label for="">Mode Of Payment</label>
+            <label for="">PAYMENT INFO</label>
             <br>
             <input id="cardNumber" type="text" placeholder="Mode of Payment">
         </div>
         <div class="col-xs-1"></div>
-        <div class="col-xs-3">
+        <div class="col-xs-6">
             <div class="checkoutDiv">
                 <h1 class="checkoutHeading">Checkout</h1>
                 <label class="myLabel" for="number_of_items">Number of Items</label>
@@ -145,7 +178,8 @@
                 <label class="myLabel" for="order_total">Order Total</label>
                 <input disabled type="text" placeholder="Order Total" id="total">
                 <br>
-                <button class="btn btn-success" onclick=clickProceed() id="btn_proceed">PROCEED</button>
+                <br>
+                <button class="btn btn-success" onclick=clickProceed(); id="btn_proceed">PROCEED</button>
             </div>
         </div>
         <div class="col-xs-1"></div>

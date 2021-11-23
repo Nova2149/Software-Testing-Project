@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="../css/style1.css">
+
+<script>
+
+    $(function()
+    {
+        $.ajax({
+            url:"http://localhost:6050/getusers",
+            method:"GET",
+            dataType:"json",
+            success:function(response)
+            {
+                console.log(response)
+                buildTable(response);
+            }
+        })
+    })
+    function removeCustomer(email)
+    {
+        console.log(email)
+          $.ajax({
+            url:"http://localhost:6050/removecustomer",
+            method:"POST",
+            dataType:"json",
+            data:{
+                "email":email
+
+            },
+            success:function(response)
+            {
+                console.log(response)
+            }
+           
+
+        })
+        alert("User Removed Successfully");
+        window.location.reload();
+    }
+
+    function buildTable(data)
+    {   
+        var table=document.getElementById("mydiv");
+
+        for(let i=1;i<data.length;i++)
+        {
+            var row=
+            `<div class="row mm">
+                <h1 class="uheading">USER DETAILS </h1>
+                <div class="col-xs-1">
+                    <span>${data[i].first_name}</span>
+                </div>
+                <div class="col-xs-1">
+                    <span>${data[i].last_name}</span>
+                </div>
+                <div class="col-xs-2">
+                    <span>${data[i].email}</span>
+                </div>
+                <div class="col-xs-2">
+                    <span>${data[i].date_of_birth}</span>
+                </div>
+                <div class="col-xs-2">
+                    <span> ${data[i].address}</span>
+                </div>
+                <div class="col-xs-2">
+                    <span>${data[i].phone}</span>
+                </div>
+                <div class="col-xs-1">
+                    <span>${data[i].postal_code}</span>
+                </div>
+                <div class="col-xs-1">
+                    <button class="btn btn-danger" onclick="removeCustomer('${data[i].email}')">REMOVE</button>
+                </div>
+
+                
+            </div>`;
+            table.innerHTML+=row;
+
+        }
+    }
+</script>
+<style>
+    .uheading
+    {
+        text-align: center;
+        border:2px solid black;
+        background-color: cornflowerblue;
+    }
+    .col-xs-12
+    {
+        border:2px solid black;
+    }
+    .row
+    {
+        border:2px solid black;
+    }
+    .mm
+    {
+        border:2px solid black;
+        background-color: darkgray;
+    }
+</style>
+<body>
+   
+    <div  class="row">
+        <div class="col-xs-0"></div>
+        <div class="col-xs-12" id="mydiv"></div>
+        <div class="col-xs-0"></div>
+    </div>
+</body>
+</html>

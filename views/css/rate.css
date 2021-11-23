@@ -1,0 +1,22 @@
+.row_row{
+    display:table-row;
+    box-sizing:border-box;
+    vertical-align:middle;
+    width:100%;
+}
+.cell_cell
+{
+    display:table-cell;
+    box-sizing:border-box;
+    vertical-align:middle;
+}
+
+.table_table
+{
+    display: table;
+    box-sizing:border-box;
+    position:relative;
+    vertical-align:middle;
+    width:100%;
+    
+}

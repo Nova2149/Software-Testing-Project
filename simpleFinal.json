@@ -1,106 +1,6 @@
-{
-    "fruits":[
-        {
-        "name":"Bananas",
-        "price":0.59,
-        "img":"https://cdn.shopify.com/s/files/1/0336/7501/products/bananas_cd15495c-2e11-429c-8008-5b10672f1856_medium.jpg?v=1461087167"
-
-    },
+[
+    
     {
-        "name":"Avocados Bag",
-        "price":2.99,
-        "img":"https://cdn.shopify.com/s/files/1/0336/7501/products/bag-of-avocados_medium.jpg?v=1486651808"
-    }
-    ,{
-        "name":"Lemons",
-        "price":"0.33",
-        "img":"https://cdn.shopify.com/s/files/1/0336/7501/products/fresh-lemons_b23910c4-d2b0-429f-bd63-d102c79dc6c8_medium.jpg?v=1461678879"
-    },
-    {
-        "name":"Strawberries",
-        "price":3.99,
-        "img":"https://cdn.shopify.com/s/files/1/0336/7501/products/fresh-strawberries_medium.jpeg?v=1434048987"
-    },
-    {
-
-        "name":"Raspberries",
-        "price":3.99,
-        "img":"https://cdn.shopify.com/s/files/1/0336/7501/products/raspberries_7573ac2b-9eb2-49a1-8c99-eeea5e2cb007_medium.jpg?v=1444333955"
-    },
-    {
-        "name":"Vine Tomatoes",
-        "price":1.99,
-        "img":"https://cdn.shopify.com/s/files/1/0336/7501/products/vine-tomatoes_medium.jpg?v=1472230350"
-    },
-    {
-        "name":"Red Seedles Grapes",
-        "price":1.99,
-        "img":"https://cdn.shopify.com/s/files/1/0336/7501/products/red-seedless-grapes_9db50630-e4d9-486f-918c-14c28be2afed_medium.jpeg?v=1434048998"
-    },
-    {
-        "name":"Blackberries",
-        "price":1.66,
-        "img":"https://cdn.shopify.com/s/files/1/0336/7501/products/blackberries_medium.jpg?v=1606935584"
-    },
-    {
-        "name":"Golden Ripe Pineapples",
-        "price":2.99,
-        "img":"https://cdn.shopify.com/s/files/1/0336/7501/products/pineapple_18b30e50-ae60-4ab2-8000-36d5cdc7777a_medium.jpeg?v=1434642873"
-    },
-    {
-        "name":"Avocados",
-        "price":1.50,
-        "img":"https://cdn.shopify.com/s/files/1/0336/7501/products/avocados_medium.jpg?v=1598452924"
-    },
-    {
-        "name":"Limes",
-        "price":0.33,
-        "img":"https://cdn.shopify.com/s/files/1/0336/7501/products/fresh-limes_0478c073-ab7b-4e15-9db9-bb18f823eb7d_medium.jpeg?v=1434048994"
-    },
-    {
-        "name":"Blueberries",
-        "price":5.99,
-        "img":"https://cdn.shopify.com/s/files/1/0336/7501/products/blueberries_afd4d959-63c3-4d16-9015-9f4f13166eac_medium.jpeg?v=1434048990"
-    },
-    {
-        "name":"Oranges",
-        "price":0.49,
-        "img":"https://cdn.shopify.com/s/files/1/0336/7501/products/oranges_13c70bb3-cbca-4c61-be7e-39ebf8f20b33_medium.jpg?v=1444334137"
-    },
-    {
-        "name":"Yellow Mangoes",
-        "price":1.50,
-        "img":"https://cdn.shopify.com/s/files/1/0336/7501/products/yellow-mangos-ataulfo_medium.jpg?v=1468943928"
-    },
-    {
-        "name":"Red Mangoes",
-        "price":1.50,
-        "img":"https://cdn.shopify.com/s/files/1/0336/7501/products/red-mango_08ddda71-da23-4040-8e2f-e937255231af_medium.jpg?v=1461088393"
-    },
-    {
-        "name":"Cantaloupe",
-        "price":"2.99",
-        "img":"https://cdn.shopify.com/s/files/1/0336/7501/products/cantaloupe_medium.jpg?v=1444759705"
-    }
-],
-    "vegetables":[
-        {
-            "name":"Broccoli",
-            "price":1.50,
-            "img":"https://cdn.shopify.com/s/files/1/0336/7501/products/broccoli_b3038724-4f68-4323-9aa3-4a71f7433e90_medium.jpeg?v=1434049080"
-        },
-        {
-            "name":"Green Onions",
-            "price":0.75,
-            "img":"https://cdn.shopify.com/s/files/1/0336/7501/products/green-onions_3466fd7e-f907-4aa7-9eab-8dfdf24279a0_medium.jpg?v=1461088568"
-        },
-        {
-            "name":"English Cucumbers",
-            "price":1.50,
-            "img":"https://cdn.shopify.com/s/files/1/0336/7501/products/english-cucmbers_427bfe21-f109-4d3e-941a-42658df7d9a3_medium.jpg?v=1461088895"
-        }
-    ],
-    "meat":[{
 
         "product_id":1,
         "type":"meat",
@@ -265,10 +165,7 @@
           "img":"https://cdn.shopify.com/s/files/1/0336/7501/products/bonless-beef-blade-roast_medium.jpg?v=1468423128",
 		  "quantity":100,
 		  "Description":"A blade pot roast is cut from the shoulder blade area of a beef carcass."
-      }
-
-    ],
-    "dairy":[
+      },
         {   "product_id":1,
             "type":"dairy",
             "name":"Lactania Milk",
@@ -407,9 +304,7 @@
             "img":"https://cdn.shopify.com/s/files/1/0336/7501/products/liberte-organic-kefir-1l_medium.jpg?v=1556738196",
 			"quantity":100,
 			"Description":"Choosing nature with Liberté Organic. Kefir is a complex fermented milk product containing bacteria and yeast, and is recommended by Canada’s Food Guide for its calcium content."
-        }
-    ],
-    "fruitsetlegumes":[
+        },
         {        "product_id":1,
             "type":"fruitsetlegumes",
             "name":"Bananas",
@@ -564,5 +459,5 @@
 			"Description":"English cucumbers, Cucumis sativus, are actually bred to create a cucumber without some of the more undesirable characteristics that this vegetable has, such as a tough outer skin, large seeds, and a bitter taste."
         }
 
+    
     ]
-}

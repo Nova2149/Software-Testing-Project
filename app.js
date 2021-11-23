@@ -6,7 +6,8 @@ const path=require('path')
 let mysql=require('mysql2');
 const { request } = require('http');
 const e = require('express');
-const { count } = require('console');
+const { count, Console } = require('console');
+const { DH_UNABLE_TO_CHECK_GENERATOR } = require('constants');
 let signin_email="";
 let  signin_password="";
 let counter;
@@ -14,6 +15,7 @@ let dairy_id;
 
 //User ID is unique  and belongs to the user 
 let user_id;
+let order_id;
 
 //setting up the sql connection
 const connection=mysql.createConnection({
@@ -36,16 +38,16 @@ app.use(express.static(path.resolve(__dirname,"views")))
 //Fruits Api which we will use to load the fruits on our website
 
 
-app.get('/mydata',(req,res)=>
-{
-    let mydata=fs.readFileSync('simple.json')
-    let product_data=JSON.parse(mydata)
-   // console.log(product_data)
+// app.get('/mydata',(req,res)=>
+// {
+//     let mydata=fs.readFileSync('simple.json')
+//     let product_data=JSON.parse(mydata)
+//    // console.log(product_data)
 
-   res.send(product_data)
+//    res.send(product_data)
 
 
-});
+//});
 
 //Displaying the Home page
 app.get("/home",(req,res)=>
@@ -98,6 +100,28 @@ connection.query(sql,(err,result)=>
 {
     if(err) throw err;
     console.log("Table is created "+result);
+    sql="select * from register where user_id=1000"
+    connection.query(sql,(er,rs)=>
+    {
+        if(er) throw er;
+        console.log(rs)
+        if(rs==""||rs==null)
+        {
+            sql="insert into register values(1000,'Tom','Marcos','tm1@gmail.com',null,null,null,'Msdhoni0',null);";
+            connection.query(sql,(er1,rs1)=>
+            {
+                if(er1) throw er1;
+                console.log(rs1)
+        
+            })
+        }
+        else
+        {
+            console.log("Admin Already Exists");
+
+        }
+    })
+ 
 
 })
 
@@ -190,7 +214,7 @@ app.post("/signin",(req,res)=>
             console.log("Sign In Unsuccessful");
             res.send({"count":1})
         }
-        else 
+        else if(result[0].user_id!=1000)
         {
             console.log("Sign In Successful")
             //When Sign In get the User Id of the person
@@ -198,6 +222,11 @@ app.post("/signin",(req,res)=>
             console.log(user_id)
             res.send({"count":0})
 
+        }
+        else{
+                res.send({
+                    "count":2
+                })
         }
 
 
@@ -213,20 +242,20 @@ app.post("/productinfo",(req,res)=>
      dairy_id=req.body.product_id;
     console.log(dairy_id);
 
-    let mydata=fs.readFileSync('simple.json')
+    let mydata=fs.readFileSync('simple3.json')
     let product_data=JSON.parse(mydata)
 
   
     let final_result=[]
-    for( let i=0;i<product_data.dairy.length;i++)
+    for( let i=0;i<product_data.length;i++)
     {   
        // console.log(product_data.dairy[i].product_id)
-        if(product_data.dairy[i].product_id==dairy_id)
+        if(product_data[i].product_id==dairy_id)
         {   
             
             console.log("Match found");
            // console.log(product_data.dairy[i])
-            final_result=product_data.dairy[i]
+            final_result=product_data[i]
         }
       
         
@@ -314,13 +343,13 @@ app.get("/view",(req,res)=>
 {
     let pid=dairy_id;
    
-    let mydata=fs.readFileSync('simple.json')
+    let mydata=fs.readFileSync('simple3.json')
     let product_data=JSON.parse(mydata)
 
-    let product_id=product_data.dairy[pid].product_id;
-    let product_name=product_data.dairy[pid].name;
-    let product_price=product_data.dairy[pid].price;
-    let product_img=product_data.dairy[pid].img
+    let product_id=product_data[pid].product_id;
+    let product_name=product_data[pid].name;
+    let product_price=product_data[pid].price;
+    let product_img=product_data[pid].img
 
 
     res.render('view',{
@@ -360,7 +389,7 @@ app.post("/addproduct",(req,res)=>
     console.log(pid)
     let ptype=req.body.type
     console.log(ptype)
-    let mydata=fs.readFileSync('simple.json')
+    let mydata=fs.readFileSync('simple3.json')
     let product_data=JSON.parse(mydata)
 
     //It will store the data in the final
@@ -378,41 +407,42 @@ app.post("/addproduct",(req,res)=>
     }
 
 
-    for(let i=0;i<product_data.dairy.length;i++)
+    for(let i=0;i<product_data.length;i++)
     {
 
-        if(product_data.dairy[i].product_id==pid && product_data.dairy[i].type==ptype)
+        if(product_data[i].product_id==pid && product_data[i].type==ptype)
         {
             console.log("Its a Dairy Product")
-            final_result=product_data.dairy[i];
+            final_result=product_data[i];
             console.log(final_result)
             //push the data (JSON Object) to the final Array
             finalArray.push(final_result)
 
         }
+        
     }
-    for(let i=0;i<product_data.meat.length;i++)
-    {    if(product_data.meat[i].product_id==pid  && product_data.meat[i].type==ptype)
-        {
-            console.log("Its a meat Product")
-            final_result=product_data.meat[i];
-            console.log(final_result)
-            finalArray.push(final_result)
+    // for(let i=0;i<product_data.meat.length;i++)
+    // {    if(product_data.meat[i].product_id==pid  && product_data.meat[i].type==ptype)
+    //     {
+    //         console.log("Its a meat Product")
+    //         final_result=product_data.meat[i];
+    //         console.log(final_result)
+    //         finalArray.push(final_result)
 
-        }
+    //     }
 
-    }
-    for(let i=0;i<product_data.fruitsetlegumes.length;i++)
-    {
-        if(product_data.fruitsetlegumes[i].product_id==pid 
-           && product_data.fruitsetlegumes[i].type==ptype)
-        {
-            console.log("Its a Fruit et Legumes product")
-            final_result=product_data.fruitsetlegumes[i];
-            console.log(final_result)
-            finalArray.push(final_result)
-        }
-    }
+    // }
+    // for(let i=0;i<product_data.fruitsetlegumes.length;i++)
+    // {
+    //     if(product_data.fruitsetlegumes[i].product_id==pid 
+    //        && product_data.fruitsetlegumes[i].type==ptype)
+    //     {
+    //         console.log("Its a Fruit et Legumes product")
+    //         final_result=product_data.fruitsetlegumes[i];
+    //         console.log(final_result)
+    //         finalArray.push(final_result)
+    //     }
+    // }
     fs.writeFileSync('cart.json',JSON.stringify(finalArray))
     console.log(finalArray)
       
@@ -436,51 +466,51 @@ app.post("/viewproduct",(req,res)=>{
     console.log(pid)
     let ptype=req.body.type
     console.log(ptype)
-    let mydata=fs.readFileSync('simple.json')
+    let mydata=fs.readFileSync('simple3.json')
     let product_data=JSON.parse(mydata)
     //product_data
 
     //Reading the File First
     //Delete the contents initially present in the json file named 'demo.json'
-    fs.unlinkSync('demo.json')
+  
     let finalArray=[];
     let final_result
 
-    for(let i=0;i<product_data.dairy.length;i++)
+    for(let i=0;i<product_data.length;i++)
     {
 
-        if(product_data.dairy[i].product_id==pid && product_data.dairy[i].type==ptype)
+        if(product_data[i].product_id==pid && product_data[i].type==ptype)
         {
             console.log("Its a Dairy Product")
-            final_result=product_data.dairy[i];
+            final_result=product_data[i];
          //   console.log(final_result)
             //push the data (JSON Object) to the final Array
             finalArray.push(final_result)
 
         }
     }
-    for(let i=0;i<product_data.meat.length;i++)
-    {    if(product_data.meat[i].product_id==pid  && product_data.meat[i].type==ptype)
-        {
-            console.log("Its a meat Product")
-            final_result=product_data.meat[i];
-            //console.log(final_result)
-            finalArray.push(final_result)
+    // for(let i=0;i<product_data.meat.length;i++)
+    // {    if(product_data.meat[i].product_id==pid  && product_data.meat[i].type==ptype)
+    //     {
+    //         console.log("Its a meat Product")
+    //         final_result=product_data.meat[i];
+    //         //console.log(final_result)
+    //         finalArray.push(final_result)
 
-        }
+    //     }
 
-    }
-    for(let i=0;i<product_data.fruitsetlegumes.length;i++)
-    {
-        if(product_data.fruitsetlegumes[i].product_id==pid 
-           && product_data.fruitsetlegumes[i].type==ptype)
-        {
-            console.log("Its a Fruit et Legumes product")
-            final_result=product_data.fruitsetlegumes[i];
-           // console.log(final_result)
-            finalArray.push(final_result)
-        }
-    }
+    // }
+    // for(let i=0;i<product_data.fruitsetlegumes.length;i++)
+    // {
+    //     if(product_data.fruitsetlegumes[i].product_id==pid 
+    //        && product_data.fruitsetlegumes[i].type==ptype)
+    //     {
+    //         console.log("Its a Fruit et Legumes product")
+    //         final_result=product_data.fruitsetlegumes[i];
+    //        // console.log(final_result)
+    //         finalArray.push(final_result)
+    //     }
+    // }
     fs.writeFileSync('demo.json',JSON.stringify(finalArray))
     console.log(finalArray)
       
@@ -725,7 +755,7 @@ app.post("/addwish",(req,res)=>
     console.log(pid)
     let ptype=req.body.type
     console.log(ptype)
-    let mydata=fs.readFileSync('simple.json')
+    let mydata=fs.readFileSync('simple3.json')
     let product_data=JSON.parse(mydata)
 
     //It will store the data in the final
@@ -760,13 +790,13 @@ app.post("/addwish",(req,res)=>
 
 
 
-        for(let i=0;i<product_data.dairy.length;i++)
+        for(let i=0;i<product_data.length;i++)
         {
 
-            if(product_data.dairy[i].product_id==pid && product_data.dairy[i].type==ptype)
+            if(product_data[i].product_id==pid && product_data[i].type==ptype)
             {
                 console.log("Its a Dairy Product")
-                final_result=product_data.dairy[i];
+                final_result=product_data[i];
                 console.log(final_result)
                 //push the data (JSON Object) to the final Array
                 finalArray.push(final_result)
@@ -776,33 +806,33 @@ app.post("/addwish",(req,res)=>
             }
         }
         console.log(finalArray)
-        for(let i=0;i<product_data.meat.length;i++)
-        {    if(product_data.meat[i].product_id==pid  && product_data.meat[i].type==ptype)
-            {
-                console.log("Its a meat Product")
-                final_result=product_data.meat[i];
-                console.log(final_result)
-                finalArray.push(final_result)
+        // for(let i=0;i<product_data.meat.length;i++)
+        // {    if(product_data.meat[i].product_id==pid  && product_data.meat[i].type==ptype)
+        //     {
+        //         console.log("Its a meat Product")
+        //         final_result=product_data.meat[i];
+        //         console.log(final_result)
+        //         finalArray.push(final_result)
 
                 
 
 
-              //  finalArray.push(final_result)
+        //       //  finalArray.push(final_result)
 
-            }
+        //     }
 
-        }
-        for(let i=0;i<product_data.fruitsetlegumes.length;i++)
-        {
-            if(product_data.fruitsetlegumes[i].product_id==pid 
-            && product_data.fruitsetlegumes[i].type==ptype)
-            {
-                console.log("Its a Fruit et Legumes product")
-                final_result=product_data.fruitsetlegumes[i];
-                console.log(final_result)
-                finalArray.push(final_result)
-            }
-        }
+        // }
+        // for(let i=0;i<product_data.fruitsetlegumes.length;i++)
+        // {
+        //     if(product_data.fruitsetlegumes[i].product_id==pid 
+        //     && product_data.fruitsetlegumes[i].type==ptype)
+        //     {
+        //         console.log("Its a Fruit et Legumes product")
+        //         final_result=product_data.fruitsetlegumes[i];
+        //         console.log(final_result)
+        //         finalArray.push(final_result)
+        //     }
+        // }
         console.log("Final Array in  Ass Wish Api");
 
         fs.writeFileSync('wishlist.json',JSON.stringify(finalArray))
@@ -897,43 +927,43 @@ app.get("/getwish",(req,res)=>
 
         
      
-        const dataBuffer=fs.readFileSync('simple.json')
+        const dataBuffer=fs.readFileSync('simple3.json')
         const data=JSON.parse(dataBuffer)
         var finalArray=[]
 
         for(let j=0;j<response.length;j++)
         {   
-            for(let i=0;i<data.fruitsetlegumes.length;i++)
+            for(let i=0;i<data.length;i++)
             {   
-                if(response[j].product_id==data.fruitsetlegumes[i].product_id 
+                if(response[j].product_id==data[i].product_id 
                     &&
-                    response[j].product_type==data.fruitsetlegumes[i].type)
+                    response[j].product_type==data[i].type)
                     {
-                        finalArray.push(data.fruitsetlegumes[i]);
+                        finalArray.push(data[i]);
                     }
         
         
             }
 
-            //for meat Products
-            for(let i=0;i<data.meat.length;i++)
-            {
-                if(response[j].product_id==data.meat[i].product_id 
-                    &&
-                    response[j].product_type==data.meat[i].type)
-                    {
-                        finalArray.push(data.meat[i])
-                    }
-            }
-            //for Dairy Products
-            for(let i=0;i<data.dairy.length;i++)
-            {
-                if(response[j].product_id==data.dairy[i].product_id && 
-                    response[j].product_type==data.dairy[i].type)
-                    {
-                        finalArray.push(data.dairy[i])
-                    }
-            }
+            // //for meat Products
+            // for(let i=0;i<data.meat.length;i++)
+            // {
+            //     if(response[j].product_id==data.meat[i].product_id 
+            //         &&
+            //         response[j].product_type==data.meat[i].type)
+            //         {
+            //             finalArray.push(data.meat[i])
+            //         }
+            // }
+            // //for Dairy Products
+            // for(let i=0;i<data.dairy.length;i++)
+            // {
+            //     if(response[j].product_id==data.dairy[i].product_id && 
+            //         response[j].product_type==data.dairy[i].type)
+            //         {
+            //             finalArray.push(data.dairy[i])
+            //         }
+            // }
 
             console.log("Result for the Final Array")
             console.log(finalArray)
@@ -1078,7 +1108,7 @@ app.post("/searchProduct",(req,res)=>
     const upper_text_insertedText=insertedText.toUpperCase()
 
     //Read the Simple.json File
-    const dataBuffer=fs.readFileSync('simple.json')
+    const dataBuffer=fs.readFileSync('simple3.json')
     const data=JSON.parse(dataBuffer)
 
     //Loop through the data
@@ -1087,38 +1117,38 @@ app.post("/searchProduct",(req,res)=>
 
    var finalArray=[]
    //For Fruits et Legumes Products
-   for(let i=0;i<data.fruitsetlegumes.length;i++)
+   for(let i=0;i<data.length;i++)
    {
-   let product_name=data.fruitsetlegumes[i].name
+   let product_name=data[i].name
    let upper_text_product_name=product_name.toUpperCase()
    if(upper_text_product_name.includes(upper_text_insertedText))
    {
-       finalArray.push(data.fruitsetlegumes[i])
+       finalArray.push(data[i])
    }
 
    }
    
-   //For Dairy Products
-   for(let i=0;i<data.dairy.length;i++)
-   {
-       let product_name=data.dairy[i].name
-       let upper_text_product_name=product_name.toUpperCase()
-       if(upper_text_product_name.includes(upper_text_insertedText))
-       {
-           finalArray.push(data.dairy[i])
-       }
-   }
-   //For Meat Products
-   for(let i=0;i<data.meat.length;i++)
-   {    
-       let product_name=data.meat[i].name
-       let upper_text_product_name=product_name.toUpperCase()
-       if(upper_text_product_name.includes(upper_text_insertedText))
-        {
-            finalArray.push(data.meat[i]);
+//    //For Dairy Products
+//    for(let i=0;i<data.dairy.length;i++)
+//    {
+//        let product_name=data.dairy[i].name
+//        let upper_text_product_name=product_name.toUpperCase()
+//        if(upper_text_product_name.includes(upper_text_insertedText))
+//        {
+//            finalArray.push(data.dairy[i])
+//        }
+//    }
+//    //For Meat Products
+//    for(let i=0;i<data.meat.length;i++)
+//    {    
+//        let product_name=data.meat[i].name
+//        let upper_text_product_name=product_name.toUpperCase()
+//        if(upper_text_product_name.includes(upper_text_insertedText))
+//         {
+//             finalArray.push(data.meat[i]);
             
-        }
-   }
+//         }
+//    }
    console.log(finalArray)
    res.send(finalArray)
 })
@@ -1240,12 +1270,16 @@ app.get("/proceed",(req,res)=>
         if(error) throw error;
         console.log(result)
         if(result==""||result==null)
-        {
-            sql="insert into orderTable values(?,1,?,?)";
-            connection.query(sql,[user_id,order_total,order_status],(er,rs)=>
+        {       
+            order_id=1
+            sql="insert into orderTable values(?,?,?,?)";
+            connection.query(sql,[user_id,order_id,order_total,order_status],(er,rs)=>
             {
                 if (er) throw er;
                 console.log(rs);
+
+                //Temp code starts Here
+
             })
 
         }
@@ -1256,7 +1290,7 @@ app.get("/proceed",(req,res)=>
             console.log(result_index)
             console.log(result[result_index].order_id)
             
-            var order_id=result[result_index].order_id+1
+             order_id=result[result_index].order_id+1
             console.log(order_id)
             console.log(typeof order_id)
            var string_order_id=order_id.toString()
@@ -1266,19 +1300,367 @@ app.get("/proceed",(req,res)=>
                 if (er) throw er;
                 console.log(rs);
 
+               
+                //Write the code to empty the contents of the File
+                
             })
+
+
+                //Temp code Ends Here  
+
+
+            
         }
     })
 
 })
+    
+//This api clear the content of the cart and writes the cart items to the db
+app.get("/clearcart",(req,res)=>
+{
+    const dataBuffer=fs.readFileSync('cart.json')
+    const data=JSON.parse(dataBuffer)
+
+    console.log(data)
+    console.log(data.length)
+
+    for(let i=0;i<data.length;i++)
+    {
+
+
+        setTimeout(()=>
+        {
+
+            var product_id=data[i].product_id;
+            var product_type=data[i].type
+            console.log(product_id)
+            console.log(product_type)
+    
+            sql="select * from orderProduct where user_id=? and order_id=? and product_id=? and product_type=?";
+            connection.query(sql,[user_id,order_id,product_id,product_type],(er1,rs1)=>
+            {
+                if(er1) throw er1;
+                console.log(rs1)
+                if(rs1==""||rs1==null)
+                {
+                    console.log("Inside IF");
+                    sql="insert into orderProduct values(?,?,?,?,null,null);";
+                    connection.query(sql,[user_id,order_id,product_id,product_type,],(er2,rs2)=>
+                    {
+                        if(er2) throw er2;
+                        console.log(rs2)
+    
+                    })
+                }
+                else{
+    
+                    console.log("Inside Elese");
+                    console.log("The specific Data already Exists in the Cart")
+    
+                }
+            })
+
+        })
+       
+    }
+    fs.writeFileSync('cart.json',JSON.stringify(""))
+
+
+})
+
 
 
 //Get Request to upload the order page
 app.get("/order",(req,res)=>
 {
-    res.sendFile("path.resolve(__dirname,'views/html/order.html')");
+    res.sendFile(path.resolve(__dirname,'views/html/order.html'))
+
+})
+//Store items while making the Order in the database
+
+sql="create table if not exists orderProduct(user_id int,order_id int,product_id int,product_type varchar(50),product_rating int,product_review text"
++",primary key(user_id,order_id,product_id,product_type),foreign key(user_id,order_id) references orderTable(user_id,order_id) on delete cascade)";
+
+//Now write the Sql command to create the connection
+connection.query(sql,(err,res)=>
+{
+    if(err) throw err;
+    console.log("orderProduct Table is created successfully "+res);
+})
+
+//Api for getting all the orders from the Order Table
+app.get("/getorders",(req,res)=>
+{
+    sql="select * from orderTable where user_id=?";
+    connection.query(sql,[user_id],(error,result)=>
+    {
+        if(error) throw error;
+        console.log(result);
+        res.send(result)
+    })
+})
+
+/*This is a Testing code which is yet to start */
+//Write an  Sql Query to 
+// const dataBuffer=fs.readFileSync('cart.json')
+// const data=JSON.parse(dataBuffer)
+// console.log(data)
+//The testing code ends Here
+
+
+//Write the code to get the items associated with a particular user and prticualr order 
+
+
+//To load the Admin Page
+app.get("/admin",(req,res)=>
+{
+    res.sendFile(path.resolve(__dirname,'views/html/Admin.html'))
+})
+
+//To load Customer Derails PAge
+app.get("/customerdetails",(req,res)=>
+{
+    res.sendFile(path.resolve(__dirname,'views/html/CustomerDetails.html'))
+})
+
+//Customer Details Api to get all the Registered Users
+//Admin Section
+app.get("/getusers",(req,res)=>
+{
+    sql="select * from register";
+    connection.query(sql,(error,result)=>
+    {
+        if(error) throw error;
+        console.log(result)
+
+        res.send(result)
+
+    })
+})
+
+//Admin Section APi
+//To remove or block a particular user
+app.get("/removeuser",(req,res)=>
+{   let email=req.body.email;
+    sql="delete from register where email=?;"
+    connection.query(sql,[email],(error,result)=>
+    {
+        if (error) throw error;
+        console.log(result)
+
+    })
+})
+
+//Get Request to load the product Info PAge
+//Admin Section
+app.get("/productinfo",(req,res)=>
+{
+    res.sendFile(path.resolve(__dirname,'views/html/ProductInfo.html'))
+})
+
+//Admin Section
+//To get a particular from the json File
+
+app.post("/getproduct",(req,res)=>
+{   
+    console.log(req.body)
+    let pid=req.body.product_id
+    let ptype=req.body.type;
+    console.log(pid)
+    console.log(ptype)
+    const dataBuffer=fs.readFileSync("simple3.json")
+    const data=JSON.parse(dataBuffer)
+    var finalArray=[]
+    
+    
+    for(let i=0;i<data.length;i++)
+    {
+
+        if(data[i].product_id==pid && data[i].type==ptype)
+        {
+            console.log("Its a Dairy Product")
+        
+            //push the data (JSON Object) to the final Array
+            console.log(data[i])
+            finalArray.push(data[i])
+
+        }
+    }
+
+     console.log(finalArray)
+     res.send(finalArray)
+})
+
+//Admin Section 
+
+//Update Product Info
+app.post("/updateProductInfo",(req,res)=>
+{           
+    console.log("Update Product Info")
+
+    console.log(req.body)
+
+    let product_id=req.body.product_id
+    let type=req.body.type
+    let img=req.body.product_url;
+    let price=req.body.product_price
+    let Description=req.body.product_description
+    let quantity=req.body.product_quantity
+    let name=req.body.product_name
+
+   
+
+    const dataBuffer=fs.readFileSync('simple3.json')
+    const data=JSON.parse(dataBuffer)
+    var finalArray=[]
+
+    for(let i=0;i<data.length;i++)
+    {
+        finalArray.push(data[i])
+
+    }
+    for(let i=0;i<finalArray.length;i++)
+    {
+        if(finalArray[i].product_id==product_id && finalArray[i].type==type)
+        {
+            finalArray[i].img=img
+            finalArray[i].price=price
+            finalArray[i].Description=Description
+            finalArray[i].quantity=quantity
+            finalArray[i].name=name
+        }
+    }
+
+    //To Update the Contents of the File
+  
+    fs.writeFileSync('simple3.json',JSON.stringify(finalArray))
+
+})
+
+//To Load Meat Data User Side
+app.get("/meatData",(req,res)=>
+{
+    const dataBuffer=fs.readFileSync('simple3.json')
+    const data=JSON.parse(dataBuffer)
+    var finalArray=[]
+    for(let i=0;i<data.length;i++)
+    {
+        if(data[i].type=="meat")
+        {
+            finalArray.push(data[i])
+        }
+    }
+    res.send(finalArray)
+})
+
+//To Load Dairy Data User Side
+app.get("/dairyData",(req,res)=>
+{   
+    const dataBuffer=fs.readFileSync('simple3.json')
+    const data=JSON.parse(dataBuffer)
+    var finalArray=[]
+    for(let i=0;i<data.length;i++)
+    {
+        if(data[i].type=="dairy")
+        {
+            finalArray.push(data[i])
+        }
+    }
+    res.send(finalArray)
+
+})
+
+// To Load Fruits and vegetables User Side
+app.get("/f&vData",(req,res)=>
+{
+    const dataBuffer=fs.readFileSync('simple3.json')
+    const data=JSON.parse(dataBuffer)
+    var finalArray=[]
+    for(let i=0;i<data.length;i++)
+    {
+        if(data[i].type=="fruitsetlegumes")
+        {
+            finalArray.push(data[i])
+        }
+    }
+    res.send(finalArray)
+})
+
+app.get("/addproduct",(req,res)=>
+{
+    res.sendFile(path.resolve(__dirname,'views/html/AddProduct.html'))
+})
+
+app.post("/addnewproduct",(req,res)=>
+{
+    console.log(req.body)
+    let product_name=req.body.product_name
+    let product_price=req.body.product_price
+    let product_type=req.body.product_type
+    let product_description=req.body.product_description
+    let product_quantity=req.body.product_quantity
+    let product_img_url=req.body.product_img_url
+    
+    const dataBuffer=fs.readFileSync('simple3.json')
+    const data=JSON.parse(dataBuffer)
+    var finalArray=[]
+    for(let i=0;i<data.length-1;i++)
+    {
+        finalArray.push(data[i]);
+
+    }
+    
+ 
+    finalArray.push({
+        "product_id":parseInt(data.length-1),
+        "name":product_name,
+        "price":parseFloat(product_price),
+        "type":product_type,
+        "Description":product_description,
+        "quantity":product_quantity,
+        "img":product_img_url
+    })
+    finalArray.push({})
+    console.log(finalArray)
+
+
+    //Writing the data to the json File
+    fs.writeFileSync('simple3.json',JSON.stringify(finalArray))
+    //end of the Response 
+
+
+})
+//Testing APi starts HEre
+
+app.get("/mytest",(req,res)=>
+{
+    const dataBuffer=fs.readFileSync('simple3.json')
+    const data=JSON.parse(dataBuffer)
+
+    var finalArray=[]
+    let pid=4
+    let ptype="dairy"
+
+    for(let i=0;i<data.length;i++)
+    {
+        finalArray.push(data[i])
+    }
+    // To Update the final Array=
+
+    for(let i=0;i<finalArray.length;i++)
+    {
+        if(finalArray[i].product_id==pid && finalArray[i].type==ptype)
+        {
+            finalArray[i].quantity=50
+        }
+    }
+
+    res.send(finalArray)
+
+
+   
 
 })
 
 
-
+//Testing API ends HEre

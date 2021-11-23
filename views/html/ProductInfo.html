@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="../css/style1.css">
+<style>
+    .producttype
+    {
+        padding-left:200px;
+    }
+    .search
+    {
+        margin-left:350px;
+    }
+    .uheading
+    {
+        text-align:center;
+        background-color:cornflowerblue;
+        margin-bottom:25px;
+    }
+    #pdescription
+    {
+        width:900px;
+    }
+    #purl
+    {
+        width:550px;
+    }
+</style>
+<script>
+    function searchProduct()
+    {       
+
+        let pid=document.getElementById("p_id").value;
+        console.log(pid);
+        let dep_value=document.getElementById("dep").value;
+        console.log(dep_value)
+        $.ajax({
+            url:"http://localhost:6050/getproduct",
+            type:"POST",
+            dataType:"json",
+            data:{
+                "product_id":pid,
+                "type":dep_value
+            }
+            ,success:function(response)
+            {
+                console.log(response)
+                buildTable(response)
+
+            }
+        })
+    }
+    function buildTable(response)
+    {
+        console.log(response)
+        var table=document.getElementById("mydiv")
+        table.innerHTML="";
+        
+        var row=`
+        <div class="row">
+            <div class="product_img">
+            <label for="product_image">PRODUCT IMAGE</label>
+            <img src="${response[0].img}" width="200px" height="200px">
+
+
+            </div>
+
+            <div class="product_id">
+                <label for="product_id">PRODUCT ID</label>
+                <input id="pid" type="text" value=${response[0].product_id} disabled/>
+                
+            </div>
+            <div class="product_img_url">
+                <label for="product_img_url">PRODUCT IMAGE URL</label>
+                <input  id="purl" class="myinput" type="text" value="${response[0].img}" disabled />
+            <br>
+            <div class="product_name">
+                <label for="product_name">PRODUCT NAME</label>
+                <input   id="pname" class="myinput" value=${response[0].name} disabled/>            
+            </div>
+            <div class="product_type">
+                <label for="product_type">PRODUCT TYPE</label>
+                <input id="ptype"  value=${response[0].type} disabled />
+            </div>
+            <div class="product_price">
+                <label for="product_price">PRODUCT PRICE</label>
+                <input id="pprice" class="myinput" value=${response[0].price} disabled/>
+
+            </div>
+            <div class="product_description">
+                <label for="product_Descriptipn">PRODUCT DESCRIPTION</label>
+                <input id="pdescription" class="myinput" value="${response[0].Description}" disabled/>
+            </div>
+            <div class="product_quantity">
+                <label for="product_quantity">PRODUCT QUANTITY</label>
+                <input id="pquantity" class="myinput" value=${response[0].quantity} disabled />
+
+            <div class="edit">
+                <button id="myedit" class="btn btn-primary" onclick="edit()">EDIT</button>
+                <button id="myupdate"class="btn btn-success upd" onclick="update()" disabled>UPDATE</button>
+        `;
+        table.innerHTML+=row;
+    }
+    function edit()
+    {
+        console.log("edit")
+        //To Remove Disabled  from the Update button
+      
+
+        //To Remove disabled from the Input Fields
+        $(".upd").prop('disabled',false)
+        $(".myinput").prop('disabled',false)
+        
+
+
+
+    }
+    function update()
+    {   
+
+        let product_id=document.getElementById("pid").value;
+        let type=document.getElementById("ptype").value
+        let product_url=document.getElementById("purl").value
+        let product_name=document.getElementById("pname").value
+        let product_price=document.getElementById("pprice").value
+        let product_description=document.getElementById("pdescription").value
+        let product_quantity=document.getElementById("pquantity").value
+        console.log(product_id)
+        console.log(type)
+        console.log(product_url)
+        console.log(product_price)
+        console.log(product_description)
+        console.log(product_quantity)
+        console.log(product_name)
+
+
+
+        console.log("Update")
+        $.ajax({
+            url:"http://localhost:6050/updateProductInfo",
+            method:"POST",
+            dataType:"json",
+            data:{
+                "product_id":product_id,
+                "type":type,
+                "product_url":product_url,
+                "product_price":product_price,
+                "product_description":product_description,
+                "product_quantity":product_quantity,
+                "product_name":product_name
+            },
+            success:function(response)
+            {
+                console.log(response)
+            }
+        })
+        alert("Updated Successfully")
+        window.location.reload()
+
+    }
+</script>
+<body>
+    <h1 class="uheading">VIEW PRODUCT INFO</h1>
+    <div class="row">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-8">
+
+            <div>
+                <label for="product_id">PRODUCT ID</label>
+                <input type="text" placeholder="Enter Product Id" id="p_id" required >
+                <label  class="producttype"for="">PRODUCT TYPE</label>
+                <select name="department" id="dep">
+                    <option value="fruitsetlegumes">FRUITS ET LEGUMES</option>
+                    <option value="dairy">DAIRY</option>
+                    <option value="meat">MEAT</option>
+                </select>
+                <br>
+                <button class="btn btn-success search" onclick="searchProduct()">SUBMIT</button>
+            </div>
+            <div id="mydiv"></div>
+        </div>
+        <div class="col-xs-2"></div>
+    </div>
+</body>
+</html>

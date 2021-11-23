@@ -32,7 +32,7 @@
     {
         var myArray=[];
     $.ajax({
-        url:'http://localhost:6050/mydata',
+        url:'http://localhost:6050/meatData',
         type:'GET',
         dataType:'json',
 
@@ -40,7 +40,7 @@
             myArray=response
             console.log("Hello Everyone");
            // console.log(myArray)
-            console.log(myArray.meat)
+           
             buildTable(myArray)
 
         }
@@ -49,26 +49,26 @@
     function buildTable(data)
     {
         var table=document.getElementById("mydiv")
-        for(var i=0;i<data.meat.length;i++)
+        for(var i=0;i<data.length;i++)
         {
             var row1=`<div>
 
         <div>
-            <p class="item">${data.meat[i].name}</p>
+            <p class="item">${data[i].name}</p>
         </div>
 
         <div>
-        <img class="productImage" src=${data.meat[i].img} width="200px" height="200px">            
+        <img class="productImage" src=${data[i].img} width="200px" height="200px">            
         </div>
         <div class="product_display item">
 
-        <p>PRICE: ${data.meat[i].price}</p>
+        <p>PRICE: ${data[i].price}</p>
         </div>
         <div class="buttonPanel">
-            <button type="button" class="btn btn-primary" >VIEW</button>
+            <button type="button" class="btn btn-primary" onclick=viewProduct('${data[i].product_id}','${data[i].type}') >VIEW</button>
          
-            <button type="button" class="btn btn-success" onclick=addProduct('${data.meat[i].product_id}','${data.meat[i].type}')>ADD TO CART</button>
-            <button  class="loveButton" type="button" onclick=addToWishlist('${data.meat[i].product_id}','${data.meat[i].type}') >
+            <button type="button" class="btn btn-success" onclick=addProduct('${data[i].product_id}','${data[i].type}')>ADD TO CART</button>
+            <button  class="loveButton" type="button" onclick=addToWishlist('${data[i].product_id}','${data[i].type}') >
                 <i class=" btn btn-danger fa fa-heart-o" ></i>
             </button>            
         </div>
@@ -81,6 +81,45 @@
     }
 
     })
+
+    function viewProduct(id,type)
+{   
+    //Start of view Product
+    console.log("Id of the product is")
+    console.log(id)
+    console.log("Type of the  Product")
+    console.log(type)
+
+    // var product_id=id;
+    // $.ajax({
+    //     url:"http://localhost:6050/productinfo",
+    //     type:"POST",
+    //     dataType:"json",
+    //     data:{"product_id":product_id},
+    //     success:function(response)
+    //     {
+    //         console.log(response)
+    //     }
+
+  //  })
+  $.ajax({
+      url:"http://localhost:6050/viewproduct",
+      type:"POST",
+      dataType:"json",
+      data:{
+          "product_id":id,
+          "type":type
+      },
+      success:function(response)
+      {
+          console.log(response)
+      }
+  })
+  location.href="/viewpage"
+  //End of view Product
+
+}
+
     
     function addProduct(id,type)
     {           

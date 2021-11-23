@@ -11,7 +11,8 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <script>
     //Write your Javascript Code Here
-    function submitPay()
+
+        function submitPay()
     {
         console.log("You clicked the pay button successfully")
         //To get the Selected Month from the dropdown
@@ -39,16 +40,80 @@
         //variable for Selected Year
         var selected_year=parseInt(getYearValue)
         console.log(selected_year)
+        // if($(".cardNumber").val().length===0 || $(".card_holder_name").val().length===0||
+        // $(".cvv_value").val().length===0)
+        // {
+            
+        // }
+        // else{
 
+        // }
+
+      
+        var card_number=$(".card_number").val()
+        console.log(card_number)
+        var card_holder=$(".card_holder_name").val()
+        console.log(card_holder)
+        var getMonthValue=$("#expiryMonth").val()
+        console.log(getMonthValue)
+
+        var getYearValue=$("#expiryYear").val()
+        console.log(getYearValue)
+        var cvv_val=$(".cvv_value").val()
+        console.log(cvv_val)
+
+        //counter initially to 0
+        var counter=0;
+
+
+        if($(".card_number").val().length!=12)
+        {
+            alert("Length of the Card must be 12 digits")
+            counter=1;
+        }
+        if($(".cvv_value").val().length!=3)
+        {
+            alert("CVV msut be 3 digits")
+            counter=1
+        }
         if(current_year>=selected_year && current_month>selected_month)
         {   
             console.log("Wrong Card")
             alert("Sorry,Your card has Expired ,Please Use a different one")
+            counter=1
         }
 
-        window.location.href="/checkout";
+        if(counter==0)
+        {
+       
+
+                    
+                $.ajax({
+
+        url:"http://localhost:6050/addcard",
+        method:"POST",
+        dataType:"json",
+        data:{
+            "cardNumber":card_number,
+            "cardHolderName":card_holder,
+            "month":getMonthValue,
+            "year":getYearValue,
+            "cvv":cvv_val
+            }
+
+
+            })
+
+            window.location.href="/checkout";
+        }
+
+
+
 
     }
+
+    
+
 </script>
 <style>
     .paymentDiv
@@ -94,7 +159,7 @@
     }
 </style>
 <body>
-    <h1>Welcome to the Payment Page</h1>
+   
     <div class="mainDiv">
         <div class="row">
             <div class="col-xs-4"></div>
@@ -102,7 +167,7 @@
                 <div class="paymentDiv">
                     <h1 class="paymentHeading">Payment Details</h1>
                     <div>
-                        <form action="/addcard" method="POST">
+                       
                         <span>CARD NUMBER</span>
                        
                         <input required  type="number" inputmode="numeric" minlength="12" maxlength="12"  name="cardNumber" class="card_number" placeholder="ENTER YOUR CARD NUMBER">
@@ -110,7 +175,7 @@
                         <br>
                         <span>NAME ON THE CARD</span>
                   
-                        <input required type="text" name="cardHolderName" placeholder="NAME ON THE CARD" class="input_name">
+                        <input required type="text" name="cardHolderName" placeholder="NAME ON THE CARD" class=" card_holder_name input_name">
                         <br>
                         <br>
                         <span>
@@ -123,11 +188,11 @@
                 
                         <span class="spnCVV">CVV</span>
                      
-                         <input name="cvv" required  type="text" required="" id="securityCode" maxlength="3" size="3" class="esjsdlz1 css-f0up1d eesbt950" value="">
+                         <input name="cvv" class="cvv_value" required  type="text" required="" id="securityCode" maxlength="3" size="3" class="esjsdlz1 css-f0up1d eesbt950" value="">
                         <br>
 
-                       <button type="submit"  onClick="submitPay()" class="btn btn-success">PAY</button>
-                       </form>
+                       <button type="button"  onClick="submitPay()" class="btn btn-success">PAY</button>
+                       
                     </div>
                 </div>
             </div>

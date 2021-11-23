@@ -6,7 +6,230 @@
     <meta name="viewport" content="width=h1, initial-scale=1.0">
     <title>Document</title>
 </head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="../css/style1.css">
+<link rel="stylesheet" href="../css/rate.css">
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;700&display=swap');
+  body{
+          font-family:'Raleway',sans-serif;
+      font-weight:400;
+  }
+  .grid-container
+  {
+      display:grid;
+      grid-template-columns:auto auto auto;
+
+  }
+  .grid-container>div{
+      border:2px solid black;
+  }
+  .item{
+      text-align:center;
+      font-size: 25px;
+      font-weight:bold;
+  }
+  .productImage
+  {
+      margin-left:150px;
+  }
+  .buttonPanel
+  {
+      margin-left:160px;
+      margin-bottom:20px;
+  }
+  .cart-item
+  {
+      margin-left:20px;
+ 
+  }
+  .signoutli
+  {
+      margin-left:20px;
+  }
+  .myorders{
+      margin-left:20px;
+  }
+  .checked
+        {
+            color:orange;
+        }
+    .myord{
+        border:2px solid black; 
+        font-weight: bold;
+    }
+</style>
+<script>
+
+    $(function()
+    {
+        $.ajax({
+            url:"http://localhost:6050/getorders",
+            type:"GET",
+            dataType:"json",
+            success:function(response)
+            {
+                console.log(response)
+                buildTable(response)
+            }
+
+        })
+    })
+    function buildTable(data)
+    {       
+        console.log("Inside Build Table")
+        var table=document.getElementById("mydiv");
+        for(let i=0;i<data.length;i++)
+        {
+            var row=`<div class="row ">
+
+                <div class="col-xs-3">
+                <span>ORDER ID :${data[i].order_id}</span>
+                </div>
+
+                <div class="col-xs-3">
+                <span>TOTAL:${data[i].order_total}</span>
+                </div>
+
+                <div class="col-xs-3">
+                <span> STATUS:${data[i].order_status}</span>
+                </div>
+
+                <div class="col-xs-3">
+                <button class="btn btn-primary" onclick=viewDetails('${data[i].order_id}')>View Details</button>
+                </div>
+                <br>
+                <br>
+                </div>`;
+
+                table.innerHTML+=row;
+
+
+
+        }
+    }
+    function clickMe(number)
+    {   
+        console.log(number)
+        console.log("Click Me");
+         console.log(document.getElementsByClassName("rate").length)
+         console.log(document.querySelectorAll(".rate")[number-1]);
+
+         for(let i=0;i<number;i++)
+         {
+             var element=document.querySelectorAll(".rate")[i]
+             element.classList.add("checked")
+         }
+         for(let i=number;i<5;i++)
+         {
+             var element=document.querySelectorAll(".rate")[i]
+             element.classList.remove("checked")
+         }
+
+
+
+    }
+</script>
 <body>
-    <h1>Welcome to the Order Page</h1>
+    <nav class="nav">
+        <div class="navigation container">
+            <a href="index.html">
+            <div class="logo">
+                <img src="../images/logo.png">
+            
+            </div>
+            </a>
+
+            <div class="menu">
+                <div class="top-nav">
+                    <div class="logo">
+                        <img src="../images/logo.png">
+                    </div>
+                    <div class="close">
+                        <i class='bx bx-x'></i>
+                    </div>
+                </div>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="/homelogin">Home &nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/fruit&veg">Fruits & Vegetables &nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/dairy">Dairy &nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="/meat">Meat &nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/uinfo">Account &nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    </li>
+                    <li class="mysearch">
+                        <a href="/search">Search</a>
+                    </li>
+                    <li class="mysearch">
+                        <a href="/wishlist">My Wishlist</a>
+                    </li>
+                    <li class="myorders">
+                        <a href="/orders">My Orders</a>
+                    </li>
+                    <li class=" cart-item nav-item">
+                        <a href="/cart"><span class="glyphicon glyphicon-shopping-cart"></span></a>
+                    </li>
+                   
+                    <!--Temp code Starts Here-->
+                    <li class="customer_info" id="customer_name">
+                
+                       
+                    </li>
+
+                    
+                    <li class="signoutli">
+                        <a onClick="updateLocalStorage()" href="/home">
+                        <span class="glyphicon glyphicon-log-out">
+                        
+                        </span>
+                        </a>
+                    </li>
+
+                    
+                 
+
+
+                    <!--Temp Code Ends Here-->
+                </ul>
+            </div>
+            <a href="cart.html" class="cart-icon"><i class='bx bx-cart'></i></a>
+            <div class="nav-menu">
+                <i class='bx bx-menu' ></i>
+            </div>
+        </div>
+    </nav>
+ 
+
+    <!--Code to display the item in the order-->
+    <div class="row">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-8 myord" id="mydiv">
+            <br><br>
+
+        </div>
+        <div class="col-xs-2"></div>
+    </div>
+    
+        
+        <!--This is for Product Rating-->
+        <!-- <span class="fa fa-star rate  checked" onclick="clickMe(1)"></span>
+        <span class="fa fa-star rate checked" onclick="clickMe(2)"></span>
+        <span class="fa fa-star rate checked" onclick="clickMe(3)"></span>
+        <span class="fa fa-star rate " onclick="clickMe(4)"></span>
+        <span class="fa fa-star rate " onclick="clickMe(5)"></span> -->
+
+    </div>
 </body>
 </html>
