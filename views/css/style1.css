@@ -19,6 +19,9 @@ body{
     color: black;
     position: relative;
     z-index: 1;
+    top:0;
+    margin-top:0;
+    
 }
 
 h1,h2,h3,h4{
@@ -32,7 +35,10 @@ a{
 ul{
     list-style-type: none;
 }
+#expiryMonth
+{
 
+}
 
 
 
@@ -500,15 +506,58 @@ ul{
     appearance: none;
     outline: none;
   }
- 
+
+  
+  select{
+      
+    position: absolute;
+    top: 26px;
+    right: 0;
+    left: 0;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: end;
+    -webkit-justify-content: flex-end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    white-space: pre-line;
+    height: 0px;
+    margin-left: 8px;
+    font-size: 0.826rem;
+  }
 
   
 
- 
+ .logout
+ {
+     margin-left:auto;
+ }
+ .admin_list_item
+ {
+     font-size: 25px;
+ }
 
+ .item1
+ {
+    margin-left:30px;
+ }
 
-
-  
+ .item2
+ {
+    margin-right: 30px;
+ }
+ .adminul
+ {
+     background-color:cornflowerblue;
+ }
+.adminnav
+{
+   
+    top:0;
+    margin-top:0;
+}
 
   
 

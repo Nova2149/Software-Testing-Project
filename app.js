@@ -232,6 +232,9 @@ app.post("/signin",(req,res)=>
 
     })
 
+    //Code to empty the cart file once the user logsout
+    fs.writeFileSync('cart.json',JSON.stringify(''))
+
 
 })
 
@@ -1237,8 +1240,8 @@ res.send(myArray)
 })
 
 //create an Order Table
-sql="create table if not exists  orderTable(user_id int,order_id int,order_total decimal(6,2),order_status varchar(30),"+
-"primary key(user_id,order_id),foreign key(user_id) references register(user_id)"+
+sql="create table if not exists  orderTable(user_id int,order_id int,order_total decimal(6,2),order_status varchar(30),order_items json"+
+",primary key(user_id,order_id),foreign key(user_id) references register(user_id)"+
 " on delete cascade);";
 
 connection.query(sql,(error,result)=>
@@ -1261,6 +1264,21 @@ app.get("/proceed",(req,res)=>
 
     var order_status="Placed";
 
+    var cartDataArray=[]
+    const cartDataBuffer=fs.readFileSync('cart.json')
+    const cartData=JSON.parse(cartDataBuffer)
+    console.log(cartData)
+    
+    for(let i=0;i<cartData.length;i++)
+    {
+        cartDataArray.push(cartData[i])
+    }
+
+    console.log("cartDataArray")
+    console.log(cartDataArray)
+    var jsonCart=JSON.stringify(cartData)
+
+
 
 
     //user_id,order_id,order_total,order_status 
@@ -1272,8 +1290,8 @@ app.get("/proceed",(req,res)=>
         if(result==""||result==null)
         {       
             order_id=1
-            sql="insert into orderTable values(?,?,?,?)";
-            connection.query(sql,[user_id,order_id,order_total,order_status],(er,rs)=>
+            sql="insert into orderTable values(?,?,?,?,?)";
+            connection.query(sql,[user_id,order_id,order_total,order_status,jsonCart],(er,rs)=>
             {
                 if (er) throw er;
                 console.log(rs);
@@ -1294,8 +1312,8 @@ app.get("/proceed",(req,res)=>
             console.log(order_id)
             console.log(typeof order_id)
            var string_order_id=order_id.toString()
-            sql="insert into orderTable values(?,?,?,?)";
-            connection.query(sql,[user_id,order_id,order_total,order_status],(er,rs)=>
+            sql="insert into orderTable values(?,?,?,?,?)";
+            connection.query(sql,[user_id,order_id,order_total,order_status,jsonCart],(er,rs)=>
             {
                 if (er) throw er;
                 console.log(rs);
@@ -1314,59 +1332,7 @@ app.get("/proceed",(req,res)=>
     })
 
 })
-    
-//This api clear the content of the cart and writes the cart items to the db
-app.get("/clearcart",(req,res)=>
-{
-    const dataBuffer=fs.readFileSync('cart.json')
-    const data=JSON.parse(dataBuffer)
 
-    console.log(data)
-    console.log(data.length)
-
-    for(let i=0;i<data.length;i++)
-    {
-
-
-        setTimeout(()=>
-        {
-
-            var product_id=data[i].product_id;
-            var product_type=data[i].type
-            console.log(product_id)
-            console.log(product_type)
-    
-            sql="select * from orderProduct where user_id=? and order_id=? and product_id=? and product_type=?";
-            connection.query(sql,[user_id,order_id,product_id,product_type],(er1,rs1)=>
-            {
-                if(er1) throw er1;
-                console.log(rs1)
-                if(rs1==""||rs1==null)
-                {
-                    console.log("Inside IF");
-                    sql="insert into orderProduct values(?,?,?,?,null,null);";
-                    connection.query(sql,[user_id,order_id,product_id,product_type,],(er2,rs2)=>
-                    {
-                        if(er2) throw er2;
-                        console.log(rs2)
-    
-                    })
-                }
-                else{
-    
-                    console.log("Inside Elese");
-                    console.log("The specific Data already Exists in the Cart")
-    
-                }
-            })
-
-        })
-       
-    }
-    fs.writeFileSync('cart.json',JSON.stringify(""))
-
-
-})
 
 
 
@@ -1378,15 +1344,15 @@ app.get("/order",(req,res)=>
 })
 //Store items while making the Order in the database
 
-sql="create table if not exists orderProduct(user_id int,order_id int,product_id int,product_type varchar(50),product_rating int,product_review text"
-+",primary key(user_id,order_id,product_id,product_type),foreign key(user_id,order_id) references orderTable(user_id,order_id) on delete cascade)";
+// sql="create table if not exists orderProduct(user_id int,order_id int,product_id int,product_type varchar(50),product_rating int,product_review text"
+// +",primary key(user_id,order_id,product_id,product_type),foreign key(user_id,order_id) references orderTable(user_id,order_id) on delete cascade)";
 
-//Now write the Sql command to create the connection
-connection.query(sql,(err,res)=>
-{
-    if(err) throw err;
-    console.log("orderProduct Table is created successfully "+res);
-})
+// //Now write the Sql command to create the connection
+// connection.query(sql,(err,res)=>
+// {
+//     if(err) throw err;
+//     console.log("orderProduct Table is created successfully "+res);
+// })
 
 //Api for getting all the orders from the Order Table
 app.get("/getorders",(req,res)=>
@@ -1630,37 +1596,243 @@ app.post("/addnewproduct",(req,res)=>
 
 
 })
-//Testing APi starts HEre
 
-app.get("/mytest",(req,res)=>
+//API to add a new Card
+app.post("/addnewcard",(req,res)=>
 {
-    const dataBuffer=fs.readFileSync('simple3.json')
-    const data=JSON.parse(dataBuffer)
+    console.log(req.body)
+    let cardNumber=req.body.cardNumber;
+    let cardHolderName=req.body.cardHolderName
+    let expiryMonth=req.body.expiryMonth
+    let expiryYear=req.body.expiryYear
+    let cvv=req.body.cvv
 
     var finalArray=[]
-    let pid=4
-    let ptype="dairy"
+    finalArray.push({
+        "cardNumber":cardNumber,
+        "cardHolderName":cardHolderName,
+        "expiryMonth":expiryMonth,
+        "expiryYear":expiryYear,
+        "cvv":cvv
+    })
+    fs.writeFileSync('card.json',JSON.stringify(finalArray))
 
-    for(let i=0;i<data.length;i++)
-    {
-        finalArray.push(data[i])
-    }
-    // To Update the final Array=
+})
+//This api is called when you will write the json data to the db
+//This api is present on homelogin.html page
+app.get("/addcardtodb",(req,res)=>
+{
+    const dataBuffer=fs.readFileSync('card.json')
+    const data=JSON.parse(dataBuffer)
+    let card_number=data[0].cardNumber
+    let name=data[0].cardHolderName
+    let expiry_month=data[0].expiryMonth
+    let expiry_year=data[0].expiryYear
+    let cvv=data[0].cvv
 
-    for(let i=0;i<finalArray.length;i++)
-    {
-        if(finalArray[i].product_id==pid && finalArray[i].type==ptype)
+    sql="select * from payment where user_id=?";
+    connection.query(sql,[user_id],(err,result)=>
         {
-            finalArray[i].quantity=50
+            if(err) throw err;
+            console.log(result)
+            if(result==null||result=="")
+            {
+                console.log("Good to Add to the Payment Table")
+                sql="insert into payment(user_id,card_number,name,expiry_month,expiry_year,cvv) values (?,?,?,?,?,?)";
+                connection.query(sql,[user_id,card_number,name,expiry_month,expiry_year,cvv],
+                    (err,result)=>
+                    {
+                        if (err) throw err;
+                        console.log("Number of Records  Inserted "+result)
+                    })
+            }
+            else{
+                console.log(result);
+                console.log("Sorry User details already exists")
+                sql="update payment set card_number=?,name=?,expiry_month=?,expiry_year=?,cvv=? where user_id=?";
+                connection.query(sql,[card_number,name,expiry_month,expiry_year,cvv,user_id],(error,result)=>
+                {
+                    if(error) throw error;
+                    console.log("Result after Updation "+result)
+
+                })
+            }
+        })
+})
+
+//This is for if a person wants to update its payment method
+//This api starts  here 
+app.get("/readcardjson",(req,res)=>
+{
+    
+})
+//This api ends Here
+
+//API to create a review table in the database
+
+sql="create table if not exists review(user_id int,product_id int,product_type varchar(30),product_review int,check(product_review between 0 and 5),primary key(user_id,product_id,product_type)"+
+",foreign key(user_id) references register(user_id) on delete cascade);"
+connection.query(sql,(err,res)=>
+{
+    if(err) throw err;
+    console.log(res);
+
+})
+
+//Add a review to the Database
+app.post("/addreview",(req,res)=>
+{       
+    console.log(req.body)
+    
+    var product_id=req.body.product_id
+    var product_type=req.body.product_type
+    var product_review=req.body.product_review
+
+    console.log(user_id)
+    console.log(product_id)
+    console.log(product_type)
+
+    sql="select * from review where user_id =? and product_id=? and product_type=?";
+    connection.query(sql,[user_id,product_id,product_type],(error,result)=>
+    {
+        if(error) throw error;
+        if(result==""||result==null)
+        {
+
+            sql="insert into review values(?,?,?,?)";
+            connection.query(sql,[user_id,product_id,product_type,product_review],(er1,rs1)=>
+            {
+                if(er1) throw er1;
+                console.log("New Value inserted into review table")
+            })
+
         }
-    }
+        else{
+            sql="update review set product_review=? where user_id =? and product_id=? and product_type=?";
+            connection.query(sql,[product_review,user_id,product_id,product_type],(er2,rs2)=>
+            {
+                if (er2) throw er2;
+                console.log(rs2)
 
-    res.send(finalArray)
+            })
 
+        }
+    })
+ 
+res.send(null)
+}
 
-   
+)
+
+//Admin APi to get all the reviews
+app.get("/getreview",(req,res)=>
+{   
+    var finalArray=[]
+    sql="select avg(product_review) as product_review,product_id,product_type from review group by product_type,product_id";
+    connection.query(sql,(er1,rs1)=>
+    {
+        if(er1) throw er1;
+        console.log(rs1)
+       res.send(rs1)
+    })
+  
 
 })
 
 
-//Testing API ends HEre
+//Get Request to load the Customer Revire Page
+app.get("/customerreview",(req,res)=>
+{
+    res.sendFile(path.resolve(__dirname,'views/html/CustomerReview.html'))
+})
+
+//Post Request to remove a particular Order
+app.post("/removeorder",(req,res)=>
+{
+   //get  the order_id from the front_end
+   var order_id=req.body.order_id;
+   sql="delete from ordertable where order_id=? and user_id=?";
+   connection.query(sql,[order_id,user_id],(error,result)=>
+   {
+       if(error) throw error;
+       console.log(result)
+   })
+   res.send("Order has been successfully deleted")
+})
+
+//Api to get all Orders 
+app.get("/getallorders",(req,res)=>
+{
+    sql="select * from ordertable";
+    connection.query(sql,(error,result)=>
+    {
+        if(error) throw error;
+        console.log(result)
+        res.send(result)
+    })
+}
+
+)
+
+//Load the Admin Order Web Page
+//Get Request for that
+app.get("/adminorders",(req,res)=>
+{
+    res.sendFile(path.resolve(__dirname,'views/html/AdminOrders.html'))
+})
+
+app.post("/updateorderstatus",(req,res)=>
+{
+    var order_status=req.body.orderStatus
+    var order_id=req.body.orderId;
+    var client_user_id=req.body.userId
+    sql="update orderTable set order_status=? where  user_id=? and order_id=?"
+    connection.query(sql,[order_status,client_user_id,order_id],(error,result)=>
+    {
+        if(error) throw error;
+        console.log(result)
+    })
+})
+
+
+//Writing the logic for the quantities
+
+//Decrement the Quantities every time the user purchases the product
+app.get("/updatequantity",(req,res)=>
+{   
+
+    //read the data from the cart.json file
+    const dataBuffer=fs.readFileSync('cart.json')
+    const data=JSON.parse(dataBuffer)
+    console.log(data)
+
+    //read the data from the simple.json file
+    const simpleDataBuffer=fs.readFileSync('simple3.json')
+    const simpleData=JSON.parse(simpleDataBuffer)
+
+    var finalArray=[]
+    for(let j=0;j<simpleData.length;j++)
+    {
+        for(let i=0;i<data.length;i++)
+        {
+            if(data[i].product_id==simpleData[j].product_id && data[i].type==simpleData[i].type)
+            {
+                let quantity=simpleData[j].quantity;
+                simpleData[j].quantity=quantity-1
+             
+
+            }
+
+        }
+        finalArray.push(simpleData[j])
+    }
+
+    console.log("Items after bieng edited")
+    console.log(finalArray)
+})
+
+//Load the Admin Payment Page 
+app.get("/adminpayment",(req,res)=>
+{
+    res.sendFile(path.resolve(__dirname,'views/html/adminpayment.html'))
+})

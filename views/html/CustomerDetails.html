@@ -57,7 +57,7 @@
         {
             var row=
             `<div class="row mm">
-                <h1 class="uheading">USER DETAILS </h1>
+               
                 <div class="col-xs-1">
                     <span>${data[i].first_name}</span>
                 </div>
@@ -112,8 +112,25 @@
     }
 </style>
 <body>
-   
+    <nav class="nav adminnav">
+        <ul class="nav-list adminul">
+            <li class="nav-item mylist admin_list_item item1">
+
+                <a href="/admin">
+                    <span class="glyphicon glyphicon-home"></span>
+                </a>
+            </li>
+                
+       
+            <li class="nav-item logout admin_list_item item2">
+                <a href="/home">
+                    <span class="glyphicon glyphicon-log-out"></span>
+                </a>
+            </li>
+        </ul>
+    </nav>
     <div  class="row">
+        <h1 class="uheading">USER DETAILS </h1>
         <div class="col-xs-0"></div>
         <div class="col-xs-12" id="mydiv"></div>
         <div class="col-xs-0"></div>

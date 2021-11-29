@@ -43,7 +43,23 @@
 }
 </style>
 <body>
-    
+    <nav class="nav adminnav">
+        <ul class="nav-list adminul">
+            <li class="nav-item mylist admin_list_item item1">
+
+                <a href="/admin">
+                    <span class="glyphicon glyphicon-home"></span>
+                </a>
+            </li>
+                
+       
+            <li class="nav-item logout admin_list_item item2">
+                <a href="/home">
+                    <span class="glyphicon glyphicon-log-out"></span>
+                </a>
+            </li>
+        </ul>
+    </nav>
     <div class="row">
         <h1 class="adminheading">ADMIN WORKSPACE</h1>
         <div class="col-xs-2"></div>
@@ -55,14 +71,15 @@
                     <h1>Customer Section</h1>
                     <div>
                         <a href="/customerdetails">Customer Details</a><br>
-                        <a href="">View Payment</a><br>
-                        <a href="">Customer Reviews</a><br>
+                        <a href="/adminpayment">View Payment</a><br>
+                        <a href="/customerreview">Customer Reviews</a><br>
                     </div>
                 </div>
                 <div class="col-xs-4">
                     <h1>Product Section</h1>
                     <a href="/addproduct">Add Product</a><br>
-                    <a href="/productinfo">Update Product</a>
+                    <a href="/productinfo">Update Product</a><br>
+                    <a href="/adminorders">Admin Orders</a>
                     <br>
                  </div>
                 <div class="col-xs-4">

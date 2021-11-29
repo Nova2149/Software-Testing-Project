@@ -37,6 +37,20 @@
                 }
 
             })
+
+
+            $.ajax({
+                url:"http://localhost:6050/addcardtodb",
+                type:"GET",
+                dataType:"json",
+                success:function(response)
+                {
+                    console.log(response)
+                    
+                }
+
+
+            })
         })
         function buildTable(response)
         {

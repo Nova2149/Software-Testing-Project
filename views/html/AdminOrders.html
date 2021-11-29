@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=h1, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="../css/style1.css">
+    <script>
+        $(function()
+        {
+            $.ajax({
+                url:"http://localhost:6050/getallorders",
+                method:"GET",
+                dataType:"json",
+                success:function(response){
+                    console.log(response);
+                    buildTable(response)
+                }
+            })
+        })
+        function buildTable(data)
+        {
+            var table=document.getElementById("mytbody")
+            for(let i=0;i<data.length;i++)
+            {
+                var row1=`
+                <tr>
+                    <td>${data[i].user_id}</td>
+                    <td>${data[i].order_id}</td>
+                    <td>${data[i].order_total}</td>
+                    
+                    <td>
+                    `;
+                   
+
+                    for(let j=0;j<data[i].order_items.length;j++)
+                    {
+                        row1+=`
+                                         ${data[i].order_items[j].name}<br>
+                      
+                            `;
+                    }
+                    row1+=`
+                    </td>
+                    <td>
+                    <input type="text" id="edit_order" value='${data[i].order_status}' disabled required  />
+                            
+                        
+                    </td>
+                    <td>
+                    <button class="btn btn-primary"  onclick="changeStatus(${i})">Edit</button>   
+                    <button class="btn btn-success" disabled  id="update_order" onclick=updateOrder(${i},'${data[i].order_id}','${data[i].user_id}')>Update</button>
+                    </td>
+                
+                </tr>`;
+                table.innerHTML+=row1;
+
+            }
+
+        }
+        function changeStatus(index)
+        {
+            console.log("Change Status Clicked Successfully")
+            console.log(index)
+            var element=document.querySelectorAll("#edit_order")[index]
+            element.disabled=false;
+
+            //To enable the Update button
+            var update_button=document.querySelectorAll("#update_order")[index]
+            update_button.disabled=false
+
+         
+
+        }
+        function updateOrder(index,order_id,user_id)
+        {
+            console.log("Update Order Clicked Successfully")
+            console.log(index)
+
+            var order_status_value=document.querySelectorAll("#edit_order")[index].value
+            console.log(order_status_value)
+
+            console.log(order_id)
+            var orderId=order_id
+            console.log(orderId)
+            var userId=user_id
+            console.log(userId)
+
+           //Make a ajax query
+          // Edit the database before making this particular request
+            $.ajax({
+                url:"http://localhost:6050/updateorderstatus",
+                method:"POST",
+                dataType:"json",
+                data:{
+                    "orderStatus":order_status_value,
+                    "orderId":orderId,
+                    "userId":user_id
+            
+                },
+                success:function(response)
+                {
+                    console.log(response)
+                }
+            })
+
+
+        }
+
+    </script>
+
+    <style>
+        h1
+        {
+            text-align:center;
+            font-style: bold;
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav adminnav">
+        <ul class="nav-list adminul">
+            <li class="nav-item mylist admin_list_item item1">
+
+                <a href="/admin">
+                    <span class="glyphicon glyphicon-home"></span>
+                </a>
+            </li>
+                
+       
+            <li class="nav-item logout admin_list_item item2">
+                <a href="/home">
+                    <span class="glyphicon glyphicon-log-out"></span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <h1>CUSTOMERS ORDERS </h1>
+    <table class="table table-stripped">
+        <tr>
+            <th class="info">USER ID</th>
+            <th class="info">ORDER ID</th>
+            <th class="info">ORDER TOTAL</th>
+           
+            <th class="info">ORDER ITEMS</th>
+            <th class="info">ORDER STATUS</th>
+            <th class="info">EDIT ORDER</th>
+            
+        </tr>
+        <tbody id="mytbody">
+           
+
+        </tbody>
+    </table>
+
+</body>
+</html>

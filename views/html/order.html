@@ -61,6 +61,38 @@
         border:2px solid black; 
         font-weight: bold;
     }
+    .order_items
+    {
+        display: inline;
+    }
+
+    .myli
+    {
+        display: inline;
+        float:left;
+        margin-bottom:25px;
+        margin-top:5px;
+      
+    }
+    .submit_li
+    {
+        margin-left:200px;
+    
+    }
+    .rating_li
+    {
+       margin-left:150px;
+    }
+    .name_li
+    {
+        width:150px;
+        margin-left:15px;
+    }
+    .order_heading
+    {
+        background-color:grey;
+
+    }
 </style>
 <script>
 
@@ -84,7 +116,7 @@
         var table=document.getElementById("mydiv");
         for(let i=0;i<data.length;i++)
         {
-            var row=`<div class="row ">
+            var row=`<div class="row  order_heading">
 
                 <div class="col-xs-3">
                 <span>ORDER ID :${data[i].order_id}</span>
@@ -99,39 +131,122 @@
                 </div>
 
                 <div class="col-xs-3">
-                <button class="btn btn-primary" onclick=viewDetails('${data[i].order_id}')>View Details</button>
+                <button class="btn btn-danger" onclick="cancelOrder('${data[i].order_id}','${data[i].order_status}')" >Cancel Order</button>
+                
                 </div>
                 <br>
                 <br>
                 </div>`;
-
                 table.innerHTML+=row;
+
+                for(let  j=0;j<data[i].order_items.length;j++)
+                {
+                   
+                var row2=`<div class="row">
+    
+                    <div class="col-xs-12">
+                        <ul class="order_items">
+                        <li class="myli"><img src="${data[i].order_items[j].img}" width="100px" height="100px"></img></li>
+                      
+                        <li class="myli name_li">${data[i].order_items[j].name}</li>
+                  
+                        <li class="myli price_li">${data[i].order_items[j].price}</li>
+                  
+                        <li class="myli rating_li">
+                        
+                        <label for="user_rating">User Rating</label>
+                         <input type="number" min="0" max="5" id="rating_value" />/<span>5</span>
+                     
+                        </li>
+                        <li class="myli submit_li">
+                        <button type="button" class="btn btn-primary" onclick="submitReview(${j},'${data[i].order_items[j].product_id}','${data[i].order_items[j].type }')">Submit</button>
+                        </li>
+                                                
+                        </ul>
+                        
+                    </div>
+                   
+                </div>`;
+                table.innerHTML+=row2;
+
+
+                }
+                
+              
+
+           
 
 
 
         }
     }
-    function clickMe(number)
-    {   
-        console.log(number)
-        console.log("Click Me");
-         console.log(document.getElementsByClassName("rate").length)
-         console.log(document.querySelectorAll(".rate")[number-1]);
 
-         for(let i=0;i<number;i++)
-         {
-             var element=document.querySelectorAll(".rate")[i]
-             element.classList.add("checked")
-         }
-         for(let i=number;i<5;i++)
-         {
-             var element=document.querySelectorAll(".rate")[i]
-             element.classList.remove("checked")
-         }
+function submitReview(current_index,data_id,data_type)
+{       
+    
+    console.log(current_index)
+    console.log(data_id)
+    console.log(data_type)
+    console.log("Submit Review Clicked Successfully")
+    //Get the Value of the current particular 
+    let rating_value=document.querySelectorAll("#rating_value")[current_index].value
+    console.log(rating_value)
+    //Make an AJAX Call to write this query to the database
 
+    $.ajax({
+        url:"http://localhost:6050/addreview",
+        method:"POST",
+        dataType:"json",
+        data:{
+            "product_id":data_id,
+            "product_type":data_type,
+            "product_review":rating_value
+        },
+        success:function(response)
+        {
+            console.log(response)
+        }
+    })
+}   
 
+function cancelOrder(order_id,order_status)
+{       
+    var counter=0;
+    console.log(order_id)
+    console.log(order_status)
+    if(order_status!='Placed')
+    {
+        alert("Its too Late,Order cannot be cancelled now")
+        counter=1;
 
     }
+    if(counter==0)
+    {
+        $.ajax({
+            url:"http://localhost:6050/removeorder",
+            method:"POST",
+            dataType:"json",
+            data:{
+
+
+                "order_id":order_id
+            },
+            sucess:function(response)
+            {
+                console.log(response)
+            }
+        })
+    }
+    window.location.reload()
+
+    console.log("Cancel order clicked successfully")
+
+    //Call the APi to Cancel Order
+
+}
+
+    
+
 </script>
 <body>
     <nav class="nav">

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="../css/style1.css">
+
+<script>
+    $(function()
+    {
+        $.ajax({
+            url:"http://localhost:6050/getreview",
+            method:"GET",
+            dataType:"json",
+            success:function(response)
+            {
+                console.log(response)
+                buildTable(response)
+            }
+        })
+    })
+    function buildTable(data)
+    {   
+        var table=document.getElementById("mytr")
+        for(let i=0;i<data.length;i++)
+        {
+            var row1=`
+           
+            <tr>
+                <td>
+                    ${data[i].product_id}
+                </td>
+                <td>
+                    ${data[i].product_type}
+                </td>
+                <td>
+                    ${data[i].product_review}
+                </td>
+            </tr>
+
+          
+                `;
+                table.innerHTML+=row1;
+        }
+    }
+
+</script>
+<style>
+    table{
+        border:2px solid black;
+    }
+    h1{
+        text-align:center;
+        text-decoration: underline;
+    }
+</style>
+<body>
+    <nav class="nav adminnav">
+        <ul class="nav-list adminul">
+            <li class="nav-item mylist admin_list_item item1">
+
+                <a href="/admin">
+                    <span class="glyphicon glyphicon-home"></span>
+                </a>
+            </li>
+                
+       
+            <li class="nav-item logout admin_list_item item2">
+                <a href="/home">
+                    <span class="glyphicon glyphicon-log-out"></span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <h1>CUSTOMER REVIEW PAGE</h1>
+    <div class="row">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-8">
+            <table class="table table-striped">
+                <tr>
+                    <th class="info">PRODUCT ID</th>
+                    <th class="info">PRODUCT TYPE</th>
+                    <th class="info"> PRODUCT REVIEW</th>
+                </tr>
+                <tbody id="mytr">
+
+                </tbody>
+
+            </table>
+        </div>
+        <div class="col-xs-2"></div>
+    </div>
+</body>
+</html>
