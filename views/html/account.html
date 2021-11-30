@@ -19,7 +19,7 @@
     
     <!-- Custom Stylesheet -->
     <link rel="stylesheet" href="../css/style.css">
-    <title>Food Company</title>
+    <title>Fresh Food Market Place</title>
 </head>
 <body>
     <!-- Header -->
@@ -157,38 +157,8 @@
                        <input type="text" id="pcode" placeholder="Postal Code"  name="postal_code"required>
                    </div><br>
 
-                   <div class="payment_div">
-                     <div class="field">
-                      <label for="card_number">Card Number</label>
-                      <input type="text" id="cardNumber" placeholder="Enter Card Number" required>
-                      </div>
-                      <br>
-                      <div class="field">
-                      <label for="card_holder_name">Card Holder</label>
-                      <input type="text" id="holderName" placeholder="Name on the card" required>
-                      </div>
-                      <br>
-                      <div class="field">
-                        <label for="expiry_date">EXPIRY</label>
-                        <br>
-                      <select name="month" id="expiryMonth" aria-required="true" placeholder="MM" minlength="2" maxlength="2" class="field form-control"><option value="01" aria-label="01">01</option><option value="02" aria-label="02">02</option><option value="03" aria-label="03">03</option><option value="04" aria-label="04">04</option><option value="05" aria-label="05">05</option><option value="06" aria-label="06">06</option><option value="07" aria-label="07">07</option><option value="08" aria-label="08">08</option><option value="09" aria-label="09">09</option><option value="10" aria-label="10">10</option><option value="11" aria-label="11">11</option><option value="12" aria-label="12">12</option></select>
-                     
-                     </div> 
-                     <br>
-                     <div class="field">
-                      <select  name="year" aria-label="Expiry Year" id="expiryYear" aria-required="true" placeholder="YY" minlength="2" maxlength="2" class="field form-control"><option value="2021" aria-label="2021">2021</option><option value="2022" aria-label="2022">2022</option><option value="2023" aria-label="2023">2023</option><option value="2024" aria-label="2024">2024</option><option value="2025" aria-label="2025">2025</option><option value="2026" aria-label="2026">2026</option><option value="2027" aria-label="2027">2027</option><option value="2028" aria-label="2028">2028</option><option value="2029" aria-label="2029">2029</option><option value="2030" aria-label="2030">2030</option><option value="2031" aria-label="2031">2031</option><option value="2032" aria-label="2032">2032</option><option value="2033" aria-label="2033">2033</option><option value="2034" aria-label="2034">2034</option><option value="2035" aria-label="2035">2035</option><option value="2036" aria-label="2036">2036</option><option value="2037" aria-label="2037">2037</option><option value="2038" aria-label="2038">2038</option><option value="2039" aria-label="2039">2039</option><option value="2040" aria-label="2040">2040</option><option value="2041" aria-label="2041">2041</option><option value="2042" aria-label="2042">2042</option><option value="2043" aria-label="2043">2043</option><option value="2044" aria-label="2044">2044</option><option value="2045" aria-label="2045">2045</option><option value="2046" aria-label="2046">2046</option><option value="2047" aria-label="2047">2047</option><option value="2048" aria-label="2048">2048</option><option value="2049" aria-label="2049">2049</option><option value="2050" aria-label="2050">2050</option><option value="2051" aria-label="2051">2051</option><option value="2052" aria-label="2052">2052</option><option value="2053" aria-label="2053">2053</option><option value="2054" aria-label="2054">2054</option><option value="2055" aria-label="2055">2055</option><option value="2056" aria-label="2056">2056</option><option value="2057" aria-label="2057">2057</option><option value="2058" aria-label="2058">2058</option><option value="2059" aria-label="2059">2059</option><option value="2060" aria-label="2060">2060</option><option value="2061" aria-label="2061">2061</option><option value="2062" aria-label="2062">2062</option><option value="2063" aria-label="2063">2063</option><option value="2064" aria-label="2064">2064</option><option value="2065" aria-label="2065">2065</option><option value="2066" aria-label="2066">2066</option><option value="2067" aria-label="2067">2067</option><option value="2068" aria-label="2068">2068</option><option value="2069" aria-label="2069">2069</option><option value="2070" aria-label="2070">2070</option><option value="2071" aria-label="2071">2071</option></select>
-                      </div>
-                      <br>
-                      <div class="field">
-                      <label for="cvv">CVV</label>
-                      <input type="text" id="cvvCode" placeholder="cvv code">
-                      </div>
-            
-                 
-                   </div>
-
                    <!--Code Editing ends Here-->
-                   <button type="button"  onClick=registerNewUser(first_name.value,last_name.value,email.value,date_of_birth.value,address.value,phone.value,password.value,confirm_password.value,postal_code.value);enterCard() class="btn btn-dark">Register</button>
+                   <button type="button"  onClick=registerNewUser(first_name.value,last_name.value,email.value,date_of_birth.value,address.value,phone.value,password.value,confirm_password.value,postal_code.value) class="btn btn-dark">Register</button>
                 </form>
              </div><br>
           </div>
@@ -310,85 +280,12 @@
         console.log(password);
         console.log(confirmpassword);
         console.log(postalcode);
-        var counter=0;
+      
         if(password!=confirmpassword)
         {
           alert("Passwords don't match")
-          counter=1;
         }
-       
-        console.log("Enter Card Clicked successfully")
-        let card_number=$("#cardNumber").val()
-        let card_holder_name=$("#holderName").val()
-      //To get the Selected Month from the dropdown
-      var getMonthValue=document.getElementById("expiryMonth").selectedOptions[0].value;
-      
-
-      //To get the Selected Year from the dropdown
-      var  getYearValue=document.getElementById("expiryYear").selectedOptions[0].value;
-        let cvv_code=$("#cvvCode").val()
-
-        console.log(card_number)
-        console.log(card_holder_name)
-        console.log(getMonthValue)
-        console.log(getYearValue)
-        console.log(cvv_code)
-
-            //Get the current Year and month using Javascript
-       var today=new Date()
-    
-
-      //Now Apply the Logic to Check if the card is expired or not
-      //Variable for Current Year
-      var current_year=parseInt(today.getFullYear())
-      console.log(current_year)
-      //Variable for Current Month
-      var current_month=parseInt(today.getMonth())
-      console.log(current_month)
-      //variable for Selected Month
-      var selected_month=parseInt(getMonthValue)
-      console.log(selected_month)
-      //variable for Selected Year
-      var selected_year=parseInt(getYearValue)
-      console.log(selected_year)
-
-        if($("#cardNumber").val().length!=12)
-        {
-          alert("The Length of the Card Number must be 12 digits")
-          counter=1
-        }
-        if($("#cvvCode").val().length!=3)
-        {
-          alert("The Length of the Security  Code must be 3 Digits")
-          counter=1
-        }
-
-        if(current_year>=selected_year && current_month>selected_month)
-        {   
-            console.log("Wrong Card")
-            alert("Sorry,Your card has Expired ,Please Use a different one")
-            counter=1
-        }
-        if(counter==0)
-        {
-          $.ajax({
-            url:"http://localhost:6050/addnewcard",
-            method:"POST",
-            dataType:"json",
-            data:{
-              "cardNumber":card_number,
-              "cardHolderName":card_holder_name,
-              "expiryMonth":getMonthValue,
-              "expiryYear":getYearValue,
-              "cvv":cvv_code
-            },
-            success:function(response)
-            {
-              console.log(response)
-            }
-          })
-        }
-        if(counter==0)
+        else
         {
           $.ajax({
             url:"http://localhost:6050/register",
@@ -424,89 +321,8 @@
           })
 
         }
-        
       
       
-      }
-      //
-      function enterCard()
-      {
-        console.log("Enter Card Clicked successfully")
-        let card_number=$("#cardNumber").val()
-        let card_holder_name=$("#holderName").val()
-      //To get the Selected Month from the dropdown
-      var getMonthValue=document.getElementById("expiryMonth").selectedOptions[0].value;
-      
-
-      //To get the Selected Year from the dropdown
-      var  getYearValue=document.getElementById("expiryYear").selectedOptions[0].value;
-        let cvv_code=$("#cvvCode").val()
-
-        console.log(card_number)
-        console.log(card_holder_name)
-        console.log(getMonthValue)
-        console.log(getYearValue)
-        console.log(cvv_code)
-
-            //Get the current Year and month using Javascript
-       var today=new Date()
-    
-
-      //Now Apply the Logic to Check if the card is expired or not
-      //Variable for Current Year
-      var current_year=parseInt(today.getFullYear())
-      console.log(current_year)
-      //Variable for Current Month
-      var current_month=parseInt(today.getMonth())
-      console.log(current_month)
-      //variable for Selected Month
-      var selected_month=parseInt(getMonthValue)
-      console.log(selected_month)
-      //variable for Selected Year
-      var selected_year=parseInt(getYearValue)
-      console.log(selected_year)
-
-        //counter to be used for the validations
-
-        var counter=0
-        if($("#cardNumber").val().length!=12)
-        {
-          alert("The Length of the Card Number must be 12 digits")
-          counter=1
-        }
-        if($("#cvvCode").val().length!=3)
-        {
-          alert("The Length of the Security  Code must be 3 Digits")
-          counter=1
-        }
-
-        if(current_year>=selected_year && current_month>selected_month)
-        {   
-            console.log("Wrong Card")
-            alert("Sorry,Your card has Expired ,Please Use a different one")
-            counter=1
-        }
-        if(counter==0)
-        {
-          $.ajax({
-            url:"http://localhost:6050/addnewcard",
-            method:"POST",
-            dataType:"json",
-            data:{
-              "cardNumber":card_number,
-              "cardHolderName":card_holder_name,
-              "expiryMonth":getMonthValue,
-              "expiryYear":getYearValue,
-              "cvv":cvv_code
-            },
-            success:function(response)
-            {
-              console.log(response)
-            }
-          })
-        }
-
-
       }
    </script>
 

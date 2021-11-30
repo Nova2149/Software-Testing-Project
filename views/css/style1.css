@@ -19,9 +19,6 @@ body{
     color: black;
     position: relative;
     z-index: 1;
-    top:0;
-    margin-top:0;
-    
 }
 
 h1,h2,h3,h4{
@@ -35,10 +32,7 @@ a{
 ul{
     list-style-type: none;
 }
-#expiryMonth
-{
 
-}
 
 
 
@@ -506,40 +500,15 @@ ul{
     appearance: none;
     outline: none;
   }
+ 
 
   
 
+ 
+
+
 
   
-
- .logout
- {
-     margin-left:auto;
- }
- .admin_list_item
- {
-     font-size: 25px;
- }
-
- .item1
- {
-    margin-left:30px;
- }
-
- .item2
- {
-    margin-right: 30px;
- }
- .adminul
- {
-     background-color:cornflowerblue;
- }
-.adminnav
-{
-   
-    top:0;
-    margin-top:0;
-}
 
   
 

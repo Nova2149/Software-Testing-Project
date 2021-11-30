@@ -4,12 +4,17 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+    <link rel="stylesheet" href="../css/hf.css">
     <!-- Favicon -->
     <link rel="shortcut icon" href="./images/logo.png" type="image/x-icon">
     
     <!-- Box  icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    
+    <!-- Bootstrap Carousal -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,7 +22,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Overlock:wght@400;700&display=swap" rel="stylesheet"> 
     
     <!-- Custom Stylesheet -->
-    <link rel="stylesheet" href="../css/style.css">
+    <!-- <link rel="stylesheet" href="../css/style.css"> -->
     <title>Fresh Food Market Place</title>
 </head>
 <body>
@@ -25,97 +30,263 @@
     <header id="home" class="header">
         <!-- Navigation -->
         <nav class="nav">
-            <div class="navigation container">
-                <a href="index.html">
-                <div class="logo">
-                    <img src="../images/logo.png">
-                    <div class="hero-content">
-                        <h6><span class="logo_title">Food Place</span></h6>
-                    </div>
+                <div class="topnav">
+                    <a href="index.html"><img src="../images/logo.png"></a>
+                    <a href="/home">Home</a>
+                    <a href="/fruit&veg">Fruits & Vegetables</a>
+                    <a href="/dairy">Dairy</a>
+                    <a href="/meat">Meat</a>
+                    <a href="/search">Search</a>
+                    <a href="/wishlist">My Wishlist</a>
+                    <a href="/order">My Orders</a>
+                    <a href="cart.html">Cart  <i class='bx bx-cart'></i></a>
+                    <a href="/account">Account</a>
+                    <a onClick="updateLocalStorage()" href="/home">
+                        <span class="glyphicon glyphicon-log-out">
+                        </span>
+                        </a>
                 </div>
-                </a>
-    
-                <div class="menu">
-                    <div class="top-nav">
-                        <div class="logo">
-                            <img src="../images/logo.png">
-                        </div>
-                        <div class="close">
-                            <i class='bx bx-x'></i>
-                        </div>
-                    </div>
-                    <ul class="nav-list">
-                        <li class="nav-item">
-                            <a href="/home">Home &nbsp;&nbsp;&nbsp;&nbsp;</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/fruit&veg">Fruits & Vegetables &nbsp;&nbsp;&nbsp;&nbsp;</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/dairy">Dairy &nbsp;&nbsp;&nbsp;&nbsp;</a>
-                        </li>
-    
-                        <li class="nav-item">
-                            <a href="/meat">Meat &nbsp;&nbsp;&nbsp;&nbsp;</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/account">Account &nbsp;&nbsp;&nbsp;&nbsp;</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="cart.html"><i class='bx bx-cart'>&nbsp;&nbsp;&nbsp;&nbsp;</i></a>
-                        </li>
-                    </ul>
-                </div>
-                <a href="cart.html" class="cart-icon"><i class='bx bx-cart'></i></a>
-                <div class="nav-menu">
-                    <i class='bx bx-menu' ></i>
-                </div>
-            </div>
         </nav>
-        
-        <!-- Banner -->
-        <img src="../images/banner.png" class="banner-img" alt=""/>
-        
     </header>
     
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+          <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+          <li data-target="#myCarousel" data-slide-to="1"></li>
+          <li data-target="#myCarousel" data-slide-to="2"></li>
+        </ol>
+      
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner">
+          <div class="item active">
+            <img src="../images/banner.png" alt="" height=600px width="100%"/>
+          </div>
+      
+          <div class="item">
+            <img src="../images/banner.png" alt="" height=600px width="100%"/>
+          </div>
+      
+          <div class="item">
+            <img src="../images/banner.png" alt="" height=600px width="100%"/>
+          </div>
+        </div>
+      
+        <!-- Left and right controls -->
+        <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+          <span class="glyphicon glyphicon-chevron-left"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#myCarousel" data-slide="next">
+          <span class="glyphicon glyphicon-chevron-right"></span>
+          <span class="sr-only">Next</span>
+        </a>
+      </div>
      <!------------main-------------->
      <main>
+          <!--Featured Products-->
+        <section class="section featured">
+            <div class="title">
+                <h1><b>Featured Products</b></h1>
+                <br>
+                </div>
+                <div class="product-center container">
+                <div class="product">
+                    <div class="product-header">
+                    <img src="./images/feactured1.jpg" alt="">
+                    <ul class="icons">
+                        <span><i class="bx bx-heart"></i></span>
+                        <span><i class="bx bx-shopping-bag"></i></span>
+                        <span><i class="bx bx-search"></i></span>
+                    </ul>
+                    </div>
+                    <div class="product-footer">
+                    <a href="#">
+                        <h3>Featured</h3>
+                    </a>
+                    <div class="rating">
+                        <i class="bx bxs-star"></i>
+                        <i class="bx bxs-star"></i>
+                        <i class="bx bxs-star"></i>
+                        <i class="bx bxs-star"></i>
+                        <i class="bx bx-star"></i>
+                    </div>
+                    <h4 class="price">$40</h4>
+                    </div>
+                </div>
+                <div class="product">
+                <div class="product-header">
+                <img src="./images/feactured1.jpg" alt="">
+                <ul class="icons">
+                    <span><i class="bx bx-heart"></i></span>
+                    <span><i class="bx bx-shopping-bag"></i></span>
+                    <span><i class="bx bx-search"></i></span>
+                </ul>
+                </div>
+                <div class="product-footer">
+                <a href="#">
+                    <h3>Featured</h3>
+                </a>
+                <div class="rating">
+                    <i class="bx bxs-star"></i>
+                    <i class="bx bxs-star"></i>
+                    <i class="bx bxs-star"></i>
+                    <i class="bx bxs-star"></i>
+                    <i class="bx bx-star"></i>
+                </div>
+                <h4 class="price">$50</h4>
+                </div>
+            </div>
+            <div class="product">
+            <div class="product-header">
+            <img src="./images/feactured1.jpg" alt="">
+            <ul class="icons">
+                <span><i class="bx bx-heart"></i></span>
+                <span><i class="bx bx-shopping-bag"></i></span>
+                <span><i class="bx bx-search"></i></span>
+            </ul>
+            </div>
+            <div class="product-footer">
+            <a href="#">
+                <h3>Featured</h3>
+            </a>
+            <div class="rating">
+                <i class="bx bxs-star"></i>
+                <i class="bx bxs-star"></i>
+                <i class="bx bxs-star"></i>
+                <i class="bx bxs-star"></i>
+                <i class="bx bx-star"></i>
+            </div>
+            <h4 class="price">$80</h4>
+            </div>
+            </div>
+        </section>
+
+    <!-- Latest Products -->
+    <section class="section featured">
+            <div class="title">
+            <h1><b>Latest Products</b></h1>
+            </div>
+            <div class="product-center container">
+            <div class="product">
+                <div class="product-header">
+                <img src="./images/pic2.jpg" alt="">
+                </div>
+                <div class="product-footer">
+                <a href="#">
+                    <h3>Latest</h3>
+                </a>
+                <div class="rating">
+                    <i class="bx bxs-star"></i>
+                    <i class="bx bxs-star"></i>
+                    <i class="bx bxs-star"></i>
+                    <i class="bx bxs-star"></i>
+                    <i class="bx bx-star"></i>
+                </div>
+                <h4 class="price">$40</h4>
+                </div>
+            </div>
+            <div class="product">
+            <div class="product-header">
+            <img src="./images/pic3.jpg" alt="">
+            </div>
+            <div class="product-footer">
+            <a href="#">
+                <h3>Latest</h3>
+            </a>
+            <div class="rating">
+                <i class="bx bxs-star"></i>
+                <i class="bx bxs-star"></i>
+                <i class="bx bxs-star"></i>
+                <i class="bx bxs-star"></i>
+                <i class="bx bx-star"></i>
+            </div>
+            <h4 class="price">$50</h4>
+            </div>
+        </div>
+        <div class="product">
+        <div class="product-header">
+        <img src="./images/pic4.jpg" alt="">
+        </div>
+        <div class="product-footer">
+        <a href="#">
+            <h3>Latest</h3>
+        </a>
+        <div class="rating">
+            <i class="bx bxs-star"></i>
+            <i class="bx bxs-star"></i>
+            <i class="bx bxs-star"></i>
+            <i class="bx bxs-star"></i>
+            <i class="bx bx-star"></i>
+        </div>
+        <h4 class="price">$80</h4>
+        </div>
+        </div>
+    </section>
+    <br><br>
      </main>
      <!-- Footer -->
      <footer id="footer" class="section footer">
-        <div class="container">
-        <div class="footer-container">
-            <div class="footer-center">
-            <h3>CONTACT US</h3>
-            <div>
-                <span>
-                <i class="fas fa-map-marker-alt"></i>
-                </span>
-                577 Boul Henri-Bourassa E, Montréal, QC H2C 1E2
-            </div>
-            <div>
-                <span>
-                <i class="far fa-envelope"></i>
-                </span>
-                owner@info_orion.ca
-            </div>
-            <div>
-                <span>
-                <i class="fas fa-phone"></i>
-                </span>
-                123-456-7890
-            </div>
-            <div>
-                <span>
-                <i class="far fa-paper-plane"></i>
-                </span>
-                Montreal, Canada
-            </div>
-            </div>
-        </div>
-        </div>
-        </div><br>
-        <div class="copyright">
-        <center><i class='bx bx-copyright'>Copyright Reserved By Cégep de la Gaspésie et des Îles, Montreal</i></center>
-    </div>
-    </footer>
+        <br>
+       <div class="container">
+       <div class="footer-container">
+           <div class="footer-center">
+           <h3>EXTRAS</h3>
+           <a href="#">Brands</a>
+           <a href="#">E-Giftcards</a>
+           <a href="#">Affiliate</a>
+           <a href="#">Specials</a>
+           <a href="#">Site Map</a>
+           </div>
+           <div class="footer-center">
+           <h3>INFORMATION</h3>
+           <a href="#">About Us</a>
+           <a href="#">Privacy Policy</a>
+           <a href="#">Terms & Conditions</a>
+           <a href="#">Contact Us</a>
+           <a href="#">Site Map</a>
+           </div>
+           <div class="footer-center">
+           <h3>Social</h3>
+           <a href="#">Facebook</a>
+           <a href="#">Instagram</a>
+           <a href="#">Twitter</a>
+           <a href="#">Youtube</a>
+           <a href="#">LinkedIn</a>
+           </div>
+           <div class="footer-center">
+           <h3>CONTACT US</h3>
+           <div>
+               <span>
+               <i class="fas fa-map-marker-alt"></i>
+               </span>
+               577 Boul Henri-Bourassa E, Montréal, QC H2C 1E2
+           </div>
+           <div>
+               <span>
+               <i class="far fa-envelope"></i>
+               </span>
+               owner@cegepgim.ca
+           </div>
+           <div>
+               <span>
+               <i class="fas fa-phone"></i>
+               </span>
+               123-456-7890
+           </div>
+           <div>
+               <span>
+               <i class="far fa-paper-plane"></i>
+               </span>
+               Montreal, Canada
+           </div>
+           </div>
+       </div>
+       </div>
+       </div>
+       <div class="copyright">
+       <i class='bx bx-copyright'>Copyright Reserved By Cégep de la Gaspésie et des Îles, Montreal</i>
+   </div>
+   </footer>
+    </body>
+    </html>

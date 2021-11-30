@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <link rel="stylesheet" href="../css/hf.css">
+    <title>Fresh Food Market Place</title>
 </head>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -40,38 +42,39 @@
 
                 var row1=`
                 <div class="row">
+                    <br>
             <div class="product_img">
-            <label for="product_image">PRODUCT IMAGE</label>
-            <img src="${data.img}" width="200px" height="200px">
-
-
+            <label for="product_image" class="myimage">PRODUCT IMAGE</label>
+            <img src="${data.img}" width="250px" height="250px">
             </div>
-
+            <br>
             <div class="product_id">
-                <label for="product_id" class="mylabel">PRODUCT ID</label>
+                <label for="product_id" class="mylabel">ID</label>
                 <input id="pid" type="text" value=${data.product_id} disabled/>
                 
             </div>
         
             <div class="product_name">
-                <label for="product_name" class="mylabel">PRODUCT NAME</label>
+                <label for="product_name" class="mylabel">NAME</label>
                 <input   id="pname" class="myinput" value="${data.name}" disabled/>            
             </div>
             <div class="product_type">
-                <label for="product_type" class="mylabel">PRODUCT TYPE</label>
+                <label for="product_type" class="mylabel">TYPE</label>
                 <input id="ptype"  value=${data.type} disabled />
             </div>
             <div class="product_price">
-                <label for="product_price"  class="mylabel">PRODUCT PRICE</label>
+                <label for="product_price"  class="mylabel">PRICE</label>
                 <input id="pprice" class="myinput" value=${data.price} disabled/>
 
             </div>
+            <br>
             <div class="product_description">
-                <label for="product_Descriptipn">PRODUCT DESCRIPTION</label>
+                <label for="product_Descriptipn">DESCRIPTION</label>
                 <input id="pdescription" class="myinput" value="${data.Description}" disabled/>
             </div>
+            <br>
             <div class="product_quantity">
-                <label for="product_quantity" >PRODUCT QUANTITY</label>
+                <label for="product_quantity" >AVAILABLE QUANTITY</label>
                 <input id="pquantity" class="myinput" value=${data.quantity} disabled />
             </div>
             <br>
@@ -91,16 +94,28 @@
         }
 </script>
 <style>
-  
+    .container
+    {
+        text-align: left;
+        padding-top: 80px;
+        width: 100%;
+    }
     .midh
     {
-        background-color:skyblue;
+        background-color:black;
         color:whitesmoke;
         text-align: center;
+        margin-left: -20px;
     }
     .mylabel
+    {  
+        padding-top: 20px;
+        padding-right:140px;
+    }
+    .myimage
     {
-        padding-right:90px;
+        padding-top: 20px;
+        padding-right:38px;
     }
     #pid
     {
@@ -112,24 +127,111 @@
     }
     #pdescription
     {
-        margin-left:30px;;
-        width:80%;
+        margin-left:85px;
+        width:650px;
+        height: 30px;
     }
     #pquantity
     {
-        margin-left:55px;
+        margin-left:30px;
+    }
+    .go_back_btn{
+        text-align: center;
     }
 </style>
 
 <body>
-    <h1>Products Page</h1>
+    <header id="home" class="header">
+        <!-- Navigation -->
+        <nav class="nav">
+                <div class="topnav">
+                    <a href="index.html"><img src="../images/logo.png"></a>
+                    <a href="/home">Home</a>
+                    <a href="/fruit&veg">Fruits & Vegetables</a>
+                    <a href="/dairy">Dairy</a>
+                    <a href="/meat">Meat</a>
+                    <a href="/search">Search</a>
+                    <a href="/wishlist">My Wishlist</a>
+                    <a href="/order">My Orders</a>
+                    <a href="cart.html">Cart  <i class='bx bx-cart'></i></a>
+                    <a href="/account">Account</a>
+                    <a onClick="updateLocalStorage()" href="/home">
+                        <span class="glyphicon glyphicon-log-out">
+                        </span>
+                        </a>
+                </div>
+        </nav>
+    </header>
+
     <div class='container'>
     <div class='col-xs-2'></div>
     <div class='col-xs-8 mididv'>
-    <h1 class="midh">PRODUCT INFO</h1>
+    <h1 class="midh">Product Detail</h1>
     <div class="grid-container" id="mydiv"></div>
     </div>
     <div class='col-xs-2'></div>
-    </div>
+    </div><br><br>
+    
+    <footer id="footer" class="section footer">
+       <div class="container">
+       <div class="footer-container">
+           <div class="footer-center">
+           <h3>EXTRAS</h3>
+           <a href="#">Brands</a>
+           <a href="#">E-Giftcards</a>
+           <a href="#">Affiliate</a>
+           <a href="#">Specials</a>
+           <a href="#">Site Map</a>
+           </div>
+           <div class="footer-center">
+           <h3>INFORMATION</h3>
+           <a href="#">About Us</a>
+           <a href="#">Privacy Policy</a>
+           <a href="#">Terms & Conditions</a>
+           <a href="#">Contact Us</a>
+           <a href="#">Site Map</a>
+           </div>
+           <div class="footer-center">
+           <h3>Social</h3>
+           <a href="#">Facebook</a>
+           <a href="#">Instagram</a>
+           <a href="#">Twitter</a>
+           <a href="#">Youtube</a>
+           <a href="#">LinkedIn</a>
+           </div>
+           <div class="footer-center">
+           <h3>CONTACT US</h3>
+           <div>
+               <span>
+               <i class="fas fa-map-marker-alt"></i>
+               </span>
+               577 Boul Henri-Bourassa E, Montréal, QC H2C 1E2
+           </div>
+           <div>
+               <span>
+               <i class="far fa-envelope"></i>
+               </span>
+               owner@cegepgim.ca
+           </div>
+           <div>
+               <span>
+               <i class="fas fa-phone"></i>
+               </span>
+               123-456-7890
+           </div>
+           <div>
+               <span>
+               <i class="far fa-paper-plane"></i>
+               </span>
+               Montreal, Canada
+           </div>
+           </div>
+       </div>
+       </div>
+       </div>
+       <div class="copyright">
+       <i class='bx bx-copyright'>Copyright Reserved By Cégep de la Gaspésie et des Îles, Montreal</i>
+   </div>
+   </footer>
 </body>
 </html>

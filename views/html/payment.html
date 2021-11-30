@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=h1, initial-scale=1.0">
-    <title>Document</title>
+    <title>Fresh Food Market Place</title>
 </head>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -15,12 +15,12 @@
         function submitPay()
     {
         console.log("You clicked the pay button successfully")
-            //To get the Selected Month from the dropdown
-            var getMonthValue=document.getElementById("expiryMonth").selectedOptions[0].value;
-        
+        //To get the Selected Month from the dropdown
+        var getMonthValue=document.getElementById("expiryMonth").selectedOptions[0].value;
+      
 
-        //To get the Selected Year from the dropdown
-        var  getYearValue=document.getElementById("expiryYear").selectedOptions[0].value;
+       //To get the Selected Year from the dropdown
+       var  getYearValue=document.getElementById("expiryYear").selectedOptions[0].value;
  
 
        //Get the current Year and month using Javascript
@@ -87,7 +87,24 @@
         {
        
 
-          
+                    
+                $.ajax({
+
+        url:"http://localhost:6050/addcard",
+        method:"POST",
+        dataType:"json",
+        data:{
+            "cardNumber":card_number,
+            "cardHolderName":card_holder,
+            "month":getMonthValue,
+            "year":getYearValue,
+            "cvv":cvv_val
+            }
+
+
+            })
+
+            window.location.href="/checkout";
         }
 
 

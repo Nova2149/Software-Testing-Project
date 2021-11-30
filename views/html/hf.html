@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="./images/logo.png" type="image/x-icon">
+    
+    <!-- Box  icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Overlock:wght@400;700&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!--Temp Code Starts Here-->
+    <script>
+        $(function()
+        {
+            $.ajax({
+                url:"http://localhost:6050/getuserinfo",
+                type:"GET",
+                dataType:"json",
+                success:function(response)
+                {
+                    console.log(response)
+                    console.log(response[0].first_name)
+                    console.log(response[0].last_name)
+
+                    buildTable(response);
+
+                }
+
+            })
+        })
+        function buildTable(response)
+        {
+            var table=document.getElementById("customer_name");
+            var row1=`
+            <span class="glyphicon glyphicon-user"></span>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="userdiv">
+            <span class="user_first_name">Welcome, ${response[0].first_name}&nbsp;&nbsp;${response[0].last_name}</span>
+            &nbsp;&nbsp;
+            <span class="user_last_name"></span>
+            &nbsp;&nbsp;
+            </div>
+            `;
+            table.innerHTML+=row1;
+
+        }
+        function updateLocalStorage()
+        {
+            console.log(localStorage.getItem("count"))
+            localStorage.setItem("count",1);
+
+            $.ajax({
+                url:"http://localhost:6050/signout",
+                type:"GET",
+                dataType:"json",
+                success:function(response)
+                {
+                    console.log(response)
+                }
+            })
+
+        }
+
+    </script>
+    <!--Temp Code Ends Here-->
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="../css/hf.css">
+    <title>Fresh Food Market Place</title>
+</head>
+<body>
+    <!-- Header -->
+    <header id="home" class="header">
+        <!-- Navigation -->
+        <nav class="nav">
+                <div class="topnav">
+                    <a href="index.html"><img src="../images/logo.png"></a>
+                    <a href="/home">Home</a>
+                    <a href="/fruit&veg">Fruits & Vegetables</a>
+                    <a href="/dairy">Dairy</a>
+                    <a href="/meat">Meat</a>
+                    <a href="/search">Search</a>
+                    <a href="/wishlist">My Wishlist</a>
+                    <a href="/order">My Orders</a>
+                    <a href="cart.html">Cart  <i class='bx bx-cart'></i></a>
+                    <a href="/account">Account</a>
+                    <a onClick="updateLocalStorage()" href="/home">
+                        <span class="glyphicon glyphicon-log-out">
+                        </span>
+                        </a>
+                </div>
+        </nav>
+    </header>
+    <!-- br below is fake body content -->
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+     <!-- Footer -->
+     <footer id="footer" class="section footer">
+         <br>
+        <div class="container">
+        <div class="footer-container">
+            <div class="footer-center">
+            <h3>EXTRAS</h3>
+            <a href="#">Brands</a>
+            <a href="#">E-Giftcards</a>
+            <a href="#">Affiliate</a>
+            <a href="#">Specials</a>
+            <a href="#">Site Map</a>
+            </div>
+            <div class="footer-center">
+            <h3>INFORMATION</h3>
+            <a href="#">About Us</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms & Conditions</a>
+            <a href="#">Contact Us</a>
+            <a href="#">Site Map</a>
+            </div>
+            <div class="footer-center">
+            <h3>Social</h3>
+            <a href="#">Facebook</a>
+            <a href="#">Instagram</a>
+            <a href="#">Twitter</a>
+            <a href="#">Youtube</a>
+            <a href="#">LinkedIn</a>
+            </div>
+            <div class="footer-center">
+            <h3>CONTACT US</h3>
+            <div>
+                <span>
+                <i class="fas fa-map-marker-alt"></i>
+                </span>
+                577 Boul Henri-Bourassa E, Montréal, QC H2C 1E2
+            </div>
+            <div>
+                <span>
+                <i class="far fa-envelope"></i>
+                </span>
+                owner@cegepgim.ca
+            </div>
+            <div>
+                <span>
+                <i class="fas fa-phone"></i>
+                </span>
+                123-456-7890
+            </div>
+            <div>
+                <span>
+                <i class="far fa-paper-plane"></i>
+                </span>
+                Montreal, Canada
+            </div>
+            </div>
+        </div>
+        </div>
+        </div>
+        <div class="copyright">
+        <i class='bx bx-copyright'>Copyright Reserved By Cégep de la Gaspésie et des Îles, Montreal</i>
+    </div>
+    </footer>
+    </body>
+    </html>
