@@ -28,27 +28,62 @@
         })
     })
     function removeCustomer(email)
-    {
+    {   
         console.log(email)
-          $.ajax({
-            url:"http://localhost:6050/removecustomer",
+
+        $.ajax({
+            url:"http://localhost:6050/getuser_id",
             method:"POST",
             dataType:"json",
             data:{
                 "email":email
+            }
+            ,success:function(response)
+            {
+                console.log(response)
+                deleteUser(response)
+            }
+        })
+       
+        //   $.ajax({
+        //     url:"http://localhost:6050/removecustomer",
+        //     method:"POST",
+        //     dataType:"json",
+        //     data:{
+        //         "email":email
 
+        //     },
+        //     success:function(response)
+        //     {
+        //         console.log(response)
+        //     }
+           
+
+        // })
+        // alert("User Removed Successfully");
+        // window.location.reload();
+    }
+    function deleteUser(data)
+    {   
+        console.log("Inside the delete User method")
+        let user_id=data[0].user_id
+        console.log(user_id)
+        $.ajax({
+            url:"http://localhost:6050/removecustomer",
+            method:"POST",
+            dataType:"json",
+            data:{
+                "client_user_id":user_id
             },
             success:function(response)
             {
                 console.log(response)
             }
-           
-
         })
-        alert("User Removed Successfully");
+        alert("User removed successfully")
         window.location.reload();
+        
     }
-
     function buildTable(data)
     {   
         var table=document.getElementById("mydiv");

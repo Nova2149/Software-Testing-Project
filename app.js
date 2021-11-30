@@ -22,7 +22,8 @@ const connection=mysql.createConnection({
     host:'localhost',
     user:'root',
     password:'root',
-    database:'myweb418'
+    database:'myweb418',
+    multipleStatements:true
 })
 
 const app=express()
@@ -1835,4 +1836,65 @@ app.get("/updatequantity",(req,res)=>
 app.get("/adminpayment",(req,res)=>
 {
     res.sendFile(path.resolve(__dirname,'views/html/adminpayment.html'))
+})
+
+//Get the Payment info api
+app.get("/getpaymentinfo",(req,res)=>
+{
+    sql="select * from payment";
+    connection.query(sql,(error,result)=>
+    {
+        if(error) throw error;
+        console.log(result)
+        res.send(result)
+    })
+})
+
+//To load the total sales page
+//Get Request-Admin Section
+app.get("/totalsales",(req,res)=>
+{
+    res.sendFile(path.resolve(__dirname,'views/html/totalsales.html'))
+})
+
+//sql get request to generate the total sales
+
+app.get("/gettotalsales",(req,res)=>
+{
+    sql="select count(order_id) as num_of_orders ,sum(order_total) as sum_of_order from orderTable;";
+    connection.query(sql,(error,result)=>
+    {
+        if(error) throw error;
+        console.log(result)
+        res.send(result)
+    })
+})
+//POst api to get the Customer User ID
+//Admin Section
+app.post("/getuser_id",(req,res)=>
+{
+    let email=req.body.email
+    sql="select user_id from register where email=?"
+    connection.query(sql,[email],(error,result)=>
+    {
+        if(error) throw error;
+        console.log(result)
+        res.send(result)
+    })
+})
+//Post api to Remove a Customer
+app.post("/removecustomer",(req,res)=>
+{
+    let client_user_id=parseInt(req.body.client_user_id)
+    console.log(client_user_id)
+
+    sql="SET FOREIGN_KEY_CHECKS=0;delete from register where user_id=?;"+
+    "SET FOREIGN_KEY_CHECKS=1;"
+    connection.query(sql,[client_user_id],(error,result)=>
+    {
+        if(error) throw error;
+        console.log(result)
+        res.send(result)
+
+    })
 })

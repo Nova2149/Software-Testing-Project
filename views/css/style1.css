@@ -508,25 +508,7 @@ ul{
   }
 
   
-  select{
-      
-    position: absolute;
-    top: 26px;
-    right: 0;
-    left: 0;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: end;
-    -webkit-justify-content: flex-end;
-    -ms-flex-pack: end;
-    justify-content: flex-end;
-    white-space: pre-line;
-    height: 0px;
-    margin-left: 8px;
-    font-size: 0.826rem;
-  }
+
 
   
 

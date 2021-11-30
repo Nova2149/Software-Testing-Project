@@ -13,40 +13,39 @@
 </head>
 
 <script>
-    $(function()
-    {
-        $.ajax({
-            url:"http://localhost:6050/getpaymentinfo",
-            method:"GET",
-            dataType:"json",
-            success:function(response)
+    $.ajax({
+        url:"http://localhost:6050/gettotalsales",
+        method:"GET",
+        dataType:"json",
+        success:function(response)
         {
             console.log(response)
             buildTable(response)
-
-        }   
-         })
+        }
     })
-
-    function buildTable(response)
+    function buildTable(data)
     {
         var table=document.getElementById("mytbody")
-        for(let  i=0;i<response.length;i++)
-        {
-            var row=`<tr>
-                <td>
-                    ${response[i].user_id}
-                </td>
-                <td>${response[i].card_number}</td>
-                <td>${response[i].name}</td>
-                <td>${response[i].expiry_month}</td>
-                <td>${response[i].expiry_year}</td>
+      
+            var  row=`
+            <tr>
+                <td>${data[0].num_of_orders}</td>
+                <td>${data[0].sum_of_order}</td>
+            </tr>`;
 
-                </tr>`
-                table.innerHTML+=row;
-        }
+            table.innerHTML+=row;
+        
     }
 </script>
+<style>
+    h1{
+        text-align:center;
+        font-style: bold;
+    }   
+    table{
+        border:2px solid black;
+    }
+</style>
 <body>
     <nav class="nav adminnav">
         <ul class="nav-list adminul">
@@ -65,24 +64,23 @@
             </li>
         </ul>
     </nav>
-
+        
+    <h1>SALES DATA</h1>
     <div class="row">
         <div class="col-xs-2"></div>
         <div class="col-xs-8">
             <table class="table table-stripped">
                 <tr>
-                    <th class="info">USER ID</th>
-                    <th class="info">CARD NUMBER</th>
-                    <th class="info">CARD HOLDER NAME</th>
-                    <th class="info">EXPIRY MONTH</th>
-                    <th class="info">EXPIRY YEAR</th>
+                    <th class="info">Number of Orders</th>
+                    <th class="info">Total Sales</th>
                 </tr>
                 <tbody id="mytbody">
-                     
+
                 </tbody>
             </table>
         </div>
         <div class="col-xs-2"></div>
     </div>
+    
 </body>
 </html>
