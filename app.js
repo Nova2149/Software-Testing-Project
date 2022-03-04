@@ -18,11 +18,15 @@ let user_id;
 let order_id;
 
 //setting up the sql connection
+//npm i mysql2
+
+
+//Roshini 
 const connection=mysql.createConnection({
     host:'localhost',
     user:'root',
     password:'root',
-    database:'myweb418',
+    database:'myweb418',//schema name-myweb418
     multipleStatements:true
 })
 
